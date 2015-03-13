@@ -57,6 +57,7 @@ wmDict = {
 	'enlightenment': 'Enlightenment',
 	'herbstluftwm': 'herbstluftwm',
 	'fluxbox': 'Fluxbox',
+	'howm': 'howm',
 	'fvwm': 'FVWM',
 	'i3': 'i3',
 	'icewm': 'IceWM',
