@@ -31,6 +31,7 @@ output = [ 'User', 'Hostname', 'Distro', 'Kernel', 'Uptime', 'WindowManager', 'D
 colorDict = {
 	'Arch Linux': ['\x1b[0;34m', '\x1b[1;34m'],
 	'Ubuntu': ['\x1b[0;31m', '\x1b[1;31m', '\x1b[0;33m'],
+	'FreeBSD': ['\x1b[0;31m', '\x1b[1;31m', '\x1b[0;33m'],
 	'Debian': ['\x1b[0;31m', '\x1b[1;31m'],
 	'Mint': ['\x1b[0;32m', '\x1b[1;37m'],
 	'Crunchbang': ['\x1b[1;37m'],
@@ -77,7 +78,7 @@ wmDict = {
 	}
 
 logosDict = {'Arch Linux': '''{color[1]}
-{color[1]}               +                {results[0]}
+{color[1]}               +                {results[8]}
 {color[1]}               #                {results[1]}
 {color[1]}              ###               {results[2]}
 {color[1]}             #####              {results[3]}
@@ -90,22 +91,42 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[1]}       #{color[0]}######   #######        {results[10]}
 {color[0]}     .######;     ;###;`\".      {results[11]}
 {color[0]}    .#######;     ;#####.       {results[12]}
-{color[0]}    #########.   .########`     {results[13]}
-{color[0]}   ######'           '######    {results[14]}
-{color[0]}  ;####                 ####;   {results[15]}
-{color[0]}  ##'                     '##   {results[16]} 
-{color[0]} #'                         `#  {results[17]}
+{color[0]}    #########.   .########`     
+{color[0]}   ######'           '######    
+{color[0]}  ;####                 ####;   
+{color[0]}  ##'                     '##    
+{color[0]} #'                         `#  
 \x1b[0m'''
+,'FreeBSD':'''{color[0]}
+{color[0]}  ```                        `    {results[0]}
+{color[0]} s` `.....---.......--.```   -/   {results[1]}
+{color[0]} +o   .--`         /y:`      +.   {results[2]}
+{color[0]}  yo`:.            :o      `+-    {results[3]}
+{color[0]}   y/               -/`   -o/     {results[4]}
+{color[0]}  .-                  ::/sy+:.    {results[5]}
+{color[0]}  /                     `--  /    {results[6]}
+{color[0]} `:                          :`   {results[7]}
+{color[0]} `:                          :`   {results[8]}
+{color[0]}  /                          /    {results[9]}
+{color[0]}  .-                        -.    {results[10]}
+{color[0]}   --                      -.     {results[11]}
+{color[0]}    `:`                  `:`      {results[12]}
+{color[0]}      .--             `--.        
+{color[0]}         .---.....----.           
+{color[0]}                                  
+{color[0]}                                  
+{color[0]}                                  
+\x1b[0m'''
+
 }
 
-processes = str(subprocess.check_output(('ps', '-u', getuser(), '-o', 'comm',
-	'--no-headers')), encoding='utf8').rstrip('\n').split('\n')
+processes = str(subprocess.check_output(('ps', '-u', '-o', 'comm=')), encoding='utf8').rstrip('\n').split('\n')
 
 #---------------Classes---------------#
 
 class Output:
 	results = []
-	results.extend(['']*(18-len(output)))
+	#results.extend(['']*(18-len(output)))
 	
 	def __init__(self):
 		self.distro = self.__detectDistro()
@@ -113,6 +134,8 @@ class Output:
 	def __detectDistro(self):
 		if os.path.exists('/etc/pacman.conf'):
 			return 'Arch Linux'
+		elif os.path.exists('/bin/freebsd-version'):
+			return 'FreeBSD'
 		else:
 			sys.exit(1)
 			
@@ -137,6 +160,8 @@ class Distro:
 	def __init__(self):
 		if os.path.exists('/etc/pacman.conf'):
 			distro =  'Arch Linux'
+		elif os.path.exists('/bin/freebsd-version'):
+			distro = 'FreeBSD'
 		self.key = 'Distro'
 		self.value = distro
 			
@@ -148,7 +173,8 @@ class Kernel:
 			
 class Uptime:		
 	def __init__(self):
-		fuptime = int(open('/proc/uptime').read().split('.')[0])
+		#fuptime = int(open('/proc/uptime').read().split('.')[0])
+		fuptime = 100000
 		day = int(fuptime / 86400)
 		fuptime = fuptime % 86400
 		hour = int(fuptime / 3600)
@@ -198,24 +224,26 @@ class Terminal:
 			
 class Packages:
 	def __init__(self):
-		p1 = Popen(['pacman', '-Q'], stdout=PIPE).communicate()[0].decode("Utf-8")
+		p1 = Popen(['pkg', 'info'], stdout=PIPE).communicate()[0].decode("Utf-8")
 		packages = len(p1.rstrip('\n').split('\n'))
 		self.key = 'Packages'
 		self.value = packages
 		
 class CPU:
     def __init__(self):
-        file = open('/proc/cpuinfo').readlines()
-        cpuinfo = re.sub('  +', ' ', file[4].replace('model name\t: ', '').rstrip('\n'))
+        #file = open('/proc/cpuinfo').readlines()
+        file = Popen(['sysctl', '-n','hw'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
+        cpuinfo = re.sub('  +', ' ', file[1].replace('model name\t: ', '').rstrip('\n'))
         self.key = 'CPU'
         self.value = cpuinfo
 
 class RAM:
 	def __init__(self):
-		raminfo = Popen(['free', '-m'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
-		ram = ''.join(filter(re.compile('M').search, raminfo)).split()
-		used = ram[2]
-		total = ram[1]
+		raminfo = Popen(['vmstat'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
+		#ram = ''.join(filter(re.compile('M').search, raminfo)).split()
+		ram = raminfo[2].split()
+		used = int(ram[3])//1000
+		total = int(ram[4])//1000
 		usedpercent = ((float(used) / float(total)) * 100)
 		if usedpercent <= 33:
 			ramdisplay = '%s%s MB %s/ %s MB' % (colorDict['Sensors'][1], used, colorDict['Clear'][0], total)
@@ -228,11 +256,11 @@ class RAM:
 			
 class Disk:
     def __init__(self):
-        p1 = Popen(['df', '-Tlh', '--total', '-t', 'ext4', '-t', 'ext3', '-t', 'ext2', '-t', 'reiserfs', '-t', 'jfs', '-t', 'ntfs', '-t', 'fat32', '-t', 'btrfs', '-t', 'fuseblk', '-t', 'xfs'], stdout=PIPE).communicate()[0].decode("Utf-8")
+        p1 = Popen(['df', '-Tlhc'], stdout=PIPE).communicate()[0].decode("Utf-8")
         total = p1.splitlines()[-1]
-        used = total.split()[3]
-        size = total.split()[2]
-        usedpercent = float(total.split()[5][:-1])
+        used = total.split()[2]
+        size = total.split()[1]
+        usedpercent = float(total.split()[4][:-1])
         
         if usedpercent <= 33:
             disk = '%s%s %s/ %s' % (colorDict['Sensors'][1], used, colorDict['Clear'][0], size)  
