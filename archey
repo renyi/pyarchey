@@ -174,7 +174,9 @@ class Kernel:
 class Uptime:		
 	def __init__(self):
 		#fuptime = int(open('/proc/uptime').read().split('.')[0])
-		fuptime = 100000
+		boottime = Popen(['sysctl', '-n',  'kern.boottime'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n').split()[3]
+		currtime = Popen(['date', '+%s'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
+		fuptime =int(currtime) - int(re.sub(',', '', boottime))
 		day = int(fuptime / 86400)
 		fuptime = fuptime % 86400
 		hour = int(fuptime / 3600)
