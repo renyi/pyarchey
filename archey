@@ -129,7 +129,7 @@ else:
     dist = 'NotFound'
 
 if dist == 'FreeBSD':
-    processes = str(subprocess.check_output(('ps', '-u', '-o', 'comm=')), encoding='utf8').rstrip('\n').split('\n')
+    processes = str(subprocess.check_output(('ps', '-U', getuser(), '-o', 'comm=')), encoding='utf8').rstrip('\n').split('\n')
 else:
     processes = str(subprocess.check_output(('ps', '-u', getuser(), '-o', 'comm',
         '--no-headers')), encoding='utf8').rstrip('\n').split('\n')
