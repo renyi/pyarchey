@@ -33,7 +33,7 @@ colorDict = {
     'Ubuntu': ['\x1b[0;31m', '\x1b[1;31m', '\x1b[1;33m'],
     'FreeBSD': ['\x1b[0;31m', '\x1b[1;31m', '\x1b[0;33m'],
     'Debian': ['\x1b[0;31m', '\x1b[1;31m'],
-    'Mint': ['\x1b[0;32m', '\x1b[1;37m'],
+    'LinuxMint': ['\x1b[1;37m', '\x1b[1;32m'],
     'Crunchbang': ['\x1b[1;37m'],
     'Fedora': ['\x1b[0;34m', '\x1b[1;37m'],
     'Sensors': ['\x1b[1;31m', '\x1b[1;32m', '\x1b[1;33m'], 
@@ -156,19 +156,19 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[2]}                                    
 \x1b[0m'''
 ,'LinuxMint':'''{color[0]}
-{color[0]} MMMMMMMMMMMMMMMMMMMMMMMMMmds+.          {results[0]}
-{color[0]} MMm----::-://////////////oymNMd+`       {results[1]}
-{color[0]} MMd      %s/++                %s-sNMd:  {results[2]}
-{color[0]} MMNso/`  %sdMM    `.::-. .-::.` %s.hMN: {results[3]}
-{color[0]} ddddMMh  %sdMM   :hNMNMNhNMNMNh: `%sNMm {results[4]}
-{color[0]}     NMm  %sdMM  .NMN/-+MMM+-/NMN` %sdMM {results[5]}
-{color[0]}     NMm  %sdMM  -MMm  `MMM   dMM. %sdMM {results[6]}
-{color[0]}     NMm  %sdMM  -MMm  `MMM   dMM. %sdMM {results[7]}
-{color[0]}     NMm  %sdMM  .mmd  `mmm   yMM. %sdMM {results[8]}
-{color[0]}     NMm  %sdMM`  ..`   ...   ydm. %sdMM {results[9]}
-{color[0]}     hMM-  %s+MMd/-------...-:sdds %sMMM {results[10]}
-{color[0]}     -NMm-  %s:hNMNNNmdddddddddy/` %sdMM {results[11]}
-{color[0]}      -dMNs-``%s-::::-------.``    %sdMM {results[12]}
+{color[0]} MMMMMMMMMMMMMMMMMMMMMMMMMmds+.      {results[0]}
+{color[0]} MMm----::-://////////////oymNMd+`   {results[1]}
+{color[0]} MMd      {color[1]}/++                {color[0]}-sNMd:  {results[2]}
+{color[0]} MMNso/`  {color[1]}dMM    `.::-. .-::.`{color[0]} .hMN: {results[3]}
+{color[0]} ddddMMh  {color[1]}dMM   :hNMNMNhNMNMNh: `{color[0]}NMm {results[4]}
+{color[0]}     NMm  {color[1]}dMM  .NMN/-+MMM+-/NMN` {color[0]}dMM {results[5]}
+{color[0]}     NMm  {color[1]}dMM  -MMm  `MMM   dMM. {color[0]}dMM {results[6]}
+{color[0]}     NMm  {color[1]}dMM  -MMm  `MMM   dMM. {color[0]}dMM {results[7]}
+{color[0]}     NMm  {color[1]}dMM  .mmd  `mmm   yMM. {color[0]}dMM {results[8]}
+{color[0]}     NMm  {color[1]}dMM`  ..`   ...   ydm. {color[0]}dMM {results[9]}
+{color[0]}     hMM-  {color[1]}+MMd/-------...-:sdds {color[0]}MMM {results[10]}
+{color[0]}     -NMm-  {color[1]}:hNMNNNmdddddddddy/` {color[0]}dMM {results[11]}
+{color[0]}      -dMNs-``{color[1]}-::::-------.``    {color[0]}dMM {results[12]}
 {color[0]}       `/dMNmy+/:-------------:/yMMM
 {color[0]}          ./ydNMMMMMMMMMMMMMMMMMMMMM
 {color[0]}                                    
