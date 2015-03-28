@@ -24,7 +24,7 @@ from time import ctime, sleep
 
 #---------------Output---------------#
 
-output = [ 'User', 'Hostname', 'Distro', 'Kernel', 'Uptime', 'WindowManager', 'DesktopEnvironment', 'Shell', 'Terminal', 'Packages', 'CPU', 'RAM', 'Disk' ] 
+output = [ 'User', 'Hostname', 'OS', 'Kernel', 'Uptime', 'WindowManager', 'DesktopEnvironment', 'Shell', 'Terminal', 'Packages', 'CPU', 'RAM', 'Disk' ] 
  
 #---------------Dictionaries---------------#
 
@@ -168,14 +168,21 @@ class Hostname:
         self.key = 'Hostname'
         self.value = hostname
             
-class Distro:
+class OS:
     def __init__(self):
-        if os.path.exists('/etc/pacman.conf'):
-            distro =  'Arch Linux'
-        elif os.path.exists('/bin/freebsd-version'):
-            distro = 'FreeBSD'
-        self.key = 'Distro'
-        self.value = distro
+
+        if dist == 'FreeBSD':
+            OS = 'FreeBSD'
+        elif dist == 'Arch':
+            OS =  'Arch Linux'
+        else:
+            OS = dist
+
+        arch = Popen(['uname', '-m'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
+        OS = OS + ' ' + arch
+
+        self.key = 'OS'
+        self.value = OS
             
 class Kernel:
     def __init__(self):
@@ -308,7 +315,7 @@ class Disk:
 classes = {
  'User': User,
  'Hostname': Hostname,
- 'Distro': Distro,
+ 'OS': OS,
  'Kernel': Kernel,
  'Uptime': Uptime,
  'WindowManager': WindowManager,
