@@ -2,7 +2,7 @@
 
 
 
-  [kevin@Tardis archey]$ ./archey.py
+    [kevin@Tardis archey]$ ./archey.py
 
                     ##             User: kevin
                  ####              Hostname: Tardis.local
