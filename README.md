@@ -1,6 +1,6 @@
 # Archey
 
-
+[![Build Status](https://travis-ci.org/walchko/archey.svg?branch=master)](https://travis-ci.org/walchko/archey)
 
     [kevin@Tardis archey]$ ./archey.py
 
