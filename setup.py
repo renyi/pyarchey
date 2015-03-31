@@ -5,7 +5,7 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
-    name="PyArchey",
+    name="pyarchey",
     version="0.4",
     author="Kevin Walchko",
     keywords='system info',
@@ -36,6 +36,7 @@ setup(
         #'Programming Language :: Python :: 3.3',
         #'Programming Language :: Python :: 3.4',
     ],
+    install_requires=['psutil'],
     url="",
     long_description=read("README.md"),
     packages=["pyarchey"],

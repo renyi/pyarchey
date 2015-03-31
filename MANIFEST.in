@@ -11,4 +11,3 @@ recursive-include pyarchey *.py
 recursive-exclude * .gitignore
 recursive-exclude * .travis.yml
 recursive-exclude * .DS_Store
-recursive-exclude * *.pyc
