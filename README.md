@@ -1,6 +1,6 @@
 # PyArchey
 
-[![Build Status](https://travis-ci.org/walchko/archey.svg?branch=master)](https://travis-ci.org/walchko/archey)
+[![Build Status](https://travis-ci.org/walchko/pyarchey.svg)](https://travis-ci.org/walchko/pyarchey)
 
     [kevin@Tardis ~]$ pyarchey
 
@@ -34,7 +34,7 @@ You can also do
     cd pyarchey
     python setup.py install
 
-If you plan on doing some development, instead of `install` you can do 'develop'.
+If you plan on doing some development, instead of `install` you can do `develop`.
 
 
 ## History
