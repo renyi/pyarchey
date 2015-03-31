@@ -2,6 +2,9 @@
 
 [![Build Status](https://travis-ci.org/walchko/pyarchey.svg)](https://travis-ci.org/walchko/pyarchey)
 
+This is based off the `archey` command (which is also python) distributed by various linux, unix, and osx package managers. In order to avoid a naming conflict between them, I called this `pyarchey`.
+
+
     [kevin@Tardis ~]$ pyarchey
 
                     ##             User: kevin
@@ -24,7 +27,7 @@ Some of the custom code was removed and `psutil` was used to provide a cross-pla
 
 ## Install
 
-The preferred way is to use pypi.org
+The preferred way is to use [pypi.org](https://pypi.python.org/pypi)
 
     pip install pyarchey
 

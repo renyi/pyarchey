@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Archey [version 0.3.0]
+# Archey [version 0.4.0]
 #
 # Archey is a simple system information tool written in Python.
 #
@@ -42,19 +42,31 @@ RD ='\033[0;31m'   # red
 PL ="\033[0;35m"   # purple
 BR ="\033[0;33m"   # brown
 GY ="\033[0;30m"   # grey
+LG ="\033[0;37m"   # light grey
+
+# Bold colors (note be 'B' before the color name)
+BBK ="\033[1;30m"   # black
+BBL ="\033[1;34m"   # blue
+BGR ="\033[1;32m"   # green
+BCY ="\033[1;36m"   # cyan
+BRD ='\033[1;31m'   # red
+BPL ="\033[1;35m"   # purple
+BBR ="\033[1;33m"   # brown
+BGY ="\033[1;30m"   # grey
+BLG ="\033[1;37m"   # light grey
 
 colorDict = {
-    'Arch Linux': ['\x1b[0;34m', '\x1b[1;34m'],
-    'Ubuntu':     ['\x1b[0;31m', '\x1b[1;31m', '\x1b[1;33m'],
-    'FreeBSD':    ['\x1b[0;31m', '\x1b[1;31m', '\x1b[0;33m'],
-    'Mac OSX':    [CLR, CY],
-    'Debian':     ['\x1b[0;31m', '\x1b[1;31m'],
-    'LinuxMint':  ['\x1b[1;37m', '\x1b[1;32m'],
-    'CrunchBang': ['\x1b[1;37m','\x1b[1;37m'],
-    'Fedora':     ['\x1b[1;37m', '\x1b[1;34m', '\x1b[0;34m'],
-    'openSUSE project': ['\x1b[1;37m', '\x1b[1;32m'],
-    'Sensors':    ['\x1b[1;31m', '\x1b[1;32m', '\x1b[1;33m'],
-    'Clear':      ['\x1b[0m']
+    'Arch Linux':       [BL, BBL],
+    'Ubuntu':           [RD, BRD, BBR],
+    'FreeBSD':          [RD, BRD, BR],
+    'Mac OSX':          [CLR, CY],
+    'Debian':           [RD, BRD],
+    'LinuxMint':        [BLG, BGR],
+    'CrunchBang':       [BLG,BLG],
+    'Fedora':           [BLG, BBL, BL],
+    'openSUSE project': [BLG, BGR],
+    'Sensors':          [BRD, BGR, BBR],
+    'Clear':            [CLR]
     }
 
 
