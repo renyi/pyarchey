@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 #
-# Archey [version 0.4.0]
+# pyarchey [version 0.4.0]
 #
-# Archey is a simple system information tool written in Python.
+# pyarchey is a simple system information tool written in Python.
 #
 # Copyright 2010 Melik Manukyan <melik@archlinux.us>
 # Copyright 2010 David Vazgenovich Shakaryan <dvshakaryan@gmail.com>
@@ -15,8 +15,9 @@
 # See http://www.gnu.org/licenses/gpl.txt for the full license text.
 
 # Import libraries
-
-import os, sys, subprocess, optparse, re, linecache
+import os, sys, subprocess
+import re
+#import optparse, linecache
 from subprocess import Popen, PIPE
 #from optparse import OptionParser
 #from getpass import getuser
@@ -28,7 +29,7 @@ import datetime as dt
 
 #---------------Output---------------#
 
-output = [ 'User', 'Hostname', 'IP','OS', 'Kernel', 'Uptime', 'Shell', 'Terminal', 'Packages', 'CPU', 'Misc', 'RAM', 'Disk' ]
+output = [ 'User', 'Hostname', 'IP','OS', 'Kernel', 'Uptime', 'Shell', 'Processes', 'Packages', 'CPU', 'CPU Usage', 'RAM', 'Disk' ]
 
 #---------------Dictionaries---------------#
 #  https://wiki.archlinux.org/index.php/Color_Bash_Prompt
@@ -68,58 +69,6 @@ colorDict = {
     'Sensors':          [BRD, BGR, BBR],
     'Clear':            [CLR]
     }
-
-
-# colorDict = {
-#     'Arch Linux': ['\x1b[0;34m', '\x1b[1;34m'],
-#     'Ubuntu': ['\x1b[0;31m', '\x1b[1;31m', '\x1b[1;33m'],
-#     'FreeBSD': ['\x1b[0;31m', '\x1b[1;31m', '\x1b[0;33m'],
-#     'Mac OSX': ['\x1b[0;31m', '\x1b[1;31m', '\x1b[0;33m'],
-#     'Debian': ['\x1b[0;31m', '\x1b[1;31m'],
-#     'LinuxMint': ['\x1b[1;37m', '\x1b[1;32m'],
-#     'CrunchBang': ['\x1b[1;37m','\x1b[1;37m'],
-#     'Fedora': ['\x1b[1;37m', '\x1b[1;34m', '\x1b[0;34m'],
-#     'openSUSE project': ['\x1b[1;37m', '\x1b[1;32m'],
-#     'Sensors': ['\x1b[1;31m', '\x1b[1;32m', '\x1b[1;33m'],
-#     'Clear': ['\x1b[0m']
-#     }
-
-# deDict = {
-#     'cinnamon-sessio': 'Cinnamon',
-#     'gnome-session': 'GNOME',
-#     'mate-session': 'MATE',
-#     'ksmserver': 'KDE',
-#     'xfce4-session': 'Xfce',
-#     'lxsession': 'LXDE'
-#     }
-
-# wmDict = {
-#     'awesome': 'Awesome',
-#     'beryl': 'Beryl',
-#     'blackbox': 'Blackbox',
-#     'compiz': 'Compiz',
-#     'dwm': 'DWM',
-#     'enlightenment': 'Enlightenment',
-#     'herbstluftwm': 'herbstluftwm',
-#     'fluxbox': 'Fluxbox',
-#     'howm': 'howm',
-#     'fvwm': 'FVWM',
-#     'i3': 'i3',
-#     'icewm': 'IceWM',
-#     'kwin': 'KWin',
-#     'metacity': 'Metacity',
-#     'musca': 'Musca',
-#     'nemo': 'Nemo',
-#     'openbox': 'Openbox',
-#     'pekwm': 'PekWM',
-#     'ratpoison': 'ratpoison',
-#     'scrotwm': 'ScrotWM',
-#     'wmaker': 'Window Maker',
-#     'wmfs': 'Wmfs',
-#     'wmii': 'wmii',
-#     'xfwm4': 'Xfwm',
-#     'xmonad': 'xmonad'
-#     }
 
 logosDict = {'Arch Linux': '''{color[1]}
 {color[1]}               +                {results[0]}
@@ -239,24 +188,6 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[2]} :--------------------://
 {color[2]}
 \x1b[0m'''
-,'CrunchBang':'''{color[0]}
-{color[1]}                ___       ___      _  {results[0]}
-{color[1]}               /  /      /  /     | | {results[1]}
-{color[1]}              /  /      /  /      | | {results[2]}
-{color[1]}             /  /      /  /       | | {results[3]}
-{color[1]}     _______/  /______/  /______  | | {results[4]}
-{color[1]}    /______   _______   _______/  | | {results[5]}
-{color[1]}          /  /      /  /          | | {results[6]}
-{color[1]}         /  /      /  /           | | {results[7]}
-{color[0]}        /  /      /  /            | | {results[8]}
-{color[0]} ______/  /______/  /______       | | {results[9]}
-{color[0]}/_____   _______   _______/       | | {results[10]}
-{color[0]}     /  /      /  /               | | {results[11]}
-{color[0]}    /  /      /  /                |_| {results[12]}
-{color[0]}   /  /      /  /                  _
-{color[0]}  /  /      /  /                  | |
-{color[0]} /__/      /__/                   |_|
-\x1b[0m'''
 ,'openSUSE project':'''{color[0]}
 {color[1]}        +########_ #=.    {results[0]}
 {color[1]}      ################-#  {results[1]}
@@ -304,8 +235,8 @@ else:
     try:
     	dist = Popen(['lsb_release', '-is'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
     except:
-    	print 'Error w/ lsb_release'
-    	dist = 'Debian'
+    	#print 'Error w/ lsb_release'
+    	dist = _platform
 
 def autoSize(used,total):
     mem = ['B','KB','MB','GB','TB','PB']
@@ -363,6 +294,7 @@ class OS:
         elif dist == 'openSUSE project':
             OS = 'openSUSE'
         else:
+            ans,dist = self.fileCheck('/etc/os-release')
             OS = dist
 
         arch = Popen(['uname', '-m'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
@@ -370,6 +302,28 @@ class OS:
 
         self.key = 'OS'
         self.value = OS
+
+    def fileCheck(f):
+        txt = ''
+
+        if os.path.isfile(f):
+            txt = open(f).readlines()
+
+        else:
+            return False,'linux'
+
+        linux = ['Arch','Fedora','LinuxMint','Ubuntu','SUSE','Debian','Raspbian']
+        dist = 'Linux'
+        ans = False
+        for line in txt:
+            for i in linux:
+                if line.find(i) >= 0:
+                    dist = i
+                    ans = True
+                    break
+
+        return ans,dist
+
 
 class Kernel:
     def __init__(self):
@@ -404,7 +358,7 @@ class Uptime:
         up = dt.datetime.fromtimestamp(up)
         now = dt.datetime.now()
         diff = now - up
-        uptime = '%d days %d:%d' %(diff.days,diff.seconds/3600,(diff.seconds%3600)/60)
+        uptime = '%d days %d hrs %d mins' %(diff.days,diff.seconds/3600,(diff.seconds%3600)/60)
         self.key = 'Uptime'
         self.value = uptime
 
@@ -413,12 +367,12 @@ class Shell:
         self.key = 'Shell'
         self.value = os.getenv('SHELL')
 
-class Terminal:
+class Processes:
     def __init__(self):
-        self.key = 'Terminal'
+        self.key = 'Processes'
         # self.tmux = ' (tmux)' if os.getenv('TMUX') else ''
         # self.value = os.getenv('TERM') + self.tmux
-        self.value = 'Processes running: ' + str(len(ps.pids()))
+        self.value =  str(len(ps.pids())) + ' running'
 
 class Packages:
     def __init__(self):
@@ -531,33 +485,33 @@ class IP:
         ip = socket.gethostbyname(socket.gethostname())
 
         # try a zeroconfig host name
-        if ip == '127.0.0.1':
+        if ip.find('127.0') >=0:
             ip = socket.gethostbyname(socket.gethostname()+'.local')
         self.key = 'IP'
         self.value = ip
 
-class Misc:
+class CPU2:
     def __init__(self):
         cpu = ps.cpu_percent(interval=1, percpu=True)
-        self.key = 'Misc'
-        self.value = 'CPU usage: ' + str(cpu)
+        self.key = 'CPU Usage'
+        self.value = str(cpu)
 
 def main():
     # https://pythonhosted.org/psutil/
 
     classes = {
          'User': User,
+         'OS': OS,
          'Hostname': Hostname,
          'IP': IP,
-         'OS': OS,
          'Kernel': Kernel,
          'Uptime': Uptime,
          'Shell': Shell,
-         'Terminal': Terminal,
+         'Processes': Processes,
          'Packages': Packages,
          'CPU': CPU,
          'RAM': RAM,
-         'Misc': Misc,
+         'CPU Usage': CPU2,
          'Disk': Disk
     }
 
