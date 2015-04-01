@@ -242,6 +242,7 @@ def fileCheck(f):
         for i in linux:
             if line.find(i) >= 0:
                 dist = i
+                if dist == 'Raspbian': dist = 'Debian' # FIXME
                 ans = True
                 break
 
