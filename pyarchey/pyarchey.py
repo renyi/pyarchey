@@ -226,6 +226,27 @@ logosDict = {'Arch Linux': '''{color[1]}
 
 #
 
+def fileCheck(f):
+    txt = ''
+
+    if os.path.isfile(f):
+        txt = open(f).readlines()
+
+    else:
+        return False,'linux'
+
+    linux = ['Arch','Fedora','LinuxMint','Ubuntu','SUSE','Debian','Raspbian']
+    dist = 'Linux'
+    ans = False
+    for line in txt:
+        for i in linux:
+            if line.find(i) >= 0:
+                dist = i
+                ans = True
+                break
+
+    return ans,dist
+
 dist = _platform
 if dist == 'darwin':
     dist = 'Mac OSX'
@@ -236,7 +257,8 @@ else:
     	dist = Popen(['lsb_release', '-is'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
     except:
     	#print 'Error w/ lsb_release'
-    	dist = _platform
+    	ans,dist = self.fileCheck('/etc/os-release')
+        if not ans: dist = 'Debian' 
 
 def autoSize(used,total):
     mem = ['B','KB','MB','GB','TB','PB']
@@ -294,7 +316,6 @@ class OS:
         elif dist == 'openSUSE project':
             OS = 'openSUSE'
         else:
-            ans,dist = self.fileCheck('/etc/os-release')
             OS = dist
 
         arch = Popen(['uname', '-m'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
@@ -302,27 +323,6 @@ class OS:
 
         self.key = 'OS'
         self.value = OS
-
-    def fileCheck(f):
-        txt = ''
-
-        if os.path.isfile(f):
-            txt = open(f).readlines()
-
-        else:
-            return False,'linux'
-
-        linux = ['Arch','Fedora','LinuxMint','Ubuntu','SUSE','Debian','Raspbian']
-        dist = 'Linux'
-        ans = False
-        for line in txt:
-            for i in linux:
-                if line.find(i) >= 0:
-                    dist = i
-                    ans = True
-                    break
-
-        return ans,dist
 
 
 class Kernel:
