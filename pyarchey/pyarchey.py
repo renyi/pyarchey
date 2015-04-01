@@ -257,8 +257,8 @@ else:
     	dist = Popen(['lsb_release', '-is'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
     except:
     	#print 'Error w/ lsb_release'
-    	ans,dist = self.fileCheck('/etc/os-release')
-        if not ans: dist = 'Debian' 
+    	ans,dist = fileCheck('/etc/os-release')
+        if not ans: dist = 'Debian'
 
 def autoSize(used,total):
     mem = ['B','KB','MB','GB','TB','PB']
