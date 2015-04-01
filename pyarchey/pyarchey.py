@@ -403,7 +403,7 @@ class Packages:
             p1 = Popen(['pacman', '-Q'], stdout=PIPE).communicate()[0].decode("Utf-8")
         elif dist == 'Fedora' or dist == 'openSUSE project':
             p1 = Popen(['rpm', '-qa'], stdout=PIPE).communicate()[0].decode("Utf-8")
-        elif dist == 'Ubuntu' or dist == 'Debian' or dist == 'LinuxMint' or dist == 'CrunchBang':
+        elif dist == 'Ubuntu' or dist == 'Debian' or dist == 'LinuxMint' or dist == 'Raspbian':
             p0 = Popen(['dpkg', '--get-selections'], stdout=PIPE)
             p1 = Popen(['grep', '-v', 'deinstall'], stdin=p0.stdout, stdout=PIPE).communicate()[0].decode("Utf-8")
         packages = len(p1.rstrip('\n').split('\n'))
