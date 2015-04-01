@@ -301,8 +301,11 @@ if dist == 'darwin':
 elif dist == 'freebsd':
     dist = 'FreeBSD'
 else:
-    dist = Popen(['lsb_release', '-is'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
-
+    try:
+    	dist = Popen(['lsb_release', '-is'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
+    except:
+    	print 'Error w/ lsb_release'
+    	dist = 'Debian'
 
 def autoSize(used,total):
     mem = ['B','KB','MB','GB','TB','PB']
@@ -473,14 +476,15 @@ class RAM:
         total = ram.total
 
         used,total,size = autoSize(used,total)
-
-        usedpercent = ((float(used) / float(total)) * 100)
-        if usedpercent <= 33:
-            ramdisplay = '%s%s MB %s/ %s %s' % (colorDict['Sensors'][1], used, colorDict['Clear'][0], total,size)
-        if usedpercent > 33 and usedpercent < 67:
-            ramdisplay = '%s%s MB %s/ %s %s' % (colorDict['Sensors'][2], used, colorDict['Clear'][0], total,size)
-        if usedpercent >= 67:
-            ramdisplay = '%s%s MB %s/ %s %s' % (colorDict['Sensors'][0], used, colorDict['Clear'][0], total,size)
+        ramdisplay = '%s %s/ %s %s' % (used, size, total,size)
+        #
+        # usedpercent = ((float(used) / float(total)) * 100)
+        # if usedpercent <= 33:
+        #     ramdisplay = '%s%s MB %s/ %s %s' % (colorDict['Sensors'][1], used, colorDict['Clear'][0], total,size)
+        # if usedpercent > 33 and usedpercent < 67:
+        #     ramdisplay = '%s%s MB %s/ %s %s' % (colorDict['Sensors'][2], used, colorDict['Clear'][0], total,size)
+        # if usedpercent >= 67:
+        #     ramdisplay = '%s%s MB %s/ %s %s' % (colorDict['Sensors'][0], used, colorDict['Clear'][0], total,size)
         self.key = 'RAM'
         self.value = ramdisplay
 
@@ -524,8 +528,13 @@ class Disk:
 
 class IP:
     def __init__(self):
+        ip = socket.gethostbyname(socket.gethostname())
+
+        # try a zeroconfig host name
+        if ip == '127.0.0.1':
+            ip = socket.gethostbyname(socket.gethostname()+'.local')
         self.key = 'IP'
-        self.value = socket.gethostbyname(socket.gethostname())
+        self.value = ip
 
 class Misc:
     def __init__(self):
