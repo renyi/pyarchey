@@ -62,6 +62,7 @@ colorDict = {
     'FreeBSD':          [RD, BRD, BR],
     'Mac OSX':          [CLR, CY],
     'Debian':           [RD, BRD],
+    'Raspbian':         [RD, BRD],
     'LinuxMint':        [BLG, BGR],
     'CrunchBang':       [BLG,BLG],
     'Fedora':           [BLG, BBL, BL],
@@ -111,6 +112,24 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[0]}
 \x1b[0m'''
 ,'Debian':'''{color[0]}
+{color[1]}           _sudZUZ#Z#XZo=_        {results[0]}
+{color[1]}        _jmZZ2!!~---~!!X##wx      {results[1]}
+{color[1]}     .<wdP~~            -!YZL,    {results[2]}
+{color[1]}    .mX2'       _xaaa__     XZ[.  {results[3]}
+{color[1]}    oZ[      _jdXY!~?S#wa   ]Xb;  {results[4]}
+{color[1]}   _#e'     .]X2(     ~Xw|  )XXc  {results[5]}
+{color[1]}  .2Z`      ]X[.       xY|  ]oZ(  {results[6]}
+{color[1]}  .2#;      )3k;     _s!~   jXf`  {results[7]}
+{color[0]}   1Z>      -]Xb/    ~    __#2(   {results[8]}
+{color[0]}   -Zo;       +!4ZwerfgnZZXY'     {results[9]}
+{color[0]}    *#[,        ~-?!!!!!!-~       {results[10]}
+{color[0]}     XUb;.                        {results[11]}
+{color[0]}      )YXL,,                      {results[12]}
+{color[0]}        +3#bc,
+{color[0]}          -)SSL,,
+{color[0]}             ~~~~~
+\x1b[0m'''
+,'Raspbian':'''{color[0]}  # FIXME
 {color[1]}           _sudZUZ#Z#XZo=_        {results[0]}
 {color[1]}        _jmZZ2!!~---~!!X##wx      {results[1]}
 {color[1]}     .<wdP~~            -!YZL,    {results[2]}
@@ -242,7 +261,6 @@ def fileCheck(f):
         for i in linux:
             if line.find(i) >= 0:
                 dist = i
-                if dist == 'Raspbian': dist = 'Debian' # FIXME
                 ans = True
                 break
 
