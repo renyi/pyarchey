@@ -8,7 +8,7 @@ setup(
     name="pyarchey",
     version="0.4",
     author="Kevin Walchko",
-    keywords='system info',
+    keywords=['system info','ascii art','archey'],
     author_email="kevin.walchko@outlook.com",
     description="A simple python scrip to display an OS logo in ASCII art along with basic system information.",
     license="GPL",
@@ -19,12 +19,8 @@ setup(
         #   5 - Production/Stable
         'Development Status :: 4 - Beta',
 
-        # Indicate who your project is intended for
-        #'Intended Audience :: Developers',
-        #'Topic :: Software Development :: Build Tools',
-
         # Pick your license as you wish (should match "license" above)
-        'License :: OSI Approved :: GPL License',
+        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
 
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
@@ -35,10 +31,21 @@ setup(
         #'Programming Language :: Python :: 3.2',
         #'Programming Language :: Python :: 3.3',
         #'Programming Language :: Python :: 3.4',
+
+        # Operating systems this runs on
+        'Operating System :: Unix',
+        'Operating System :: MacOS :: MacOS X',
+        'Operating System :: POSIX',
+
+        # what does this do?
+        'Topic :: Utilities',
+        'Topic :: System :: Shells',
+        'Environment :: Console'
     ],
     install_requires=['psutil'],
-    url="",
-    long_description=read("README.md"),
+    url="https://github.com/walchko/pyarchey",
+    #long_description=read("README.md"),
+    #description-file = 'README.md',
     packages=["pyarchey"],
     entry_points={
         'console_scripts': [

@@ -125,36 +125,21 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[0]}          -)SSL,,
 {color[0]}             ~~~~~
 \x1b[0m'''
-,'Raspbian':'''{color[0]}  # FIXME
-{color[1]}           _sudZUZ#Z#XZo=_        {results[0]}
-{color[1]}        _jmZZ2!!~---~!!X##wx      {results[1]}
-{color[1]}     .<wdP~~            -!YZL,    {results[2]}
-{color[1]}    .mX2'       _xaaa__     XZ[.  {results[3]}
-{color[1]}    oZ[      _jdXY!~?S#wa   ]Xb;  {results[4]}
-{color[1]}   _#e'     .]X2(     ~Xw|  )XXc  {results[5]}
-{color[1]}  .2Z`      ]X[.       xY|  ]oZ(  {results[6]}
-{color[1]}  .2#;      )3k;     _s!~   jXf`  {results[7]}
-{color[0]}   1Z>      -]Xb/    ~    __#2(   {results[8]}
-{color[0]}   -Zo;       +!4ZwerfgnZZXY'     {results[9]}
-{color[0]}    *#[,        ~-?!!!!!!-~       {results[10]}
-{color[0]}     XUb;.                        {results[11]}
-{color[0]}      )YXL,,                      {results[12]}
-{color[0]}        +3#bc,
-{color[0]}          -)SSL,,
-{color[0]}             ~~~~~
+,'Raspbian':'''{color[0]}
+{color[0]}        .~~.   .~~.      {results[0]}
+{color[0]}       '. \ ' ' / .'     {results[1]}
+{color[0]}        .~ .~~~..~.      {results[2]}
+{color[0]}       : .~.'~'.~. :     {results[3]}
+{color[0]}      ~ (   ) (   ) ~    {results[4]}
+{color[0]}     ( : '~'.~.'~' : )   {results[5]}
+{color[0]}      ~ .~ (   ) ~. ~    {results[6]}
+{color[0]}       (  : '~' :  )     {results[7]}
+{color[0]}        '~ .~~~. ~'      {results[8]}
+{color[0]}            '~'          {results[9]}
+                                   {results[10]}
+                                   {results[11]}
+                                   {results[12]}
 \x1b[0m'''
-
-   .~~.   .~~.
-  '. \ ' ' / .'
-   .~ .~~~..~.
-  : .~.'~'.~. :
- ~ (   ) (   ) ~
-( : '~'.~.'~' : )
- ~ .~ (   ) ~. ~
-  (  : '~' :  ) 
-   '~ .~~~. ~'
-       '~'
-
 ,'Ubuntu':'''{color[0]}
 {color[0]}                          .oyhhs:   {results[0]}
 {color[1]}                 ..--.., {color[0]}shhhhhh-   {results[1]}
