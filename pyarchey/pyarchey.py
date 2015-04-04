@@ -15,17 +15,13 @@
 # See http://www.gnu.org/licenses/gpl.txt for the full license text.
 
 # Import libraries
-import os, sys, subprocess
-import re
-#import optparse, linecache
-from subprocess import Popen, PIPE
-#from optparse import OptionParser
-#from getpass import getuser
-#from time import ctime, sleep
-from sys import platform as _platform
-import socket
-import psutil as ps
-import datetime as dt
+import os, sys, subprocess              #
+import re                               #
+from subprocess import Popen, PIPE      # call commandline programs
+from sys import platform as _platform   # distribution
+import socket                           # ip address
+import psutil as ps                     # system info
+import datetime as dt                   # uptime
 
 #---------------Output---------------#
 
@@ -147,6 +143,18 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[0]}          -)SSL,,
 {color[0]}             ~~~~~
 \x1b[0m'''
+
+   .~~.   .~~.
+  '. \ ' ' / .'
+   .~ .~~~..~.
+  : .~.'~'.~. :
+ ~ (   ) (   ) ~
+( : '~'.~.'~' : )
+ ~ .~ (   ) ~. ~
+  (  : '~' :  ) 
+   '~ .~~~. ~'
+       '~'
+
 ,'Ubuntu':'''{color[0]}
 {color[0]}                          .oyhhs:   {results[0]}
 {color[1]}                 ..--.., {color[0]}shhhhhh-   {results[1]}
@@ -243,9 +251,14 @@ logosDict = {'Arch Linux': '''{color[1]}
 }
 
 
-#
+class
 
 def fileCheck(f):
+    """
+    1. Checks if a file exists, if so, reads it
+    2. looks for distribution name in file
+    3. returns name and if it was successful or not
+    """
     txt = ''
 
     if os.path.isfile(f):
