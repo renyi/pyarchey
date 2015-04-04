@@ -125,21 +125,21 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[0]}          -)SSL,,
 {color[0]}             ~~~~~
 \x1b[0m'''
-# ,'Raspbian':'''{color[0]}
-# {color[0]}        .~~.   .~~.      {results[0]}
-# {color[0]}       '. \ ' ' / .'     {results[1]}
-# {color[0]}        .~ .~~~..~.      {results[2]}
-# {color[0]}       : .~.'~'.~. :     {results[3]}
-# {color[0]}      ~ (   ) (   ) ~    {results[4]}
-# {color[0]}     ( : '~'.~.'~' : )   {results[5]}
-# {color[0]}      ~ .~ (   ) ~. ~    {results[6]}
-# {color[0]}       (  : '~' :  )     {results[7]}
-# {color[0]}        '~ .~~~. ~'      {results[8]}
-# {color[0]}            '~'          {results[9]}
-# {color[0]}                         {results[10]}
-# {color[0]}                         {results[11]}
-# {color[0]}                         {results[12]}
-#\x1b[0m'''
+,'Raspbian':'''{color[0]}
+{color[0]}        .~~.   .~~.      {results[0]}
+{color[0]}       '. \ ' ' / .'     {results[1]}
+{color[0]}        .~ .~~~..~.      {results[2]}
+{color[0]}       : .~.'~'.~. :     {results[3]}
+{color[0]}      ~ (   ) (   ) ~    {results[4]}
+{color[0]}     ( : '~'.~.'~' : )   {results[5]}
+{color[0]}      ~ .~ (   ) ~. ~    {results[6]}
+{color[0]}       (  : '~' :  )     {results[7]}
+{color[0]}        '~ .~~~. ~'      {results[8]}
+{color[0]}            '~'          {results[9]}
+{color[0]}                         {results[10]}
+{color[0]}                         {results[11]}
+{color[0]}                         {results[12]}
+\x1b[0m'''
 ,'Ubuntu':'''{color[0]}
 {color[0]}                          .oyhhs:   {results[0]}
 {color[1]}                 ..--.., {color[0]}shhhhhh-   {results[1]}
