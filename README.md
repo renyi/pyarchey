@@ -71,13 +71,13 @@ To run:
 
 Some things I would like to do:
 
-[ ] Display user defined ascii art from command line
-[ ] Display all ascii art
-[ ] Get a better Raspbian image
-[ ] Get a generic linux penguin image if distribution cannot be determined
-[ ] Return info in json format
-[ ] Turn colors on/off
-[ ] Allow different colors to be defined from command line
+- [ ] Display user defined ascii art from command line
+- [ ] Display all ascii art
+- [ ] Get a better Raspbian image
+- [ ] Get a generic linux penguin image if distribution cannot be determined
+- [ ] Return info in json format
+- [ ] Turn colors on/off
+- [ ] Allow different colors to be defined from command line
 
 ## History
 
