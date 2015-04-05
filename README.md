@@ -1,9 +1,7 @@
 # PyArchey
 
 [![Build Status](https://travis-ci.org/walchko/pyarchey.svg)](https://travis-ci.org/walchko/pyarchey)
-
-[![PyPI](https://img.shields.io/pypi/dm/pyarchey.svg)](https://pypi.python.org/pypi/pyarchey/)
-
+[![Latest Version](https://pypip.in/version/pyarchey/badge.svg)](https://pypi.python.org/pypi/pyarchey/)
 [![Downloads](https://pypip.in/download/pyarchey/badge.svg)](https://pypi.python.org/pypi/pyarchey/)
 
 This is based off the `archey` command (which is also python) distributed by various linux, unix, and osx package managers. In order to avoid a naming conflict between them, I called this `pyarchey`.
