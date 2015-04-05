@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 #
-# pyarchey [version 0.4.0]
 #
 # pyarchey is a simple system information tool written in Python.
 #
@@ -13,6 +12,17 @@
 #
 # Distributed under the terms of the GNU General Public License v3.
 # See http://www.gnu.org/licenses/gpl.txt for the full license text.
+##############################################################################
+#
+# Changes:
+# ---------------------
+# 29 Mar 15 0.4.0 Forked
+#  4 Apr 15 0.5.0 Added Apple logo, changed custom code to psutil
+#
+
+
+# For more info on psutil, see https://pythonhosted.org/psutil/
+#
 
 # Import libraries
 import os, sys, subprocess              #
@@ -517,7 +527,6 @@ class CPU2:
         self.value = str(cpu)
 
 def main():
-    # https://pythonhosted.org/psutil/
 
     classes = {
          'User': User,

@@ -8,18 +8,37 @@ This is based off the `archey` command (which is also python) distributed by var
     [kevin@Tardis ~]$ pyarchey
 
                     ##             User: kevin
-                 ####              Hostname: Tardis.local
-                 ##                IP: 192.168.1.4
+                 ####              Hostname: Dalek.local
+                 ##                IP: 192.168.1.13
          #######    #######        OS: Mac OSX x86_64
        ######################      Kernel: 14.1.0
-      #####################        Uptime: 0 days 9:28
+      #####################        Uptime: 6 days 5 hrs 32 mins
       ####################         Shell: /bin/bash
-      ####################         Terminal: Processes running: 219
-      #####################        Packages: 112
-       ######################      CPU: Intel Core2 Duo P8600 @ 2.40GHz
-        ####################       Misc: CPU usage: [46.0, 34.0]
-          ################         RAM: 7 MB / 8 GB
-            ###     ####           Disk: 93 / 232 GB
+      ####################         Processes: 367 running
+      #####################        Packages: 74
+       ######################      CPU: Intel Core i5-2400S @ 2.50GHz
+        ####################       CPU Usage: [5.9, 3.0, 4.0, 2.0]
+          ################         RAM: 11 GB/ 12 GB
+            ###     ####           Disk: 441 / 464 GB
+
+
+
+    pi@calculon ~ $ pyarchey
+
+            .~~.   .~~.      User: pi
+           '. \ ' ' / .'     Hostname: calculon
+            .~ .~~~..~.      IP: 192.168.1.17
+           : .~.'~'.~. :     OS: Raspbian armv6l
+          ~ (   ) (   ) ~    Kernel: 3.18.8+
+         ( : '~'.~.'~' : )   Uptime: 34 days 4 hrs 38 mins
+          ~ .~ (   ) ~. ~    Shell: /bin/bash
+           (  : '~' :  )     Processes: 77 running
+            '~ .~~~. ~'      Packages: 1061
+                '~'          CPU: ARMv6-compatible processor rev 7 (v6l)
+                             CPU Usage: [2.0]
+                             RAM: 213 MB/ 229 MB
+                             Disk: 4 / 14 GB
+
 
 ## Requirements
 
