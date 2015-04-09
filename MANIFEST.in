@@ -3,7 +3,7 @@
 # This tells distutils what files to distribute.
 
 include License.txt
-include README.md
+include README.rst
 include MANIFEST.in
 
 # Main

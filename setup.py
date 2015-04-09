@@ -44,7 +44,7 @@ setup(
     ],
     install_requires=['psutil'],
     url="https://github.com/walchko/pyarchey",
-    #long_description=read("README.md"),
+    long_description=read("README.rst"),
     #description-file = 'README.md',
     packages=["pyarchey"],
     entry_points={
