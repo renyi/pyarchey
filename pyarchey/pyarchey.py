@@ -284,10 +284,10 @@ elif dist == 'freebsd':
     dist = 'FreeBSD'
 else:
     try:
-    	dist = Popen(['lsb_release', '-is'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
+        dist = Popen(['lsb_release', '-is'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
     except:
-    	#print 'Error w/ lsb_release'
-    	ans,dist = fileCheck('/etc/os-release')
+        #print 'Error w/ lsb_release'
+        ans,dist = fileCheck('/etc/os-release')
         if not ans: dist = 'Debian'
 
 def autoSize(used,total):
