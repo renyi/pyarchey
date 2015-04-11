@@ -119,6 +119,10 @@ Contributions
 Changes
 --------
 
-- 29 Mar 15 0.4.0 Forked
--  4 Apr 15 0.5.0 Added Apple logo, changed custom code to psutil
-- 11 Apr 15 0.6.0 Added commandline args for: displaying ascii logos, json output, zeroconfig
+=========  ========  ======
+Date       Version   Notes
+=========  ========  ======
+29 Mar 15  0.4.0     Forked
+ 4 Apr 15  0.5.0     Added Apple logo, changed custom code to psutil
+11 Apr 15  0.6.0     Added commandline args for: displaying ascii logos, json output, zeroconfig
+=========  ========  ==================
