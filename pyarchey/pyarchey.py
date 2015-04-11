@@ -25,13 +25,15 @@
 #
 
 # Import libraries
-import os, sys, subprocess              #
-import re                               #
+import os                               # fileCheck, tries to determine distribution
+import re                               # used by CPU
 from subprocess import Popen, PIPE      # call commandline programs
 from sys import platform as _platform   # distribution
 import socket                           # ip address
 import psutil as ps                     # system info
 import datetime as dt                   # uptime
+import json                             # json
+import argparse                         # handle command line args
 
 #---------------Output---------------#
 
@@ -334,6 +336,7 @@ class Output:
     def __init__(self):
         #self.distro = self.__detectDistro()
         self.distro = dist + ' Linux' if dist == 'Arch' else dist
+        self.json = {}
 
 #    def __detectDistro(self):
 #        if dist == 'Arch':
@@ -345,9 +348,13 @@ class Output:
 
     def append(self, display):
         self.results.append('%s%s: %s%s' % (colorDict[self.distro][1], display.key, colorDict['Clear'][0], display.value))
+        self.json[display.key] = display.value
 
-    def output(self):
-        print(logosDict[self.distro].format(color = colorDict[self.distro], results = self.results))
+    def output(self, json=False):
+        if json:
+            return self.json
+        else:
+            print(logosDict[self.distro].format(color = colorDict[self.distro], results = self.results))
 
 class User:
     def __init__(self):
@@ -388,27 +395,6 @@ class Kernel:
 
 class Uptime:
     def __init__(self):
-        # if dist == 'Mac OSX':
-        #     fuptime = Popen(['uptime'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
-        #     fuptime = 10000 # FIXME
-        # elif dist == 'FreeBSD':
-        #     boottime = Popen(['sysctl', '-n',  'kern.boottime'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n').split()[3]
-        #     currtime = Popen(['date', '+%s'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
-        #     fuptime =int(currtime) - int(re.sub(',', '', boottime))
-        # else:
-        #     fuptime = int(open('/proc/uptime').read().split('.')[0])
-        # day = int(fuptime / 86400)
-        # fuptime = fuptime % 86400
-        # hour = int(fuptime / 3600)
-        # fuptime = fuptime % 3600
-        # minute = int(fuptime / 60)
-        # uptime = ''
-        # if day == 1:
-        #     uptime += '%d day, ' % day
-        # if day > 1:
-        #     uptime += '%d days, ' % day
-        # uptime += '%d:%02d' % (hour, minute)
-
         up = ps.boot_time()
         up = dt.datetime.fromtimestamp(up)
         now = dt.datetime.now()
@@ -425,8 +411,6 @@ class Shell:
 class Processes:
     def __init__(self):
         self.key = 'Processes'
-        # self.tmux = ' (tmux)' if os.getenv('TMUX') else ''
-        # self.value = os.getenv('TERM') + self.tmux
         self.value =  str(len(ps.pids())) + ' running'
 
 class Packages:
@@ -466,60 +450,18 @@ class CPU:
 
 class RAM:
     def __init__(self):
-        # if dist == 'Mac OSX': # FIXME
-        #     raminfo = Popen(['sysctl','-n','hw.memsize'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')[0]
-        #     ram = int(raminfo)/(1024**3)
-        #     used = ram
-        #     total = ram
-        # elif dist == 'FreeBSD':
-        #     raminfo = Popen(['vmstat'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
-        #     ram = raminfo[2].split()
-        #     used = int(ram[3])//1000
-        #     total = int(ram[4])//1000
-        # else:
-        #     raminfo = Popen(['free', '-m'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
-        #     ram = ''.join(filter(re.compile('M').search, raminfo)).split()
-        #     used = ram[2]
-        #     total = ram[1]
-
         ram = ps.virtual_memory()
         used = ram.used
         total = ram.total
 
         used,total,size = autoSize(used,total)
         ramdisplay = '%s %s/ %s %s' % (used, size, total,size)
-        #
-        # usedpercent = ((float(used) / float(total)) * 100)
-        # if usedpercent <= 33:
-        #     ramdisplay = '%s%s MB %s/ %s %s' % (colorDict['Sensors'][1], used, colorDict['Clear'][0], total,size)
-        # if usedpercent > 33 and usedpercent < 67:
-        #     ramdisplay = '%s%s MB %s/ %s %s' % (colorDict['Sensors'][2], used, colorDict['Clear'][0], total,size)
-        # if usedpercent >= 67:
-        #     ramdisplay = '%s%s MB %s/ %s %s' % (colorDict['Sensors'][0], used, colorDict['Clear'][0], total,size)
+
         self.key = 'RAM'
         self.value = ramdisplay
 
 class Disk:
     def __init__(self):
-        # if dist == 'Mac OSX':
-        #     p1 = Popen(['df', '-lhg'], stdout=PIPE).communicate()[0].decode("Utf-8")
-        #     total = p1.splitlines()[-1]
-        #     used = total.split()[2]
-        #     size = total.split()[1]
-        #     usedpercent = float(total.split()[4][:-1])
-        # elif dist == 'FreeBSD':
-        #     p1 = Popen(['df', '-Tlhc'], stdout=PIPE).communicate()[0].decode("Utf-8")
-        #     total = p1.splitlines()[-1]
-        #     used = total.split()[2]
-        #     size = total.split()[1]
-        #     usedpercent = float(total.split()[4][:-1])
-        # else:
-        #     p1 = Popen(['df', '-Tlh', '--total', '-t', 'ext4', '-t', 'ext3', '-t', 'ext2', '-t', 'reiserfs', '-t', 'jfs', '-t', 'ntfs', '-t', 'fat32', '-t', 'btrfs', '-t', 'fuseblk', '-t', 'xfs'], stdout=PIPE).communicate()[0].decode("Utf-8")
-        #     total = p1.splitlines()[-1]
-        #     used = total.split()[3]
-        #     size = total.split()[2]
-        #     usedpercent = float(total.split()[5][:-1])
-
         p = ps.disk_usage('/')
         total = p.total
         used = p.used
@@ -555,7 +497,18 @@ class CPU2:
         self.key = 'CPU Usage'
         self.value = str(cpu)
 
+def handleArgs():
+	parser = argparse.ArgumentParser('Displays system info and a logo for OS')
+	#parser.add_argument('-a', '--art', help='not implemented yet')
+	#parser.add_argument('-d', '--display', help='displays all ascii logos')
+	parser.add_argument('-j', '--json', help='instead of printing to screen, returns system as json', action='count')
+
+	args = vars(parser.parse_args())
+
+	return args
+
 def main():
+    args = handleArgs()
 
     classes = {
          'User': User,
@@ -577,7 +530,12 @@ def main():
     out = Output()
     for x in output:
         out.append(classes[x]())
-    out.output()
+    jsn = out.output(args['json'])
+
+
+    if args['json']:
+        return json.dumps(jsn)
+
 
 
 if __name__ == '__main__':

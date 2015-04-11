@@ -16,6 +16,8 @@ PyArchey
 
 This is based off the ``archey`` command (which is also python) distributed by various linux, unix, and osx package managers. In order to avoid a naming conflict between them, I called this ``pyarchey``.
 
+Currently, ``pyarchey`` supports Arch, Fedora, LinuxMint, Ubuntu, SUSE, Debian, Raspbian, and Slackware.
+
 ::
 
     [kevin@Tardis ~]$ pyarchey
@@ -82,6 +84,13 @@ To run::
 
 	pyarchey
 
+args:
+
+-h      help
+--help  help
+-j      output json of system info, nothing is printed to the screen
+--json  json output
+
 ------
 To Do
 ------
@@ -101,3 +110,10 @@ History
 --------
 
 As far as I am aware, this was started by @djmelik which was then forked by @mikeantonacci where I forked it form him.
+
+--------------
+Contributions
+--------------
+
+- Dimitris Zlatanidis (dslackw) - Slackware support
+- mikeantonacci - fixed tab errors
