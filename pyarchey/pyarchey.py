@@ -14,10 +14,6 @@
 # See http://www.gnu.org/licenses/gpl.txt for the full license text.
 ##############################################################################
 #
-# Changes:
-# ---------------------
-# 29 Mar 15 0.4.0 Forked
-#  4 Apr 15 0.5.0 Added Apple logo, changed custom code to psutil
 #
 
 
@@ -34,10 +30,6 @@ import psutil as ps                     # system info
 import datetime as dt                   # uptime
 import json                             # json
 import argparse                         # handle command line args
-
-#---------------Output---------------#
-
-#output = [ 'User', 'Hostname', 'IP','OS', 'Kernel', 'Uptime', 'Shell', 'Processes', 'Packages', 'CPU', 'CPU Usage', 'RAM', 'Disk' ]
 
 #---------------Dictionaries---------------#
 #  https://wiki.archlinux.org/index.php/Color_Bash_Prompt
@@ -76,6 +68,7 @@ colorDict = {
     'Fedora':           [BLG, BBL, BL],
     'openSUSE project': [BLG, BGR],
     'Slackware':        [BL, BBL],
+    'Linux':            [CLR],
     'Sensors':          [BRD, BGR, BBR],
     'Clear':            [CLR]
     }
@@ -310,10 +303,10 @@ class Output:
     #results.extend(['']*(18-len(output)))
 
     def __init__(self):
-        dist = self.detectDistro()
-        self.distro = dist + ' Linux' if dist == 'Arch' else dist
+        #dist = self.detectDistro()
+        self.distro = self.detectDistro()
         self.json = {}
-        self.dist = dist
+        #self.dist = dist
 
     def fileCheck(f):
         """
@@ -327,7 +320,7 @@ class Output:
             txt = open(f).readlines()
 
         else:
-            return False,'linux'
+            return False,'Linux'
 
         linux = ['Arch','Fedora','LinuxMint','Ubuntu','SUSE','Debian','Raspbian','Slackware']
         dist = 'Linux'
@@ -478,7 +471,7 @@ class RAM:
         self.value = ramdisplay
 
 class Disk:
-    def __init__(self):
+    def __init__(self,json=False):
         p = ps.disk_usage('/')
         total = p.total
         used = p.used
@@ -487,12 +480,15 @@ class Disk:
 
         usedpercent = int(float(used)/float(total)*100.0)
 
-        if usedpercent <= 33:
-            disk = '%s%s %s/ %s %s' % (colorDict['Sensors'][1], used, colorDict['Clear'][0], total, size)
-        if usedpercent > 33 and usedpercent < 67:
-            disk = '%s%s %s/ %s %s' % (colorDict['Sensors'][2], used, colorDict['Clear'][0], total, size)
-        if usedpercent >= 67:
-            disk = '%s%s %s/ %s %s' % (colorDict['Sensors'][0], used, colorDict['Clear'][0], total, size)
+        if json:
+            disk = '%s / %s %s' % (used, total, size)
+        else:
+            if usedpercent <= 33:
+                disk = '%s%s %s/ %s %s' % (colorDict['Sensors'][1], used, colorDict['Clear'][0], total, size)
+            if usedpercent > 33 and usedpercent < 67:
+                disk = '%s%s %s/ %s %s' % (colorDict['Sensors'][2], used, colorDict['Clear'][0], total, size)
+            if usedpercent >= 67:
+                disk = '%s%s %s/ %s %s' % (colorDict['Sensors'][0], used, colorDict['Clear'][0], total, size)
         self.key = 'Disk'
         self.value = disk
 
@@ -500,14 +496,16 @@ class IP:
     def __init__(self, zeroconfig=False):
         """
         This tries to get the host name and deterine the IP address from it.
-        However, if it fails, then it just gives the loopback address.
+        It also tries to handle zeroconfig well.
         """
         ip = '127.0.0.1'
         try:
+            host = socket.gethostname()
             if zeroconfig:
-                ip = socket.gethostbyname(socket.gethostname() + '.local')
-            else:
-                ip = socket.gethostbyname(socket.gethostname())
+                if host.find('.local') < 0:
+                    host=host + '.local'
+
+            ip = socket.gethostbyname(host)
         except:
             pass
 
@@ -523,9 +521,9 @@ class CPU2:
 def handleArgs():
 	parser = argparse.ArgumentParser('Displays system info and a logo for OS')
 	#parser.add_argument('-a', '--art', help='not implemented yet')
-	#parser.add_argument('-d', '--display', help='displays all ascii logos')
-	parser.add_argument('-z', '--zeroconfig', help='assume a zeroconfig network and .local to the hostname', action='count')
-	parser.add_argument('-j', '--json', help='instead of printing to screen, returns system as json', action='count')
+	parser.add_argument('-d', '--display', help='displays all ascii logos', action='store_true')
+	parser.add_argument('-z', '--zeroconfig', help='assume a zeroconfig network and adds .local to the hostname', action='store_true')
+	parser.add_argument('-j', '--json', help='instead of printing to screen, returns system as json', action='store_true')
 
 	args = vars(parser.parse_args())
 
@@ -534,20 +532,26 @@ def handleArgs():
 def main():
     args = handleArgs()
 
+    if args['display']:
+        for i in logosDict:
+            print(i)
+            print(logosDict[i].format(color = colorDict[i],results=list(xrange(0,13))) )
+        return 0
+
     out = Output()
     out.append( User() )
     out.append( Hostname() )
     out.append( IP(args['zeroconfig']) )
-    out.append( OS(out.dist) )
+    out.append( OS(out.distro) )
     out.append( Kernel() )
     out.append( Uptime() )
     out.append( Shell() )
     out.append( Processes() )
-    out.append( Packages(out.dist) )
-    out.append( CPU(out.dist) )
+    out.append( Packages(out.distro) )
+    out.append( CPU(out.distro) )
     out.append( CPU2() )
     out.append( RAM() )
-    out.append( Disk() )
+    out.append( Disk(args['json']) )
 
     jsn = out.output(args['json'])
 

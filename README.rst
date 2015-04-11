@@ -16,7 +16,7 @@ PyArchey
 
 This is based off the ``archey`` command (which is also python) distributed by various linux, unix, and osx package managers. In order to avoid a naming conflict between them, I called this ``pyarchey``.
 
-Currently, ``pyarchey`` supports Arch, Fedora, LinuxMint, Ubuntu, SUSE, Debian, Raspbian, and Slackware.
+Currently, ``pyarchey`` supports Arch, Fedora, LinuxMint, Ubuntu, SUSE, Debian, Raspbian, generic Linux, and Slackware.
 
 ::
 
@@ -86,10 +86,10 @@ To run::
 
 args:
 
--h      help
---help  help
--j      output json of system info, nothing is printed to the screen
---json  json output
+-d/--display     display ascii logos for all distributions
+-h/--help        help
+-j/--json        output json of system info, nothing is printed to the screen
+-z/--zeroconfig  add ``.local`` to a hostname for zeroconfig to find IP address easier
 
 ------
 To Do
@@ -98,10 +98,7 @@ To Do
 Some things I would like to do:
 
 - Display user defined ascii art from command line
-- Display all ascii art
 - Get a better Raspbian image
-- Get a generic linux penguin image if distribution cannot be determined
-- Return info in json format
 - Turn colors on/off
 - Allow different colors to be defined from command line
 
@@ -117,3 +114,11 @@ Contributions
 
 - Dimitris Zlatanidis (dslackw) - Slackware support
 - mikeantonacci - fixed tab errors
+
+--------
+Changes
+--------
+
+- 29 Mar 15 0.4.0 Forked
+-  4 Apr 15 0.5.0 Added Apple logo, changed custom code to psutil
+- 11 Apr 15 0.6.0 Added commandline args for: displaying ascii logos, json output, zeroconfig
