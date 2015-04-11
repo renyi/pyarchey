@@ -37,7 +37,7 @@ import argparse                         # handle command line args
 
 #---------------Output---------------#
 
-output = [ 'User', 'Hostname', 'IP','OS', 'Kernel', 'Uptime', 'Shell', 'Processes', 'Packages', 'CPU', 'CPU Usage', 'RAM', 'Disk' ]
+#output = [ 'User', 'Hostname', 'IP','OS', 'Kernel', 'Uptime', 'Shell', 'Processes', 'Packages', 'CPU', 'CPU Usage', 'RAM', 'Disk' ]
 
 #---------------Dictionaries---------------#
 #  https://wiki.archlinux.org/index.php/Color_Bash_Prompt
@@ -270,52 +270,28 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[0]}        ################         {results[11]}
 {color[0]}          ###     ####           {results[12]}
 \x1b[0m'''
+, 'Linux':'''
+{color[0]}              a8888b.            {results[0]}
+{color[0]}             d888888b.           {results[1]}
+{color[0]}             8P"YP"Y88           {results[2]}
+{color[0]}             8|o||o|88           {results[3]}
+{color[0]}             8'    .88           {results[4]}
+{color[0]}             8`._.' Y8.          {results[5]}
+{color[0]}            d/      `8b.         {results[6]}
+{color[0]}          .dP   .     Y8b.       {results[7]}
+{color[0]}         d8:'   "   `::88b.      {results[8]}
+{color[0]}        d8"           `Y88b      {results[9]}
+{color[0]}       :8P     '       :888      {results[10]}
+{color[0]}        8a.    :      _a88P      {results[11]}
+{color[0]}      ._/"Yaa_ :    .| 88P|      {results[12]}
+{color[0]}      \    YP"      `| 8P  `.
+{color[0]}      /     \._____.d|    .'
+{color[0]}      `--..__)888888P`._.'
+\x1b[0m'''
+
 }
 
 
-
-
-
-
-
-def fileCheck(f):
-    """
-    1. Checks if a file exists, if so, reads it
-    2. looks for distribution name in file
-    3. returns name and if it was successful or not
-    """
-    txt = ''
-
-    if os.path.isfile(f):
-        txt = open(f).readlines()
-
-    else:
-        return False,'linux'
-
-    linux = ['Arch','Fedora','LinuxMint','Ubuntu','SUSE','Debian','Raspbian','Slackware']
-    dist = 'Linux'
-    ans = False
-    for line in txt:
-        for i in linux:
-            if line.find(i) >= 0:
-                dist = i
-                ans = True
-                break
-
-    return ans,dist
-
-dist = _platform
-if dist == 'darwin':
-    dist = 'Mac OSX'
-elif dist == 'freebsd':
-    dist = 'FreeBSD'
-else:
-    try:
-        dist = Popen(['lsb_release', '-is'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
-    except:
-        #print 'Error w/ lsb_release'
-        ans,dist = fileCheck('/etc/os-release')
-        if not ans: dist = 'Debian'
 
 def autoSize(used,total):
     mem = ['B','KB','MB','GB','TB','PB']
@@ -334,17 +310,60 @@ class Output:
     #results.extend(['']*(18-len(output)))
 
     def __init__(self):
-        #self.distro = self.__detectDistro()
+        dist = self.detectDistro()
         self.distro = dist + ' Linux' if dist == 'Arch' else dist
         self.json = {}
+        self.dist = dist
 
-#    def __detectDistro(self):
-#        if dist == 'Arch':
-#            return 'Arch Linux'
-#        elif dist == 'FreeBSD':
-#            return 'FreeBSD'
-#        else:
-#            sys.exit(1)
+    def fileCheck(f):
+        """
+        1. Checks if a file exists, if so, reads it
+        2. looks for distribution name in file
+        3. returns name and if it was successful or not
+        """
+        txt = ''
+
+        if os.path.isfile(f):
+            txt = open(f).readlines()
+
+        else:
+            return False,'linux'
+
+        linux = ['Arch','Fedora','LinuxMint','Ubuntu','SUSE','Debian','Raspbian','Slackware']
+        dist = 'Linux'
+        ans = False
+        for line in txt:
+            for i in linux:
+                if line.find(i) >= 0:
+                    dist = i
+                    ans = True
+                    break
+
+        return ans,dist
+
+    def detectDistro(self):
+        dist = _platform
+        if dist == 'darwin':
+            dist = 'Mac OSX'
+        elif dist == 'freebsd':
+            dist = 'FreeBSD'
+        else:
+            try:
+                dist = Popen(['lsb_release', '-is'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
+            except:
+                #print 'Error w/ lsb_release'
+                ans,dist = fileCheck('/etc/os-release')
+                if not ans: dist = 'Linux'
+
+        # Correct some distribution names
+        if dist == 'Arch':
+            dist =  'Arch Linux'
+        elif dist == 'openSUSE project':
+            dist = 'openSUSE'
+
+
+        return dist
+
 
     def append(self, display):
         self.results.append('%s%s: %s%s' % (colorDict[self.distro][1], display.key, colorDict['Clear'][0], display.value))
@@ -367,18 +386,10 @@ class Hostname:
         self.key = 'Hostname'
         self.value = hostname
 
+
 class OS:
-    def __init__(self):
-        if dist == 'Mac OSX':
-            OS = dist
-        elif dist == 'FreeBSD':
-            OS = 'FreeBSD'
-        elif dist == 'Arch':
-            OS =  'Arch Linux'
-        elif dist == 'openSUSE project':
-            OS = 'openSUSE'
-        else:
-            OS = dist
+    def __init__(self,dist):
+        OS = dist
 
         arch = Popen(['uname', '-m'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
         OS = OS + ' ' + arch
@@ -414,37 +425,43 @@ class Processes:
         self.value =  str(len(ps.pids())) + ' running'
 
 class Packages:
-    def __init__(self):
-        if dist == 'Mac OSX':
-            p1 = Popen(['brew', 'list', '-1'], stdout=PIPE).communicate()[0].decode("Utf-8")
-        elif dist == 'FreeBSD':
-            p1 = Popen(['pkg', 'info'], stdout=PIPE).communicate()[0].decode("Utf-8")
-        elif dist == 'Arch':
-            p1 = Popen(['pacman', '-Q'], stdout=PIPE).communicate()[0].decode("Utf-8")
-        elif dist == 'Fedora' or dist == 'openSUSE project':
-            p1 = Popen(['rpm', '-qa'], stdout=PIPE).communicate()[0].decode("Utf-8")
-        elif dist == 'Ubuntu' or dist == 'Debian' or dist == 'LinuxMint' or dist == 'Raspbian':
-            p0 = Popen(['dpkg', '--get-selections'], stdout=PIPE)
-            p1 = Popen(['grep', '-v', 'deinstall'], stdin=p0.stdout, stdout=PIPE).communicate()[0].decode("Utf-8")
-        elif dist == 'Slackware':
-             p1 = Popen(['ls', '/var/log/packages/'], stdout=PIPE).communicate()[0].decode("Utf-8")
-        packages = len(p1.rstrip('\n').split('\n'))
+    def __init__(self,dist):
+        try:
+            if dist == 'Mac OSX':
+                p1 = Popen(['brew', 'list', '-1'], stdout=PIPE).communicate()[0].decode("Utf-8")
+            elif dist == 'FreeBSD':
+                p1 = Popen(['pkg', 'info'], stdout=PIPE).communicate()[0].decode("Utf-8")
+            elif dist == 'Arch':
+                p1 = Popen(['pacman', '-Q'], stdout=PIPE).communicate()[0].decode("Utf-8")
+            elif dist == 'Fedora' or dist == 'openSUSE project':
+                p1 = Popen(['rpm', '-qa'], stdout=PIPE).communicate()[0].decode("Utf-8")
+            elif dist == 'Ubuntu' or dist == 'Debian' or dist == 'LinuxMint' or dist == 'Raspbian':
+                p0 = Popen(['dpkg', '--get-selections'], stdout=PIPE)
+                p1 = Popen(['grep', '-v', 'deinstall'], stdin=p0.stdout, stdout=PIPE).communicate()[0].decode("Utf-8")
+            elif dist == 'Slackware':
+                 p1 = Popen(['ls', '/var/log/packages/'], stdout=PIPE).communicate()[0].decode("Utf-8")
+            packages = len(p1.rstrip('\n').split('\n'))
+        except:
+            packages = 0
         self.key = 'Packages'
         self.value = packages
 
 class CPU:
-    def __init__(self):
+    def __init__(self,dist):
         #file = open('/proc/cpuinfo').readlines()
-        if dist == 'Mac OSX':
-            cpu = Popen(['sysctl', '-n','machdep.cpu.brand_string'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')[0]
-            c = cpu.replace('(R)','').replace('(TM)','').replace('CPU','').split()
-            cpuinfo = ' '.join(c)
-        elif dist == 'FreeBSD':
-            file = Popen(['sysctl', '-n','hw'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
-            cpuinfo = re.sub('  +', ' ', file[1].replace('model name\t: ', '').rstrip('\n'))
-        else:
-            file = Popen(['grep', '-i', 'model name\t: ', '/proc/cpuinfo'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
-            cpuinfo = re.sub('  +', ' ', file[0].replace('model name\t: ', ''))
+        try:
+            if dist == 'Mac OSX':
+                cpu = Popen(['sysctl', '-n','machdep.cpu.brand_string'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')[0]
+                c = cpu.replace('(R)','').replace('(TM)','').replace('CPU','').split()
+                cpuinfo = ' '.join(c)
+            elif dist == 'FreeBSD':
+                file = Popen(['sysctl', '-n','hw'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
+                cpuinfo = re.sub('  +', ' ', file[1].replace('model name\t: ', '').rstrip('\n'))
+            else:
+                file = Popen(['grep', '-i', 'model name\t: ', '/proc/cpuinfo'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
+                cpuinfo = re.sub('  +', ' ', file[0].replace('model name\t: ', ''))
+        except:
+            cpuinfo = 'unknown'
         self.key = 'CPU'
         self.value = cpuinfo
 
@@ -480,14 +497,20 @@ class Disk:
         self.value = disk
 
 class IP:
-    def __init__(self):
-        ip = socket.gethostbyname(socket.gethostname())
-        # try a zeroconfig host name
-        if ip.find('127.0') >=0:
-            if dist == "Slackware":
-                ip = socket.gethostbyname(socket.gethostname())
-            else:
+    def __init__(self, zeroconfig=False):
+        """
+        This tries to get the host name and deterine the IP address from it.
+        However, if it fails, then it just gives the loopback address.
+        """
+        ip = '127.0.0.1'
+        try:
+            if zeroconfig:
                 ip = socket.gethostbyname(socket.gethostname() + '.local')
+            else:
+                ip = socket.gethostbyname(socket.gethostname())
+        except:
+            pass
+
         self.key = 'IP'
         self.value = ip
 
@@ -501,6 +524,7 @@ def handleArgs():
 	parser = argparse.ArgumentParser('Displays system info and a logo for OS')
 	#parser.add_argument('-a', '--art', help='not implemented yet')
 	#parser.add_argument('-d', '--display', help='displays all ascii logos')
+	parser.add_argument('-z', '--zeroconfig', help='assume a zeroconfig network and .local to the hostname', action='count')
 	parser.add_argument('-j', '--json', help='instead of printing to screen, returns system as json', action='count')
 
 	args = vars(parser.parse_args())
@@ -510,26 +534,21 @@ def handleArgs():
 def main():
     args = handleArgs()
 
-    classes = {
-         'User': User,
-         'OS': OS,
-         'Hostname': Hostname,
-         'IP': IP,
-         'Kernel': Kernel,
-         'Uptime': Uptime,
-         'Shell': Shell,
-         'Processes': Processes,
-         'Packages': Packages,
-         'CPU': CPU,
-         'RAM': RAM,
-         'CPU Usage': CPU2,
-         'Disk': Disk
-    }
-
-
     out = Output()
-    for x in output:
-        out.append(classes[x]())
+    out.append( User() )
+    out.append( Hostname() )
+    out.append( IP(args['zeroconfig']) )
+    out.append( OS(out.dist) )
+    out.append( Kernel() )
+    out.append( Uptime() )
+    out.append( Shell() )
+    out.append( Processes() )
+    out.append( Packages(out.dist) )
+    out.append( CPU(out.dist) )
+    out.append( CPU2() )
+    out.append( RAM() )
+    out.append( Disk() )
+
     jsn = out.output(args['json'])
 
 
