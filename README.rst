@@ -86,10 +86,10 @@ To run::
 
 args:
 
--d/--display     display ascii logos for all distributions
--h/--help        help
--j/--json        output json of system info, nothing is printed to the screen
--z/--zeroconfig  add ``.local`` to a hostname for zeroconfig to find IP address easier
+--display     display ascii logos for all distributions
+--help        help
+--json        output json of system info, nothing is printed to the screen
+--zeroconfig  add ``.local`` to a hostname for zeroconfig to find IP address easier
 
 ------
 To Do
