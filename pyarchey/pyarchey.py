@@ -308,7 +308,7 @@ class Output:
         self.json = {}
         #self.dist = dist
 
-    def fileCheck(f):
+    def fileCheck(self,f):
         """
         1. Checks if a file exists, if so, reads it
         2. looks for distribution name in file
