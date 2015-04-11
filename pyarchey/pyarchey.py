@@ -73,6 +73,7 @@ colorDict = {
     'CrunchBang':       [BLG,BLG],
     'Fedora':           [BLG, BBL, BL],
     'openSUSE project': [BLG, BGR],
+    'Slackware':        [BL, BBL],
     'Sensors':          [BRD, BGR, BBR],
     'Clear':            [CLR]
     }
@@ -228,6 +229,30 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[1]}
 {color[1]}
 \x1b[0m'''
+, 'Slackware':'''{color[0]}
+{color[1]}                   :::::::                    {results[0]}
+{color[1]}             :::::::::::::::::::              {results[1]}
+{color[1]}          :::::::::::::::::::::::::           {results[2]}
+{color[1]}        ::::::::cllcccccllllllll::::::        {results[3]}
+{color[1]}     :::::::::lc               dc:::::::      {results[4]}
+{color[1]}    ::::::::cl   clllccllll    oc:::::::::    {results[5]}
+{color[1]}   :::::::::o   lc::::::::co   oc::::::::::   {results[6]}
+{color[1]}  ::::::::::o    cccclc:::::clcc::::::::::::  {results[7]}
+{color[1]}  :::::::::::lc        cclccclc:::::::::::::  {results[8]}
+{color[1]} ::::::::::::::lcclcc          lc:::::::::::: {results[9]}
+{color[1]} ::::::::::cclcc:::::lccclc     oc::::::::::: {results[10]}
+{color[1]} ::::::::::o    l::::::::::l    lc::::::::::: {results[11]}
+{color[1]}  :::::cll:o     clcllcccll     o:::::::::::  {results[12]}
+{color[1]}  :::::occ:o                  clc:::::::::::
+{color[1]}   ::::ocl:ccslclccclclccclclc:::::::::::::
+{color[1]}    :::oclcccccccccccccllllllllllllll:::::
+{color[1]}     ::lcc1lcccccccccccccccccccccccco::::
+{color[1]}       ::::::::::::::::::::::::::::::::
+{color[1]}         ::::::::::::::::::::::::::::
+{color[1]}            ::::::::::::::::::::::
+{color[1]}                 ::::::::::::
+{color[1]}
+\x1b[0m'''
 , 'Mac OSX':'''
 {color[0]}                  ##             {results[0]}
 {color[0]}               ####              {results[1]}
@@ -265,7 +290,7 @@ def fileCheck(f):
     else:
         return False,'linux'
 
-    linux = ['Arch','Fedora','LinuxMint','Ubuntu','SUSE','Debian','Raspbian']
+    linux = ['Arch','Fedora','LinuxMint','Ubuntu','SUSE','Debian','Raspbian','Slackware']
     dist = 'Linux'
     ans = False
     for line in txt:
@@ -417,6 +442,8 @@ class Packages:
         elif dist == 'Ubuntu' or dist == 'Debian' or dist == 'LinuxMint' or dist == 'Raspbian':
             p0 = Popen(['dpkg', '--get-selections'], stdout=PIPE)
             p1 = Popen(['grep', '-v', 'deinstall'], stdin=p0.stdout, stdout=PIPE).communicate()[0].decode("Utf-8")
+        elif dist == 'Slackware':
+             p1 = Popen(['ls', '/var/log/packages/'], stdout=PIPE).communicate()[0].decode("Utf-8")
         packages = len(p1.rstrip('\n').split('\n'))
         self.key = 'Packages'
         self.value = packages
@@ -513,10 +540,12 @@ class Disk:
 class IP:
     def __init__(self):
         ip = socket.gethostbyname(socket.gethostname())
-
         # try a zeroconfig host name
         if ip.find('127.0') >=0:
-            ip = socket.gethostbyname(socket.gethostname()+'.local')
+            if dist == "Slackware":
+                ip = socket.gethostbyname(socket.gethostname())
+            else:
+                ip = socket.gethostbyname(socket.gethostname() + '.local')
         self.key = 'IP'
         self.value = ip
 
