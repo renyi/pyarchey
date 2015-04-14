@@ -67,7 +67,7 @@ colorDict = {
     'CrunchBang':       [BLG,BLG],
     'Fedora':           [BLG, BBL, BL],
     'openSUSE project': [BLG, BGR],
-    'Slackware':        [BL, BBL],
+    'Slackware':        [BLG, BL, BBL],
     'Linux':            [CLR],
     'Sensors':          [BRD, BGR, BBR],
     'Clear':            [CLR]
@@ -228,20 +228,20 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[1]}                   :::::::                    {results[0]}
 {color[1]}             :::::::::::::::::::              {results[1]}
 {color[1]}          :::::::::::::::::::::::::           {results[2]}
-{color[1]}        ::::::::cllcccccllllllll::::::        {results[3]}
-{color[1]}     :::::::::lc               dc:::::::      {results[4]}
-{color[1]}    ::::::::cl   clllccllll    oc:::::::::    {results[5]}
-{color[1]}   :::::::::o   lc::::::::co   oc::::::::::   {results[6]}
-{color[1]}  ::::::::::o    cccclc:::::clcc::::::::::::  {results[7]}
-{color[1]}  :::::::::::lc        cclccclc:::::::::::::  {results[8]}
-{color[1]} ::::::::::::::lcclcc          lc:::::::::::: {results[9]}
-{color[1]} ::::::::::cclcc:::::lccclc     oc::::::::::: {results[10]}
-{color[1]} ::::::::::o    l::::::::::l    lc::::::::::: {results[11]}
-{color[1]}  :::::cll:o     clcllcccll     o:::::::::::  {results[12]}
-{color[1]}  :::::occ:o                  clc:::::::::::
-{color[1]}   ::::ocl:ccslclccclclccclclc:::::::::::::
-{color[1]}    :::oclcccccccccccccllllllllllllll:::::
-{color[1]}     ::lcc1lcccccccccccccccccccccccco::::
+{color[1]}        ::::::::{color[0]}cllcccccllllllll{color[1]}::::::        {results[3]}
+{color[1]}     :::::::::{color[0]}lc               dc{color[1]}:::::::      {results[4]}
+{color[1]}    ::::::::{color[0]}cl   clllccllll    oc{color[1]}:::::::::    {results[5]}
+{color[1]}   :::::::::{color[0]}o   lc{color[1]}::::::::{color[0]}co   oc{color[1]}::::::::::   {results[6]}
+{color[1]}  ::::::::::{color[0]}o    cccclc{color[1]}:::::{color[0]}clcc{color[1]}::::::::::::  {results[7]}
+{color[1]}  :::::::::::{color[0]}lc        cclccclc{color[1]}:::::::::::::  {results[8]}
+{color[1]} ::::::::::::::{color[0]}lcclcc          lc{color[1]}:::::::::::: {results[9]}
+{color[1]} ::::::::::{color[0]}cclcc{color[1]}:::::{color[0]}lccclc     oc{color[1]}::::::::::: {results[10]}
+{color[1]} ::::::::::{color[0]}o    l{color[1]}::::::::::{color[0]}l    lc{color[1]}::::::::::: {results[11]}
+{color[1]}  :::::{color[0]}cll{color[1]}:{color[0]}o     clcllcccll     o{color[1]}:::::::::::  {results[12]}
+{color[1]}  :::::{color[0]}occ{color[1]}:{color[0]}o                  clc{color[1]}:::::::::::
+{color[1]}   ::::{color[0]}ocl{color[1]}:{color[0]}ccslclccclclccclclc{color[1]}:::::::::::::
+{color[1]}    :::{color[0]}oclcccccccccccccllllllllllllll{color[1]}:::::
+{color[1]}     ::{color[0]}lcc1lcccccccccccccccccccccccco{color[1]}::::
 {color[1]}       ::::::::::::::::::::::::::::::::
 {color[1]}         ::::::::::::::::::::::::::::
 {color[1]}            ::::::::::::::::::::::
