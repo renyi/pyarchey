@@ -23,6 +23,7 @@
 # Import libraries
 import os                               # fileCheck, tries to determine distribution
 import re                               # used by CPU
+import uuid                             # mac address
 from subprocess import Popen, PIPE      # call commandline programs
 from sys import platform as _platform   # distribution
 import socket                           # ip address
@@ -499,6 +500,7 @@ class IP:
         It also tries to handle zeroconfig well.
         """
         ip = '127.0.0.1'
+        mac = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
         try:
             host = socket.gethostname()
             if zeroconfig:
@@ -507,10 +509,11 @@ class IP:
 
             ip = socket.gethostbyname(host)
         except:
+            print 'error'
             pass
-
+		
         self.key = 'IP'
-        self.value = ip
+        self.value = ip + ' / ' + mac.upper()
 
 class CPU2:
     def __init__(self):
@@ -519,11 +522,31 @@ class CPU2:
         self.value = str(cpu)
 
 def handleArgs():
-	parser = argparse.ArgumentParser('Displays system info and a logo for OS')
+	parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
+	description="""
+Displays system info and a logo for OS
+
+Currently, it displays:
+	Username
+	Hostname
+	IP Address / MAC address
+	OS Name
+	Kernel Version
+	Uptime: days hrs mins
+	Shell
+	Processess Running
+	Packages Installed
+	CPU
+	CPU Usage
+	RAM
+	Disk Usage""", epilog="""Package info at: https://pypi.python.org/pypi/pyarchey
+Submit issues to: https://github.com/walchko/pyarchey""")
+
 	#parser.add_argument('-a', '--art', help='not implemented yet')
-	parser.add_argument('-d', '--display', help='displays all ascii logos', action='store_true')
-	parser.add_argument('-z', '--zeroconfig', help='assume a zeroconfig network and adds .local to the hostname', action='store_true')
+	parser.add_argument('-d', '--display', help='displays all ascii logos and exits', action='store_true')
 	parser.add_argument('-j', '--json', help='instead of printing to screen, returns system as json', action='store_true')
+# 	parser.add_argument('-v', '--version', help='prints version number', action='store_true')
+	parser.add_argument('-z', '--zeroconfig', help='assume a zeroconfig network and adds .local to the hostname', action='store_true')
 
 	args = vars(parser.parse_args())
 
@@ -534,9 +557,14 @@ def main():
 
     if args['display']:
         for i in logosDict:
+            print 'l'
             print(i)
             print(logosDict[i].format(color = colorDict[i],results=list(xrange(0,13))) )
         return 0
+
+#     if args['version']:
+#         print('pyarchey 0.6.0')
+#         return 0
 
     out = Output()
     out.append( User() )

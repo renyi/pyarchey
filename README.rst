@@ -24,7 +24,7 @@ Currently, ``pyarchey`` supports Arch, Fedora, LinuxMint, Ubuntu, SUSE, Debian, 
 
                     ##             User: kevin
                  ####              Hostname: Dalek.local
-                 ##                IP: 192.168.1.13
+                 ##                IP: 192.168.1.13 / 58:A0:36:B3:2F:E8
          #######    #######        OS: Mac OSX x86_64
        ######################      Kernel: 14.1.0
       #####################        Uptime: 6 days 5 hrs 32 mins
@@ -38,11 +38,11 @@ Currently, ``pyarchey`` supports Arch, Fedora, LinuxMint, Ubuntu, SUSE, Debian, 
 
 
 
-    pi@calculon ~ $ pyarchey
+    pi@calculon ~ $ pyarchey -z
 
             .~~.   .~~.      User: pi
            '. \ ' ' / .'     Hostname: calculon
-            .~ .~~~..~.      IP: 192.168.1.17
+            .~ .~~~..~.      IP: 192.168.1.17 / 88:A0:C6:A3:2F:68
            : .~.'~'.~. :     OS: Raspbian armv6l
           ~ (   ) (   ) ~    Kernel: 3.18.8+
          ( : '~'.~.'~' : )   Uptime: 34 days 4 hrs 38 mins
@@ -53,6 +53,11 @@ Currently, ``pyarchey`` supports Arch, Fedora, LinuxMint, Ubuntu, SUSE, Debian, 
                              CPU Usage: [2.0]
                              RAM: 213 MB/ 229 MB
                              Disk: 4 / 14 GB
+
+
+	[kevin@Tardis ~]$ pyarchey -j
+	{"Kernel": "14.3.0", "Uptime": "0 days 12 hrs 42 mins", "Shell": "/bin/bash", "Disk": "93 / 232 GB", "IP": "192.168.1.4 / 58:A0:35:B2:25:E8", "Hostname": "Tardis.local", "Processes": "241 running", "RAM": "6 GB/ 8 GB", "User": "kevin", "CPU Usage": "[5.0, 4.0]", "Packages": 111, "OS": "Mac OSX x86_64", "CPU": "Intel Core2 Duo P8600 @ 2.40GHz"}
+
 
 -------------
 Requirements
@@ -86,10 +91,10 @@ To run::
 
 args:
 
---display     display ascii logos for all distributions
---help        help
---json        output json of system info, nothing is printed to the screen
---zeroconfig  add ``.local`` to a hostname for zeroconfig to find IP address easier
+-d, --display     display ascii logos for all distributions
+-h, --help        help
+-j, --json        output json of system info, nothing is printed to the screen
+-z, --zeroconfig  add ``.local`` to a hostname for zeroconfig to find IP address easier
 
 ------
 To Do
@@ -99,8 +104,6 @@ Some things I would like to do:
 
 - Display user defined ascii art from command line
 - Get a better Raspbian image
-- Turn colors on/off
-- Allow different colors to be defined from command line
 
 --------
 History
