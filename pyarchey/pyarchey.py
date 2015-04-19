@@ -3,6 +3,7 @@
 #
 # pyarchey is a simple system information tool written in Python.
 #
+# Copyright 2015 Kevin Walchko <kevin.walchko@outlook.com>
 # Copyright 2010 Melik Manukyan <melik@archlinux.us>
 # Copyright 2010 David Vazgenovich Shakaryan <dvshakaryan@gmail.com>
 #
@@ -19,7 +20,6 @@
 
 # For more info on psutil, see https://pythonhosted.org/psutil/
 #
-
 # Import libraries
 import os                               # fileCheck, tries to determine distribution
 import re                               # used by CPU
@@ -31,6 +31,7 @@ import psutil as ps                     # system info
 import datetime as dt                   # uptime
 import json                             # json
 import argparse                         # handle command line args
+#import unittest                         # unit test
 
 #---------------Dictionaries---------------#
 #  https://wiki.archlinux.org/index.php/Color_Bash_Prompt
@@ -301,13 +302,10 @@ def autoSize(used,total):
 
 class Output:
     results = []
-    #results.extend(['']*(18-len(output)))
 
     def __init__(self):
-        #dist = self.detectDistro()
         self.distro = self.detectDistro()
         self.json = {}
-        #self.dist = dist
 
     def fileCheck(self,f):
         """
@@ -497,7 +495,8 @@ class IP:
     def __init__(self, zeroconfig=False):
         """
         This tries to get the host name and deterine the IP address from it.
-        It also tries to handle zeroconfig well.
+        It also tries to handle zeroconfig well. Also, there is an issue with getting
+        the MAC address, so this uses uuid to get that too.
         """
         ip = '127.0.0.1'
         mac = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
@@ -509,7 +508,7 @@ class IP:
 
             ip = socket.gethostbyname(host)
         except:
-            print 'error'
+            print('Error in IP()')
             pass
 		
         self.key = 'IP'
@@ -557,11 +556,11 @@ def main():
 
     if args['display']:
         for i in logosDict:
-            print 'l'
             print(i)
             print(logosDict[i].format(color = colorDict[i],results=list(xrange(0,13))) )
         return 0
 
+# Need a good way to display version number, there seems to be no standard
 #     if args['version']:
 #         print('pyarchey 0.6.0')
 #         return 0
