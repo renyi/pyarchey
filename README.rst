@@ -2,7 +2,7 @@
 PyArchey
 =========
 
-.. image:: https://travis-ci.org/walchko/pyarchey.svg?branch=0.5
+.. image:: https://travis-ci.org/walchko/pyarchey.svg?branch=master
     :target: https://travis-ci.org/walchko/pyarchey
 .. image:: https://pypip.in/version/pyarchey/badge.svg
     :target: https://pypi.python.org/pypi/pyarchey/
