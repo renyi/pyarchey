@@ -4,13 +4,13 @@ PyArchey
 
 .. image:: https://travis-ci.org/walchko/pyarchey.svg?branch=master
     :target: https://travis-ci.org/walchko/pyarchey
-.. image:: https://pypip.in/version/pyarchey/badge.svg
+.. image:: https://img.shields.io/pypi/v/pyarchey.svg
     :target: https://pypi.python.org/pypi/pyarchey/
     :alt: Latest Version
-.. image:: https://pypip.in/download/pyarchey/badge.svg
-    :target: https://pypi.python.org/pypi//pyarchey/
+.. image:: https://img.shields.io/pypi/dm/pyarchey.svg
+    :target: https://pypi.python.org/pypi/pyarchey/
     :alt: Downloads
-.. image:: https://pypip.in/license/pyarchey/badge.svg
+.. image:: https://img.shields.io/pypi/l/pyarchey.svg
     :target: https://pypi.python.org/pypi/pyarchey/
     :alt: License
 
