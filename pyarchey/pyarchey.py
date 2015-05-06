@@ -43,7 +43,7 @@ GR ="\033[0;32m"   # green
 CY ="\033[0;36m"   # cyan
 RD ='\033[0;31m'   # red
 PL ="\033[0;35m"   # purple
-BR ="\033[0;33m"   # brown
+YW ="\033[0;33m"   # yellow
 GY ="\033[0;30m"   # grey
 LG ="\033[0;37m"   # light grey
 
@@ -54,24 +54,25 @@ BGR ="\033[1;32m"   # green
 BCY ="\033[1;36m"   # cyan
 BRD ='\033[1;31m'   # red
 BPL ="\033[1;35m"   # purple
-BBR ="\033[1;33m"   # brown
+BYW ="\033[1;33m"   # yellow
 BGY ="\033[1;30m"   # grey
 BLG ="\033[1;37m"   # light grey
 
 colorDict = {
     'Arch Linux':       [BL, BBL],
-    'Ubuntu':           [RD, BRD, BBR],
-    'FreeBSD':          [RD, BRD, BR],
+    'Ubuntu':           [RD, BRD, BYW],
+    'FreeBSD':          [RD, BRD, YW],
     'Mac OSX':          [CLR, CY],
     'Debian':           [RD, BRD],
     'Raspbian':         [RD, BRD],
     'LinuxMint':        [BLG, BGR],
-    'CrunchBang':       [BLG,BLG],
+    'Gentoo':           [BPL, BLG],
+    'OpenBSD':          [BYW, BYW, YW],
     'Fedora':           [BLG, BBL, BL],
     'openSUSE project': [BLG, BGR],
     'Slackware':        [BLG, BL, BBL],
     'Linux':            [CLR, BBL],
-    'Sensors':          [BRD, BGR, BBR],
+    'Sensors':          [BRD, BGR, BYW],
     'Clear':            [CLR]
     }
 
@@ -157,7 +158,7 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[2]}       -:::::-.          {color[1]}.:++++++:  {results[5]}
 {color[1]}  ,,, {color[2]}.:::::-`             {color[1]}.++++++- {results[6]}
 {color[1]}./+++/-{color[2]}`-::-                {color[1]}./////: {results[7]}
-{color[1]}+++++++ {color[2]}.::-                        {results[8]}
+{color[1]}+++++++ {color[2]}.::-                        {color[1]}{results[8]}
 {color[1]}./+++/-`{color[2]}-::-                {color[0]}:yyyyyo {results[9]}
 {color[1]}  ``` `{color[2]}-::::-`             {color[0]}:yhhhhh: {results[10]}
 {color[2]}       -:::::-.         {color[0]}`-ohhhhhh+  {results[11]}
@@ -250,7 +251,7 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[1]}                 ::::::::::::
 {color[1]}
 \x1b[0m'''
-, 'Mac OSX':'''
+, 'Mac OSX':'''{color[0]}
 {color[0]}                  ##             {results[0]}
 {color[0]}               ####              {results[1]}
 {color[0]}               ##                {results[2]}
@@ -265,7 +266,51 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[0]}        ################         {results[11]}
 {color[0]}          ###     ####           {results[12]}
 \x1b[0m'''
-, 'Linux':'''
+,'Gentoo':'''{color[0]}
+{color[0]}        __q@@@@m             {results[0]}
+{color[0]}      _q@@@@@@@@@@_          {results[1]}
+{color[0]}     _@@@@@@@@@@@@@@m        {results[2]}
+{color[0]}    q@@@@@@@@@@@@@@@@@_      {results[3]}
+{color[0]}   _@@@@@@@@@@##@@@@@@@h     {results[4]}
+{color[0]}   @@@@@@@@@@@ ##@@@@@@@@_   {results[5]}
+{color[0]}   7##@@@@@@@___@@@@@@@@@@,  {results[6]}
+{color[0]}     ####@@@@@@@@@@@@@@@@@@  {results[7]}
+{color[0]}       ####@@@@@@@@@@@@@@@@  {results[8]}
+{color[0]}        q@@@@@@@@@@@@@@@@#W  {results[9]}
+{color[0]}       q@@@@@@@@@@@@@@@@@@/  {results[10]}
+{color[0]}     _@@@@@@@@@@@@@@@@#@@    {results[11]}
+{color[0]}    q@@@@@@@@@@@@@@@#@##^    {results[12]}
+{color[0]}   m#@@@@@@@@@@@@@@#@#W
+{color[0]}  _q@@@@@@@@@@@@@#@#*>
+{color[0]}   p@@@@@@@@@@@#@##%
+{color[0]}    _##@@@@@##@#@#g
+{color[0]}      _#@@@@@@#@@
+{color[0]}        _p@@@@q
+\x1b[0m'''
+,'OpenBSD':'''{color[0]}
+{color[0]}               |    .            {results[0]}
+{color[0]}           .   |L  /|   .        {results[1]}
+{color[0]}       _ . | _| --+._/| .        {results[2]}
+{color[0]}      / ||| Y J  )   / |/| ./    {results[3]}
+{color[0]}     J  |)'( |        ` F`.'/    {results[4]}
+{color[0]}   -<|  F         __     .-<     {results[5]}
+{color[0]}     | /       .-'. `.  /-. L___ {results[6]}
+{color[0]}     J       <      | | |O.-|.-' {results[7]}
+{color[0]}   _J   .-    / O | |   |. ./    {results[8]}
+{color[0]}  '-F  -<_.        .-'  `-'-L__  {results[9]}
+{color[0]} __J  _   _.     >-'  )._.   |'  {results[10]}
+{color[0]} `-|.'   /_.           _|   F    {results[11]}
+{color[0]}   /.-   .                _.<    {results[12]}
+{color[0]}  /'    /.'             .'  `
+{color[0]}   /L  /'   |/      _.-'-
+{color[0]}  /'J       ___.---'|
+{color[0]}    |  .--' V  | `. `
+{color[0]}    |/`. `-.     `._)
+{color[0]}       / .-.
+{color[0]}        (  `
+{color[0]}        `.
+\x1b[0m'''
+, 'Linux':'''{color[0]}
 {color[0]}              a8888b.            {results[0]}
 {color[0]}             d888888b.           {results[1]}
 {color[0]}             8P"YP"Y88           {results[2]}

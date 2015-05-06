@@ -16,7 +16,7 @@ PyArchey
 
 This is based off the ``archey`` command (which is also python) distributed by various linux, unix, and osx package managers. In order to avoid a naming conflict between them, I called this ``pyarchey``.
 
-Currently, ``pyarchey`` supports Arch, Fedora, LinuxMint, Ubuntu, SUSE, Debian, Raspbian, generic Linux, and Slackware.
+Currently, ``pyarchey`` supports logos for Arch, Fedora, LinuxMint, Ubuntu, SUSE, Debian, Raspbian, Gentoo, OpenBSD, generic Linux, and Slackware.
 
 ::
 
@@ -117,6 +117,7 @@ Contributions
 
 - Dimitris Zlatanidis (dslackw) - Slackware support
 - mikeantonacci - fixed tab errors
+- Alessandro-Barbieri - Gentoo support
 
 --------
 Changes
