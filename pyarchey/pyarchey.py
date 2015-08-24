@@ -379,10 +379,10 @@ class Output:
         return ans,dist
 
     def detectDistro(self):
-    	"""
-    	Attempts to determine the distribution and draw the logo. However, if it can't, 
-    	then it defaults to 'Linux' and draws a simple linux penguin. 
-    	"""
+        """
+        Attempts to determine the distribution and draw the logo. However, if it can't, 
+        then it defaults to 'Linux' and draws a simple linux penguin. 
+        """
         dist = _platform
         if dist == 'darwin':
             dist = 'Mac OSX'
