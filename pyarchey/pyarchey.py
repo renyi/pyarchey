@@ -32,6 +32,7 @@ import datetime as dt                   # uptime
 import json                             # json
 import argparse                         # handle command line args
 #import unittest                         # unit test
+import math
 
 #---------------Dictionaries---------------#
 #  https://wiki.archlinux.org/index.php/Color_Bash_Prompt
@@ -334,240 +335,239 @@ logosDict = {'Arch Linux': '''{color[1]}
 
 
 def autoSize(used,total):
-    mem = ['B','KB','MB','GB','TB','PB']
-    for x in range(1,5):
-        if (total / (1024 ** x)) < 1000:
-            used = used / (1024 ** x)
-            total = total / (1024 ** x)
-            size = mem[x]
-            break
-    return used,total,size
+	mem = ['B','KB','MB','GB','TB','PB']
+	for x in range(1,6):
+		if total > 1000:
+			used = math.ceil(used/1024)
+			total = math.ceil(total/1024)
+			size = mem[x]
+	return used,total,size
 
 #---------------Classes---------------#
 
 class Output:
-    results = []
+	results = []
 
-    def __init__(self):
-        self.distro = self.detectDistro()
-        self.json = {}
+	def __init__(self):
+		self.distro = self.detectDistro()
+		self.json = {}
 
-    def fileCheck(self,f):
-        """
-        1. Checks if a file exists, if so, reads it
-        2. looks for distribution name in file
-        3. returns name and if it was successful or not
-        """
-        txt = ''
+	def fileCheck(self,f):
+		"""
+		1. Checks if a file exists, if so, reads it
+		2. looks for distribution name in file
+		3. returns name and if it was successful or not
+		"""
+		txt = ''
 
-        if os.path.isfile(f):
-            txt = open(f).readlines()
+		if os.path.isfile(f):
+			txt = open(f).readlines()
 
-        else:
-            return False,'Linux'
+		else:
+			return False,'Linux'
 
-        linux = ['Arch','Fedora','LinuxMint','Ubuntu','SUSE','Debian','Raspbian','Slackware']
-        dist = 'Linux'
-        ans = False
-        for line in txt:
-            for i in linux:
-                if line.find(i) >= 0:
-                    dist = i
-                    ans = True
-                    break
+		linux = ['Arch','Fedora','LinuxMint','Ubuntu','SUSE','Debian','Raspbian','Slackware']
+		dist = 'Linux'
+		ans = False
+		for line in txt:
+			for i in linux:
+				if line.find(i) >= 0:
+					dist = i
+					ans = True
+					break
 
-        return ans,dist
+		return ans,dist
 
-    def detectDistro(self):
-        """
-        Attempts to determine the distribution and draw the logo. However, if it can't, 
-        then it defaults to 'Linux' and draws a simple linux penguin. 
-        """
-        dist = _platform
-        if dist == 'darwin':
-            dist = 'Mac OSX'
-        elif dist == 'freebsd':
-            dist = 'FreeBSD'
-        else:
-            try:
-                dist = Popen(['lsb_release', '-is'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
-            except:
-                #print 'Error w/ lsb_release'
-                ans,dist = self.fileCheck('/etc/os-release')
-                if not ans: dist = 'Linux'
+	def detectDistro(self):
+		"""
+		Attempts to determine the distribution and draw the logo. However, if it can't, 
+		then it defaults to 'Linux' and draws a simple linux penguin. 
+		"""
+		dist = _platform
+		if dist == 'darwin':
+			dist = 'Mac OSX'
+		elif dist == 'freebsd':
+			dist = 'FreeBSD'
+		else:
+			try:
+				dist = Popen(['lsb_release', '-is'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
+			except:
+				#print 'Error w/ lsb_release'
+				ans,dist = self.fileCheck('/etc/os-release')
+				if not ans: dist = 'Linux'
 
-        # Correct some distribution names
-        if dist == 'Arch':
-            dist =  'Arch Linux'
-        elif dist == 'openSUSE project':
-            dist = 'openSUSE'
-
-
-        return dist
+		# Correct some distribution names
+		if dist == 'Arch':
+			dist =	'Arch Linux'
+		elif dist == 'openSUSE project':
+			dist = 'openSUSE'
 
 
-    def append(self, display):
-        self.results.append('%s%s: %s%s' % (colorDict[self.distro][1], display.key, colorDict['Clear'][0], display.value))
-        self.json[display.key] = display.value
+		return dist
 
-    def output(self, json=False):
-        if json:
-            return self.json
-        else:
-            print(logosDict[self.distro].format(color = colorDict[self.distro], results = self.results))
+
+	def append(self, display):
+		self.results.append('%s%s: %s%s' % (colorDict[self.distro][1], display.key, colorDict['Clear'][0], display.value))
+		self.json[display.key] = display.value
+
+	def output(self, json=False):
+		if json:
+			return self.json
+		else:
+			print(logosDict[self.distro].format(color = colorDict[self.distro], results = self.results))
 
 class User:
-    def __init__(self):
-        self.key = 'User'
-        self.value = os.getenv('USER')
+	def __init__(self):
+		self.key = 'User'
+		self.value = os.getenv('USER')
 
 class Hostname:
-    def __init__(self):
-        hostname = Popen(['uname', '-n'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
-        self.key = 'Hostname'
-        self.value = hostname
+	def __init__(self):
+		hostname = Popen(['uname', '-n'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
+		self.key = 'Hostname'
+		self.value = hostname
 
 
 class OS:
-    def __init__(self,dist):
-        OS = dist
+	def __init__(self,dist):
+		OS = dist
 
-        arch = Popen(['uname', '-m'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
-        OS = OS + ' ' + arch
+		arch = Popen(['uname', '-m'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
+		OS = OS + ' ' + arch
 
-        self.key = 'OS'
-        self.value = OS
+		self.key = 'OS'
+		self.value = OS
 
 
 class Kernel:
-    def __init__(self):
-        kernel = Popen(['uname', '-r'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
-        self.key = 'Kernel'
-        self.value = kernel
+	def __init__(self):
+		kernel = Popen(['uname', '-r'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
+		self.key = 'Kernel'
+		self.value = kernel
 
 class Uptime:
-    def __init__(self):
-        up = ps.boot_time()
-        up = dt.datetime.fromtimestamp(up)
-        now = dt.datetime.now()
-        diff = now - up
-        uptime = '%d days %d hrs %d mins' %(diff.days,diff.seconds/3600,(diff.seconds%3600)/60)
-        self.key = 'Uptime'
-        self.value = uptime
+	def __init__(self):
+		up = ps.boot_time()
+		up = dt.datetime.fromtimestamp(up)
+		now = dt.datetime.now()
+		diff = now - up
+		uptime = '%d days %d hrs %d mins' %(diff.days,diff.seconds/3600,(diff.seconds%3600)/60)
+		self.key = 'Uptime'
+		self.value = uptime
 
 class Shell:
-    def __init__(self):
-        self.key = 'Shell'
-        self.value = os.getenv('SHELL')
+	def __init__(self):
+		self.key = 'Shell'
+		self.value = os.getenv('SHELL')
 
 class Processes:
-    def __init__(self):
-        self.key = 'Processes'
-        self.value =  str(len(ps.pids())) + ' running'
+	def __init__(self):
+		self.key = 'Processes'
+		self.value =  str(len(ps.pids())) + ' running'
 
 class Packages:
-    def __init__(self,dist):
-        try:
-            if dist == 'Mac OSX':
-                p1 = Popen(['brew', 'list', '-1'], stdout=PIPE).communicate()[0].decode("Utf-8")
-            elif dist == 'FreeBSD':
-                p1 = Popen(['pkg', 'info'], stdout=PIPE).communicate()[0].decode("Utf-8")
-            elif dist == 'Arch':
-                p1 = Popen(['pacman', '-Q'], stdout=PIPE).communicate()[0].decode("Utf-8")
-            elif dist == 'Fedora' or dist == 'openSUSE project':
-                p1 = Popen(['rpm', '-qa'], stdout=PIPE).communicate()[0].decode("Utf-8")
-            elif dist == 'Ubuntu' or dist == 'Debian' or dist == 'LinuxMint' or dist == 'Raspbian':
-                p0 = Popen(['dpkg', '--get-selections'], stdout=PIPE)
-                p1 = Popen(['grep', '-v', 'deinstall'], stdin=p0.stdout, stdout=PIPE).communicate()[0].decode("Utf-8")
-            elif dist == 'Slackware':
-                 p1 = Popen(['ls', '/var/log/packages/'], stdout=PIPE).communicate()[0].decode("Utf-8")
-            packages = len(p1.rstrip('\n').split('\n'))
-        except:
-            packages = 0
-        self.key = 'Packages'
-        self.value = packages
+	def __init__(self,dist):
+		try:
+			if dist == 'Mac OSX':
+				p1 = Popen(['brew', 'list', '-1'], stdout=PIPE).communicate()[0].decode("Utf-8")
+			elif dist == 'FreeBSD':
+				p1 = Popen(['pkg', 'info'], stdout=PIPE).communicate()[0].decode("Utf-8")
+			elif dist == 'Arch':
+				p1 = Popen(['pacman', '-Q'], stdout=PIPE).communicate()[0].decode("Utf-8")
+			elif dist == 'Fedora' or dist == 'openSUSE project':
+				p1 = Popen(['rpm', '-qa'], stdout=PIPE).communicate()[0].decode("Utf-8")
+			elif dist == 'Ubuntu' or dist == 'Debian' or dist == 'LinuxMint' or dist == 'Raspbian':
+				p0 = Popen(['dpkg', '--get-selections'], stdout=PIPE)
+				p1 = Popen(['grep', '-v', 'deinstall'], stdin=p0.stdout, stdout=PIPE).communicate()[0].decode("Utf-8")
+			elif dist == 'Slackware':
+				 p1 = Popen(['ls', '/var/log/packages/'], stdout=PIPE).communicate()[0].decode("Utf-8")
+			packages = len(p1.rstrip('\n').split('\n'))
+		except:
+			packages = 0
+		self.key = 'Packages'
+		self.value = packages
 
 class CPU:
-    def __init__(self,dist):
-        #file = open('/proc/cpuinfo').readlines()
-        try:
-            if dist == 'Mac OSX':
-                cpu = Popen(['sysctl', '-n','machdep.cpu.brand_string'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')[0]
-                c = cpu.replace('(R)','').replace('(TM)','').replace('CPU','').split()
-                cpuinfo = ' '.join(c)
-            elif dist == 'FreeBSD':
-                file = Popen(['sysctl', '-n','hw'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
-                cpuinfo = re.sub('  +', ' ', file[1].replace('model name\t: ', '').rstrip('\n'))
-            else:
-                file = Popen(['grep', '-i', 'model name\t: ', '/proc/cpuinfo'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
-                cpuinfo = re.sub('  +', ' ', file[0].replace('model name\t: ', ''))
-        except:
-            cpuinfo = 'unknown'
-        self.key = 'CPU'
-        self.value = cpuinfo
+	def __init__(self,dist):
+		#file = open('/proc/cpuinfo').readlines()
+		try:
+			if dist == 'Mac OSX':
+				cpu = Popen(['sysctl', '-n','machdep.cpu.brand_string'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')[0]
+				c = cpu.replace('(R)','').replace('(TM)','').replace('CPU','').split()
+				cpuinfo = ' '.join(c)
+			elif dist == 'FreeBSD':
+				file = Popen(['sysctl', '-n','hw'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
+				cpuinfo = re.sub('	+', ' ', file[1].replace('model name\t: ', '').rstrip('\n'))
+			else:
+				file = Popen(['grep', '-i', 'model name\t: ', '/proc/cpuinfo'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
+				cpuinfo = re.sub('	+', ' ', file[0].replace('model name\t: ', ''))
+		except:
+			cpuinfo = 'unknown'
+		self.key = 'CPU'
+		self.value = cpuinfo
 
 class RAM:
-    def __init__(self):
-        ram = ps.virtual_memory()
-        used = ram.used
-        total = ram.total
+	def __init__(self):
+		ram = ps.virtual_memory()
+		used = ram.used
+		total = ram.total
 
-        used,total,size = autoSize(used,total)
-        ramdisplay = '%s %s/ %s %s' % (used, size, total,size)
+		used,total,size = autoSize(used,total)
+		ramdisplay = '%s %s/ %s %s' % (used, size, total,size)
 
-        self.key = 'RAM'
-        self.value = ramdisplay
+		self.key = 'RAM'
+		self.value = ramdisplay
 
 class Disk:
-    def __init__(self,json=False):
-        p = ps.disk_usage('/')
-        total = p.total
-        used = p.used
+	def __init__(self,json=False):
+		p = ps.disk_usage('/')
+		total = p.total
+		used = p.used
 
-        used,total,size = autoSize(used,total)
+		used,total,size = autoSize(used,total)
 
-        usedpercent = int(float(used)/float(total)*100.0)
+		usedpercent = int(float(used)/float(total)*100.0)
 
-        if json:
-            disk = '%s / %s %s' % (used, total, size)
-        else:
-            if usedpercent <= 33:
-                disk = '%s%s %s/ %s %s' % (colorDict['Sensors'][1], used, colorDict['Clear'][0], total, size)
-            if usedpercent > 33 and usedpercent < 67:
-                disk = '%s%s %s/ %s %s' % (colorDict['Sensors'][2], used, colorDict['Clear'][0], total, size)
-            if usedpercent >= 67:
-                disk = '%s%s %s/ %s %s' % (colorDict['Sensors'][0], used, colorDict['Clear'][0], total, size)
-        self.key = 'Disk'
-        self.value = disk
+		if json:
+			disk = '%s / %s %s' % (used, total, size)
+		else:
+			if usedpercent <= 33:
+				disk = '%s%s %s/ %s %s' % (colorDict['Sensors'][1], used, colorDict['Clear'][0], total, size)
+			if usedpercent > 33 and usedpercent < 67:
+				disk = '%s%s %s/ %s %s' % (colorDict['Sensors'][2], used, colorDict['Clear'][0], total, size)
+			if usedpercent >= 67:
+				disk = '%s%s %s/ %s %s' % (colorDict['Sensors'][0], used, colorDict['Clear'][0], total, size)
+		self.key = 'Disk'
+		self.value = disk
 
 class IP:
-    def __init__(self, zeroconfig=False):
-        """
-        This tries to get the host name and deterine the IP address from it.
-        It also tries to handle zeroconfig well. Also, there is an issue with getting
-        the MAC address, so this uses uuid to get that too.
-        """
-        ip = '127.0.0.1'
-        mac = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
-        try:
-            host = socket.gethostname()
-            if zeroconfig:
-                if host.find('.local') < 0:
-                    host=host + '.local'
+	def __init__(self, zeroconfig=False):
+		"""
+		This tries to get the host name and deterine the IP address from it.
+		It also tries to handle zeroconfig well. Also, there is an issue with getting
+		the MAC address, so this uses uuid to get that too.
+		"""
+		ip = '127.0.0.1'
+		mac = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
+		try:
+			host = socket.gethostname()
+			if zeroconfig:
+				if host.find('.local') < 0:
+					host=host + '.local'
 
-            ip = socket.gethostbyname(host)
-        except:
-            print('Error in IP()')
-            pass
+			ip = socket.gethostbyname(host)
+		except:
+			print('Error in IP()')
+			pass
 		
-        self.key = 'IP'
-        self.value = ip + ' / ' + mac.upper()
+		self.key = 'IP'
+		self.value = ip + ' / ' + mac.upper()
 
 class CPU2:
-    def __init__(self):
-        cpu = ps.cpu_percent(interval=1, percpu=True)
-        self.key = 'CPU Usage'
-        self.value = str(cpu)
+	def __init__(self):
+		cpu = ps.cpu_percent(interval=1, percpu=True)
+		self.key = 'CPU Usage'
+		self.value = str(cpu)
 
 def handleArgs():
 	parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -593,7 +593,7 @@ Submit issues to: https://github.com/walchko/pyarchey""")
 	#parser.add_argument('-a', '--art', help='not implemented yet')
 	parser.add_argument('-d', '--display', help='displays all ascii logos and exits', action='store_true')
 	parser.add_argument('-j', '--json', help='instead of printing to screen, returns system as json', action='store_true')
-# 	parser.add_argument('-v', '--version', help='prints version number', action='store_true')
+#	parser.add_argument('-v', '--version', help='prints version number', action='store_true')
 	parser.add_argument('-z', '--zeroconfig', help='assume a zeroconfig network and adds .local to the hostname', action='store_true')
 
 	args = vars(parser.parse_args())
@@ -601,41 +601,41 @@ Submit issues to: https://github.com/walchko/pyarchey""")
 	return args
 
 def main():
-    args = handleArgs()
+	args = handleArgs()
 
-    if args['display']:
-        for i in logosDict:
-            print(i)
-            print(logosDict[i].format(color = colorDict[i],results=list(xrange(0,13))) )
-        return 0
+	if args['display']:
+		for i in logosDict:
+			print(i)
+			print(logosDict[i].format(color = colorDict[i],results=list(xrange(0,13))) )
+		return 0
 
 # Need a good way to display version number, there seems to be no standard
-#     if args['version']:
-#         print('pyarchey 0.6.0')
-#         return 0
+#	  if args['version']:
+#		  print('pyarchey 0.6.0')
+#		  return 0
 
-    out = Output()
-    out.append( User() )
-    out.append( Hostname() )
-    out.append( IP(args['zeroconfig']) )
-    out.append( OS(out.distro) )
-    out.append( Kernel() )
-    out.append( Uptime() )
-    out.append( Shell() )
-    out.append( Processes() )
-    out.append( Packages(out.distro) )
-    out.append( CPU(out.distro) )
-    out.append( CPU2() )
-    out.append( RAM() )
-    out.append( Disk(args['json']) )
+	out = Output()
+	out.append( User() )
+	out.append( Hostname() )
+	out.append( IP(args['zeroconfig']) )
+	out.append( OS(out.distro) )
+	out.append( Kernel() )
+	out.append( Uptime() )
+	out.append( Shell() )
+	out.append( Processes() )
+	out.append( Packages(out.distro) )
+	out.append( CPU(out.distro) )
+	out.append( CPU2() )
+	out.append( RAM() )
+	out.append( Disk(args['json']) )
 
-    jsn = out.output(args['json'])
+	jsn = out.output(args['json'])
 
 
-    if args['json']:
-        return json.dumps(jsn)
+	if args['json']:
+		return json.dumps(jsn)
 
 
 
 if __name__ == '__main__':
-    main()
+	main()

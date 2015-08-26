@@ -14,9 +14,12 @@ PyArchey
     :target: https://pypi.python.org/pypi/pyarchey/
     :alt: License
 
-This is based off the ``archey`` command (which is also python) distributed by various linux, unix, and osx package managers. In order to avoid a naming conflict between them, I called this ``pyarchey``.
+This is based off the ``archey`` command (which is also python) distributed by various 
+linux, unix, and osx package managers. In order to avoid a naming conflict between them, 
+I called this ``pyarchey``.
 
-Currently, ``pyarchey`` supports logos for Arch, Fedora, LinuxMint, Ubuntu, SUSE, Debian, Raspbian, Gentoo, OpenBSD, generic Linux, and Slackware.
+Currently, ``pyarchey`` supports logos for Arch, Fedora, LinuxMint, Ubuntu, SUSE, Debian, 
+Raspbian, Gentoo, OpenBSD, generic Linux, and Slackware.
 
 ::
 
@@ -56,14 +59,19 @@ Currently, ``pyarchey`` supports logos for Arch, Fedora, LinuxMint, Ubuntu, SUSE
 
 
 	[kevin@Tardis ~]$ pyarchey -j
-	{"Kernel": "14.3.0", "Uptime": "0 days 12 hrs 42 mins", "Shell": "/bin/bash", "Disk": "93 / 232 GB", "IP": "192.168.1.4 / 58:A0:35:B2:25:E8", "Hostname": "Tardis.local", "Processes": "241 running", "RAM": "6 GB/ 8 GB", "User": "kevin", "CPU Usage": "[5.0, 4.0]", "Packages": 111, "OS": "Mac OSX x86_64", "CPU": "Intel Core2 Duo P8600 @ 2.40GHz"}
+	{"Kernel": "14.3.0", "Uptime": "0 days 12 hrs 42 mins", "Shell": "/bin/bash", 
+	"Disk": "93 / 232 GB", "IP": "192.168.1.4 / 58:A0:35:B2:25:E8", "Hostname": 
+	"Tardis.local", "Processes": "241 running", "RAM": "6 GB/ 8 GB", "User": "kevin", 
+	"CPU Usage": "[5.0, 4.0]", "Packages": 111, "OS": "Mac OSX x86_64", "CPU": 
+	"Intel Core2 Duo P8600 @ 2.40GHz"}
 
 
 -------------
 Requirements
 -------------
 
-Some of the custom code was removed and ``psutil`` was used to provide a cross-platform solution.
+Some of the custom code was removed and ``psutil`` was used to provide a cross-platform 
+solution.
 
 --------
 Install
@@ -96,20 +104,13 @@ args:
 -j, --json        output json of system info, nothing is printed to the screen
 -z, --zeroconfig  add ``.local`` to a hostname for zeroconfig to find IP address easier
 
-------
-To Do
-------
-
-Some things I would like to do:
-
-- Display user defined ascii art from command line
-- Get a better Raspbian image
 
 --------
 History
 --------
 
-As far as I am aware, this was started by @djmelik which was then forked by @mikeantonacci where I forked it form him.
+As far as I am aware, this was started by @djmelik which was then forked by 
+@mikeantonacci where I forked it form him.
 
 --------------
 Contributions
@@ -128,4 +129,5 @@ Date           Version   Notes
 29 Mar 15      0.4.0     Forked
  4 Apr 15      0.5.0     Added Apple logo, changed custom code to ``psutil``
 11 Apr 15      0.6.0     Added commandline args for: displaying ascii logos, json output, zeroconfig
+26 Aug 15      0.6.2     Minor fixes
 =============  ========  ======
