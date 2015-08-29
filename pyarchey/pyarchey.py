@@ -60,22 +60,22 @@ BGY ="\033[1;30m"   # grey
 BLG ="\033[1;37m"   # light grey
 
 colorDict = {
-    'Arch Linux':       [BL, BBL],
-    'Ubuntu':           [RD, BRD, BYW],
-    'FreeBSD':          [RD, BRD, YW],
-    'Mac OSX':          [CLR, CY],
-    'Debian':           [RD, BRD],
-    'Raspbian':         [RD, BRD],
-    'LinuxMint':        [BLG, BGR],
-    'Gentoo':           [BPL, BLG],
-    'OpenBSD':          [BYW, BYW, YW],
-    'Fedora':           [BLG, BBL, BL],
-    'openSUSE project': [BLG, BGR],
-    'Slackware':        [BLG, BL, BBL],
-    'Linux':            [CLR, BBL],
-    'Sensors':          [BRD, BGR, BYW],
-    'Clear':            [CLR]
-    }
+	'Arch Linux':		[BL, BBL],
+	'Ubuntu':			[RD, BRD, BYW],
+	'FreeBSD':			[RD, BRD, YW],
+	'Mac OSX':			[CLR, CY],
+	'Debian':			[RD, BRD],
+	'Raspbian':			[RD, BRD],
+	'LinuxMint':		[BLG, BGR],
+	'Gentoo':			[BPL, BLG],
+	'OpenBSD':			[BYW, BYW, YW],
+	'Fedora':			[BLG, BBL, BL],
+	'openSUSE project': [BLG, BGR],
+	'Slackware':		[BLG, BL, BBL],
+	'Linux':			[CLR, BBL],
+	'Sensors':			[BRD, BGR, BYW],
+	'Clear':			[CLR]
+	}
 
 logosDict = {'Arch Linux': """{color[1]}
 {color[1]}               +                {results[0]}
@@ -496,11 +496,11 @@ class CPU(object):
 				c = cpu.replace('(R)','').replace('(TM)','').replace('CPU','').split()
 				cpuinfo = ' '.join(c)
 			elif dist == 'FreeBSD':
-				file = Popen(['sysctl', '-n','hw'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
-				cpuinfo = re.sub('	+', ' ', file[1].replace('model name\t: ', '').rstrip('\n'))
+				cpu = Popen(['sysctl', '-n','hw'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
+				cpuinfo = re.sub('	+', ' ', cpu[1].replace('model name\t: ', '').rstrip('\n'))
 			else:
-				file = Popen(['grep', '-i', 'model name\t: ', '/proc/cpuinfo'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
-				cpuinfo = re.sub('	+', ' ', file[0].replace('model name\t: ', ''))
+				cpu = Popen(['grep', '-i', 'model name\t: ', '/proc/cpuinfo'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
+				cpuinfo = re.sub('	+', ' ', cpu[0].replace('model name\t: ', ''))
 		except:
 			cpuinfo = 'unknown'
 		self.key = 'CPU'
@@ -558,7 +558,6 @@ class IP(object):
 			ip = socket.gethostbyname(host)
 		except:
 			print('Error in IP()')
-			pass
 		
 		self.key = 'IP'
 		self.value = ip + ' / ' + mac.upper()
