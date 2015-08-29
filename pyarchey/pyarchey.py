@@ -42,7 +42,7 @@ BK ="\033[0;30m"   # black
 BL ="\033[0;34m"   # blue
 GR ="\033[0;32m"   # green
 CY ="\033[0;36m"   # cyan
-RD ='\033[0;31m'   # red
+RD ="\033[0;31m"   # red
 PL ="\033[0;35m"   # purple
 YW ="\033[0;33m"   # yellow
 GY ="\033[0;30m"   # grey
@@ -53,7 +53,7 @@ BBK ="\033[1;30m"   # black
 BBL ="\033[1;34m"   # blue
 BGR ="\033[1;32m"   # green
 BCY ="\033[1;36m"   # cyan
-BRD ='\033[1;31m'   # red
+BRD ="\033[1;31m"   # red
 BPL ="\033[1;35m"   # purple
 BYW ="\033[1;33m"   # yellow
 BGY ="\033[1;30m"   # grey
@@ -77,7 +77,7 @@ colorDict = {
     'Clear':            [CLR]
     }
 
-logosDict = {'Arch Linux': '''{color[1]}
+logosDict = {'Arch Linux': """{color[1]}
 {color[1]}               +                {results[0]}
 {color[1]}               #                {results[1]}
 {color[1]}              ###               {results[2]}
@@ -96,8 +96,8 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[0]}  ;####                 ####;
 {color[0]}  ##'                     '##
 {color[0]} #'                         `#
-\x1b[0m'''
-,'FreeBSD':'''{color[0]}
+\x1b[0m"""
+,'FreeBSD':"""{color[0]}
 {color[0]}  ```                        `    {results[0]}
 {color[0]} s` `.....---.......--.```   -/   {results[1]}
 {color[0]} +o   .--`         /y:`      +.   {results[2]}
@@ -116,8 +116,8 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[0]}
 {color[0]}
 {color[0]}
-\x1b[0m'''
-,'Debian':'''{color[0]}
+\x1b[0m"""
+,'Debian':"""{color[0]}
 {color[1]}           _sudZUZ#Z#XZo=_        {results[0]}
 {color[1]}        _jmZZ2!!~---~!!X##wx      {results[1]}
 {color[1]}     .<wdP~~            -!YZL,    {results[2]}
@@ -134,8 +134,8 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[0]}        +3#bc,
 {color[0]}          -)SSL,,
 {color[0]}             ~~~~~
-\x1b[0m'''
-,'Raspbian':'''{color[0]}
+\x1b[0m"""
+,'Raspbian':"""{color[0]}
 {color[0]}        .~~.   .~~.      {results[0]}
 {color[0]}       '. \ ' ' / .'     {results[1]}
 {color[0]}        .~ .~~~..~.      {results[2]}
@@ -149,8 +149,8 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[0]}                         {results[10]}
 {color[0]}                         {results[11]}
 {color[0]}                         {results[12]}
-\x1b[0m'''
-,'Ubuntu':'''{color[0]}
+\x1b[0m"""
+,'Ubuntu':"""{color[0]}
 {color[0]}                          .oyhhs:   {results[0]}
 {color[1]}                 ..--.., {color[0]}shhhhhh-   {results[1]}
 {color[1]}               -+++++++++`:{color[0]}yyhhyo`  {results[2]}
@@ -169,8 +169,8 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[0]}               `.:://::- {color[2]}-:::::;
 {color[2]}                         `.-:-'
 {color[2]}
-\x1b[0m'''
-,'LinuxMint':'''{color[0]}
+\x1b[0m"""
+,'LinuxMint':"""{color[0]}
 {color[0]} MMMMMMMMMMMMMMMMMMMMMMMMMmds+.      {results[0]}
 {color[0]} MMm----::-://////////////oymNMd+`   {results[1]}
 {color[0]} MMd      {color[1]}/++                {color[0]}-sNMd:  {results[2]}
@@ -189,8 +189,8 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[0]}
 {color[0]}
 {color[0]}
-\x1b[0m'''
-,'Fedora':'''{color[0]}
+\x1b[0m"""
+,'Fedora':"""{color[0]}
 {color[2]}           :/------------://        {results[0]}
 {color[2]}        :------------------://      {results[1]}
 {color[2]}      :-----------{color[0]}/shhdhyo/{color[2]}-://     {results[2]}
@@ -209,8 +209,8 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[2]} :------{color[0]}:://:{color[2]}-----------://
 {color[2]} :--------------------://
 {color[2]}
-\x1b[0m'''
-,'openSUSE project':'''{color[0]}
+\x1b[0m"""
+,'openSUSE project':"""{color[0]}
 {color[1]}        +########_ #=.    {results[0]}
 {color[1]}      ################-#  {results[1]}
 {color[1]}    =################ -:+ {results[2]}
@@ -227,8 +227,8 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[1]}
 {color[1]}
 {color[1]}
-\x1b[0m'''
-, 'Slackware':'''{color[0]}
+\x1b[0m"""
+, 'Slackware':"""{color[0]}
 {color[1]}                   :::::::                    {results[0]}
 {color[1]}             :::::::::::::::::::              {results[1]}
 {color[1]}          :::::::::::::::::::::::::           {results[2]}
@@ -251,8 +251,8 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[1]}            ::::::::::::::::::::::
 {color[1]}                 ::::::::::::
 {color[1]}
-\x1b[0m'''
-, 'Mac OSX':'''{color[0]}
+\x1b[0m"""
+, 'Mac OSX':"""{color[0]}
 {color[0]}                  ##             {results[0]}
 {color[0]}               ####              {results[1]}
 {color[0]}               ##                {results[2]}
@@ -266,8 +266,8 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[0]}      ####################       {results[10]}
 {color[0]}        ################         {results[11]}
 {color[0]}          ###     ####           {results[12]}
-\x1b[0m'''
-,'Gentoo':'''{color[0]}
+\x1b[0m"""
+,'Gentoo':"""{color[0]}
 {color[0]}        __q@@@@m             {results[0]}
 {color[0]}      _q@@@@@@@@@@_          {results[1]}
 {color[0]}     _@@@@@@@@@@@@@@m        {results[2]}
@@ -287,8 +287,8 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[0]}    _##@@@@@##@#@#g
 {color[0]}      _#@@@@@@#@@
 {color[0]}        _p@@@@q
-\x1b[0m'''
-,'OpenBSD':'''{color[0]}
+\x1b[0m"""
+,'OpenBSD':"""{color[0]}
 {color[0]}               |    .            {results[0]}
 {color[0]}           .   |L  /|   .        {results[1]}
 {color[0]}       _ . | _| --+._/| .        {results[2]}
@@ -310,8 +310,8 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[0]}       / .-.
 {color[0]}        (  `
 {color[0]}        `.
-\x1b[0m'''
-, 'Linux':'''{color[0]}
+\x1b[0m"""
+, 'Linux':"""{color[0]}
 {color[0]}              a8888b.            {results[0]}
 {color[0]}             d888888b.           {results[1]}
 {color[0]}             8P"YP"Y88           {results[2]}
@@ -328,7 +328,7 @@ logosDict = {'Arch Linux': '''{color[1]}
 {color[0]}      \    YP"      `| 8P  `.
 {color[0]}      /     \._____.d|    .'
 {color[0]}      `--..__)888888P`._.'
-\x1b[0m'''
+\x1b[0m"""
 
 }
 
@@ -345,7 +345,7 @@ def autoSize(used,total):
 
 #---------------Classes---------------#
 
-class Output:
+class Output(object):
 	results = []
 
 	def __init__(self):
@@ -416,19 +416,19 @@ class Output:
 		else:
 			print(logosDict[self.distro].format(color = colorDict[self.distro], results = self.results))
 
-class User:
+class User(object):
 	def __init__(self):
 		self.key = 'User'
 		self.value = os.getenv('USER')
 
-class Hostname:
+class Hostname(object):
 	def __init__(self):
 		hostname = Popen(['uname', '-n'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
 		self.key = 'Hostname'
 		self.value = hostname
 
 
-class OS:
+class OS(object):
 	def __init__(self,dist):
 		OS = dist
 
@@ -439,13 +439,13 @@ class OS:
 		self.value = OS
 
 
-class Kernel:
+class Kernel(object):
 	def __init__(self):
 		kernel = Popen(['uname', '-r'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
 		self.key = 'Kernel'
 		self.value = kernel
 
-class Uptime:
+class Uptime(object):
 	def __init__(self):
 		up = ps.boot_time()
 		up = dt.datetime.fromtimestamp(up)
@@ -455,17 +455,17 @@ class Uptime:
 		self.key = 'Uptime'
 		self.value = uptime
 
-class Shell:
+class Shell(object):
 	def __init__(self):
 		self.key = 'Shell'
 		self.value = os.getenv('SHELL')
 
-class Processes:
+class Processes(object):
 	def __init__(self):
 		self.key = 'Processes'
 		self.value =  str(len(ps.pids())) + ' running'
 
-class Packages:
+class Packages(object):
 	def __init__(self,dist):
 		try:
 			if dist == 'Mac OSX':
@@ -487,7 +487,7 @@ class Packages:
 		self.key = 'Packages'
 		self.value = packages
 
-class CPU:
+class CPU(object):
 	def __init__(self,dist):
 		#file = open('/proc/cpuinfo').readlines()
 		try:
@@ -506,7 +506,7 @@ class CPU:
 		self.key = 'CPU'
 		self.value = cpuinfo
 
-class RAM:
+class RAM(object):
 	def __init__(self):
 		ram = ps.virtual_memory()
 		used = ram.used
@@ -518,7 +518,7 @@ class RAM:
 		self.key = 'RAM'
 		self.value = ramdisplay
 
-class Disk:
+class Disk(object):
 	def __init__(self,json=False):
 		p = ps.disk_usage('/')
 		total = p.total
@@ -540,7 +540,7 @@ class Disk:
 		self.key = 'Disk'
 		self.value = disk
 
-class IP:
+class IP(object):
 	def __init__(self, zeroconfig=False):
 		"""
 		This tries to get the host name and deterine the IP address from it.
@@ -563,7 +563,7 @@ class IP:
 		self.key = 'IP'
 		self.value = ip + ' / ' + mac.upper()
 
-class CPU2:
+class CPU2(object):
 	def __init__(self):
 		cpu = ps.cpu_percent(interval=1, percpu=True)
 		self.key = 'CPU Usage'
