@@ -472,7 +472,7 @@ class OS(object):
 			d = Distro()
 			dn = d.getDistro()
 			if dn: OS = dn + ' ' + platform.machine()
-			else OS = OS + ' ' + platform.machine()
+			else: OS = OS + ' ' + platform.machine()
 		else:
 			#arch = Popen(['uname', '-m'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
 			OS = OS + ' ' + platform.machine()
