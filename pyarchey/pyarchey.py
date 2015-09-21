@@ -418,7 +418,9 @@ class Output(object):
 			print(logosDict[self.distro].format(color = colorDict[self.distro], results = self.results))
 
 class Distro(object):
-	def __init__(self):
+# 	def __init__(self):
+	
+	def getDistro(self,f='/etc/os-release'):
 		"""
 		1. Checks if a file exists, if so, reads it
 		2. looks for distribution name in file
@@ -437,7 +439,7 @@ class Distro(object):
 		BUG_REPORT_URL="http://www.raspbian.org/RaspbianBugs"
 		"""
 		try:
-			txt = open('/etc/os-release').readlines()
+			txt = open(f).readlines()
 
 			for line in txt:
 				if line.find('PRETTY_NAME') >=0: return line.split('=')[1].replace('GNU/Linux ','')
@@ -468,7 +470,9 @@ class OS(object):
 			OS = OS + ' ' + v[0] + ' ' + v[2]
 		elif dist == 'Raspbian': # maybe expand this to all linux??
 			d = Distro()
-			if d: OS = d + ' ' + platform.machine()
+			dn = d.getDistro()
+			if dn: OS = dn + ' ' + platform.machine()
+			else OS = OS + ' ' + platform.machine()
 		else:
 			#arch = Popen(['uname', '-m'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
 			OS = OS + ' ' + platform.machine()
