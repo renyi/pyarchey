@@ -45,29 +45,29 @@ Raspbian, Gentoo, OpenBSD, generic Linux, and Slackware.
 
 
 
-	pi@calculon ~/github/pyarchey $ pyarchey -z
+    pi@calculon ~/github/pyarchey $ pyarchey -z
 
-			.~~.   .~~.      User: pi
-		   '. \ ' ' / .'     Hostname: calculon
-			.~ .~~~..~.      IP: 192.168.1.17 / B8:27:EB:0A:5A:17
-		   : .~.'~'.~. :     OS: Raspbian 7 (wheezy) armv6l
-		  ~ (   ) (   ) ~    Kernel: 4.1.6+
-		 ( : '~'.~.'~' : )   Uptime: 15 days 21 hrs 23 mins
-		  ~ .~ (   ) ~. ~    Shell: /bin/bash
-		   (  : '~' :  )     Processes: 73 running
-			'~ .~~~. ~'      Packages: 960
-				'~'          CPU: ARMv6-compatible processor rev 7 (v6l)
-							 CPU Usage: [1.0]
-							 RAM: 216.0 MB/ 229.0 MB
-							 Disk: 4.0 / 15.0 GB
+            .~~.   .~~.      User: pi
+           '. \ ' ' / .'     Hostname: calculon
+            .~ .~~~..~.      IP: 192.168.1.17 / B8:27:EB:0A:5A:17
+           : .~.'~'.~. :     OS: Raspbian 7 (wheezy) armv6l
+          ~ (   ) (   ) ~    Kernel: 4.1.6+
+         ( : '~'.~.'~' : )   Uptime: 15 days 21 hrs 23 mins
+          ~ .~ (   ) ~. ~    Shell: /bin/bash
+           (  : '~' :  )     Processes: 73 running
+            '~ .~~~. ~'      Packages: 960
+                '~'          CPU: ARMv6-compatible processor rev 7 (v6l)
+                             CPU Usage: [1.0]
+                             RAM: 216.0 MB/ 229.0 MB
+                             Disk: 4.0 / 15.0 GB
 
 
-	pi@calculon ~/github/pyarchey $ pyarchey -zj
-	{"Kernel": "4.1.6+", "Uptime": "15 days 21 hrs 39 mins", "Shell": "/bin/bash", 
-	"Disk": "4.0 / 15.0 GB", "IP": "192.168.1.17 / B8:27:EB:0A:5A:17", "Hostname": 
-	"calculon", "Processes": "73 running", "RAM": "215.0 MB/ 229.0 MB", "User": "pi", 
-	"CPU Usage": "[3.9]", "Packages": 960, "OS": "Raspbian 7 (wheezy) armv6l", "CPU": 
-	"ARMv6-compatible processor rev 7 (v6l)"}
+    pi@calculon ~/github/pyarchey $ pyarchey -zj
+    {"Kernel": "4.1.6+", "Uptime": "15 days 21 hrs 39 mins", "Shell": "/bin/bash", 
+    "Disk": "4.0 / 15.0 GB", "IP": "192.168.1.17 / B8:27:EB:0A:5A:17", "Hostname": 
+    "calculon", "Processes": "73 running", "RAM": "215.0 MB/ 229.0 MB", "User": "pi", 
+    "CPU Usage": "[3.9]", "Packages": 960, "OS": "Raspbian 7 (wheezy) armv6l", "CPU": 
+    "ARMv6-compatible processor rev 7 (v6l)"}
 
 
 -------------
