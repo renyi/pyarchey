@@ -29,19 +29,19 @@ Raspbian, Gentoo, OpenBSD, generic Linux, and Slackware.
 
     [kevin@Tardis soccer2]$ pyarchey -z
     
-    				  ##             User: kevin
-    			   ####              Hostname: Tardis.local
-    			   ##                IP: 192.168.1.4 / 58:B0:35:F2:25:D8
-    	   #######    #######        OS: Mac OSX 10.10.5 x86_64
-    	 ######################      Kernel: 14.5.0
-    	#####################        Uptime: 13 days 14 hrs 45 mins
-    	####################         Shell: /bin/bash
-    	####################         Processes: 214 running
-    	#####################        Packages: 113
-    	 ######################      CPU: Intel Core2 Duo P8600 @ 2.40GHz
-    	  ####################       CPU Usage: [17.8, 13.9]
-    		################         RAM: 7.0 GB/ 8.0 GB
-    		  ###     ####           Disk: 219.0 / 233.0 GB
+                      ##             User: kevin
+                   ####              Hostname: Tardis.local
+                   ##                IP: 192.168.1.4 / 58:B0:35:F2:25:D8
+           #######    #######        OS: Mac OSX 10.10.5 x86_64
+         ######################      Kernel: 14.5.0
+        #####################        Uptime: 13 days 14 hrs 45 mins
+        ####################         Shell: /bin/bash
+        ####################         Processes: 214 running
+        #####################        Packages: 113
+         ######################      CPU: Intel Core2 Duo P8600 @ 2.40GHz
+          ####################       CPU Usage: [17.8, 13.9]
+            ################         RAM: 7.0 GB/ 8.0 GB
+              ###     ####           Disk: 219.0 / 233.0 GB
 
 
 
