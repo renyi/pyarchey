@@ -442,7 +442,7 @@ class Distro(object):
 			txt = open(f).readlines()
 
 			for line in txt:
-				if line.find('PRETTY_NAME') >=0: return line.split('=')[1].replace('\n','').replace('GNU/Linux ','')
+				if line.find('PRETTY_NAME') >=0: return line.split('=')[1].replace('"','').replace('\n','').replace('GNU/Linux ','')
 			return ''
 		
 		except:
