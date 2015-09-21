@@ -2,7 +2,7 @@
 PyArchey
 =========
 
-.. image:: https://imgs.xkcd.com/comics/automation.png
+.. figure:: https://imgs.xkcd.com/comics/automation.png
 	:align: center
 
 
