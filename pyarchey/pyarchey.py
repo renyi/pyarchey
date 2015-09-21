@@ -32,7 +32,8 @@ import datetime as dt                   # uptime
 import json                             # json
 import argparse                         # handle command line args
 #import unittest                         # unit test
-import math
+import math								# handle memory sizes
+import platform							# get system info - not used yet
 
 #---------------Dictionaries---------------#
 #  https://wiki.archlinux.org/index.php/Color_Bash_Prompt
@@ -366,7 +367,7 @@ class Output(object):
 		else:
 			return False,'Linux'
 
-		linux = ['Arch','Fedora','LinuxMint','Ubuntu','SUSE','Debian','Raspbian','Slackware']
+		linux = ['Arch Linux','Fedora','LinuxMint','Ubuntu','SUSE','Debian','Raspbian','Slackware']
 		dist = 'Linux'
 		ans = False
 		for line in txt:
@@ -394,7 +395,7 @@ class Output(object):
 			except:
 				#print 'Error w/ lsb_release'
 				ans,dist = self.fileCheck('/etc/os-release')
-				if not ans: dist = 'Linux'
+				
 
 		# Correct some distribution names
 		if dist == 'Arch':
@@ -416,6 +417,36 @@ class Output(object):
 		else:
 			print(logosDict[self.distro].format(color = colorDict[self.distro], results = self.results))
 
+class Distro(object):
+	def __init__(self):
+		"""
+		1. Checks if a file exists, if so, reads it
+		2. looks for distribution name in file
+		3. returns name and if it was successful or not
+		
+		pi@calculon ~ $ more /etc/os-release
+		PRETTY_NAME="Raspbian GNU/Linux 7 (wheezy)"
+		NAME="Raspbian GNU/Linux"
+		VERSION_ID="7"
+		VERSION="7 (wheezy)"
+		ID=raspbian
+		ID_LIKE=debian
+		ANSI_COLOR="1;31"
+		HOME_URL="http://www.raspbian.org/"
+		SUPPORT_URL="http://www.raspbian.org/RaspbianForums"
+		BUG_REPORT_URL="http://www.raspbian.org/RaspbianBugs"
+		"""
+		try:
+			txt = open('/etc/os-release').readlines()
+
+			for line in txt:
+				if line.find('PRETTY_NAME') >=0: return line.split('=')[1].replace('GNU/Linux ','')
+			return ''
+		
+		except:
+			return ''	
+
+
 class User(object):
 	def __init__(self):
 		self.key = 'User'
@@ -423,17 +454,24 @@ class User(object):
 
 class Hostname(object):
 	def __init__(self):
-		hostname = Popen(['uname', '-n'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
+		#hostname = Popen(['uname', '-n'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
 		self.key = 'Hostname'
-		self.value = hostname
+		self.value = platform.node()
 
 
 class OS(object):
 	def __init__(self,dist):
 		OS = dist
-
-		arch = Popen(['uname', '-m'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
-		OS = OS + ' ' + arch
+		
+		if dist == 'Mac OSX':
+			v = platform.mac_ver() 
+			OS = OS + ' ' + v[0] + ' ' + v[2]
+		elif dist == 'Raspbian': # maybe expand this to all linux??
+			d = Distro()
+			if d: OS = d + ' ' + platform.machine()
+		else:
+			#arch = Popen(['uname', '-m'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
+			OS = OS + ' ' + platform.machine()
 
 		self.key = 'OS'
 		self.value = OS
@@ -441,9 +479,10 @@ class OS(object):
 
 class Kernel(object):
 	def __init__(self):
-		kernel = Popen(['uname', '-r'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
+		#kernel = Popen(['uname', '-r'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
 		self.key = 'Kernel'
-		self.value = kernel
+		#self.value = kernel
+		self.value = platform.release()
 
 class Uptime(object):
 	def __init__(self):
@@ -472,7 +511,7 @@ class Packages(object):
 				p1 = Popen(['brew', 'list', '-1'], stdout=PIPE).communicate()[0].decode("Utf-8")
 			elif dist == 'FreeBSD':
 				p1 = Popen(['pkg', 'info'], stdout=PIPE).communicate()[0].decode("Utf-8")
-			elif dist == 'Arch':
+			elif dist == 'Arch Linux':
 				p1 = Popen(['pacman', '-Q'], stdout=PIPE).communicate()[0].decode("Utf-8")
 			elif dist == 'Fedora' or dist == 'openSUSE project':
 				p1 = Popen(['rpm', '-qa'], stdout=PIPE).communicate()[0].decode("Utf-8")
@@ -592,7 +631,7 @@ Submit issues to: https://github.com/walchko/pyarchey""")
 	#parser.add_argument('-a', '--art', help='not implemented yet')
 	parser.add_argument('-d', '--display', help='displays all ascii logos and exits', action='store_true')
 	parser.add_argument('-j', '--json', help='instead of printing to screen, returns system as json', action='store_true')
-#	parser.add_argument('-v', '--version', help='prints version number', action='store_true')
+# 	parser.add_argument('-v', '--version', help='prints version number', action='store_true')
 	parser.add_argument('-z', '--zeroconfig', help='assume a zeroconfig network and adds .local to the hostname', action='store_true')
 
 	args = vars(parser.parse_args())
@@ -608,10 +647,10 @@ def main():
 			print(logosDict[i].format(color = colorDict[i],results=list(xrange(0,13))) )
 		return 0
 
-# Need a good way to display version number, there seems to be no standard
-#	  if args['version']:
-#		  print('pyarchey 0.6.0')
-#		  return 0
+    # Need a good way to display version number, there seems to be no standard
+# 	if args['version']:
+# 		print('pyarchey 0.6.3')
+# 		return 0
 
 	out = Output()
 	out.append( User() )
