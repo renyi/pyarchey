@@ -2,6 +2,8 @@
 PyArchey
 =========
 
+.. image:: https://imgs.xkcd.com/comics/automation.png
+
 .. image:: https://travis-ci.org/walchko/pyarchey.svg?branch=master
     :target: https://travis-ci.org/walchko/pyarchey
 .. image:: https://img.shields.io/pypi/v/pyarchey.svg
@@ -23,47 +25,47 @@ Raspbian, Gentoo, OpenBSD, generic Linux, and Slackware.
 
 ::
 
-    [kevin@Tardis ~]$ pyarchey
+	[kevin@Tardis soccer2]$ pyarchey -z
 
-                    ##             User: kevin
-                 ####              Hostname: Dalek.local
-                 ##                IP: 192.168.1.13 / 58:A0:36:B3:2F:E8
-         #######    #######        OS: Mac OSX x86_64
-       ######################      Kernel: 14.1.0
-      #####################        Uptime: 6 days 5 hrs 32 mins
-      ####################         Shell: /bin/bash
-      ####################         Processes: 367 running
-      #####################        Packages: 74
-       ######################      CPU: Intel Core i5-2400S @ 2.50GHz
-        ####################       CPU Usage: [5.9, 3.0, 4.0, 2.0]
-          ################         RAM: 11 GB/ 12 GB
-            ###     ####           Disk: 441 / 464 GB
-
-
-
-    pi@calculon ~ $ pyarchey -z
-
-            .~~.   .~~.      User: pi
-           '. \ ' ' / .'     Hostname: calculon
-            .~ .~~~..~.      IP: 192.168.1.17 / 88:A0:C6:A3:2F:68
-           : .~.'~'.~. :     OS: Raspbian armv6l
-          ~ (   ) (   ) ~    Kernel: 3.18.8+
-         ( : '~'.~.'~' : )   Uptime: 34 days 4 hrs 38 mins
-          ~ .~ (   ) ~. ~    Shell: /bin/bash
-           (  : '~' :  )     Processes: 77 running
-            '~ .~~~. ~'      Packages: 1061
-                '~'          CPU: ARMv6-compatible processor rev 7 (v6l)
-                             CPU Usage: [2.0]
-                             RAM: 213 MB/ 229 MB
-                             Disk: 4 / 14 GB
+					  ##             User: kevin
+				   ####              Hostname: Tardis.local
+				   ##                IP: 192.168.1.4 / 58:B0:35:F2:25:D8
+		   #######    #######        OS: Mac OSX 10.10.5 x86_64
+		 ######################      Kernel: 14.5.0
+		#####################        Uptime: 13 days 14 hrs 45 mins
+		####################         Shell: /bin/bash
+		####################         Processes: 214 running
+		#####################        Packages: 113
+		 ######################      CPU: Intel Core2 Duo P8600 @ 2.40GHz
+		  ####################       CPU Usage: [17.8, 13.9]
+			################         RAM: 7.0 GB/ 8.0 GB
+			  ###     ####           Disk: 219.0 / 233.0 GB
 
 
-	[kevin@Tardis ~]$ pyarchey -j
-	{"Kernel": "14.3.0", "Uptime": "0 days 12 hrs 42 mins", "Shell": "/bin/bash", 
-	"Disk": "93 / 232 GB", "IP": "192.168.1.4 / 58:A0:35:B2:25:E8", "Hostname": 
-	"Tardis.local", "Processes": "241 running", "RAM": "6 GB/ 8 GB", "User": "kevin", 
-	"CPU Usage": "[5.0, 4.0]", "Packages": 111, "OS": "Mac OSX x86_64", "CPU": 
-	"Intel Core2 Duo P8600 @ 2.40GHz"}
+
+	pi@calculon ~/github/pyarchey $ pyarchey -z
+
+			.~~.   .~~.      User: pi
+		   '. \ ' ' / .'     Hostname: calculon
+			.~ .~~~..~.      IP: 192.168.1.17 / B8:27:EB:0A:5A:17
+		   : .~.'~'.~. :     OS: Raspbian 7 (wheezy) armv6l
+		  ~ (   ) (   ) ~    Kernel: 4.1.6+
+		 ( : '~'.~.'~' : )   Uptime: 15 days 21 hrs 23 mins
+		  ~ .~ (   ) ~. ~    Shell: /bin/bash
+		   (  : '~' :  )     Processes: 73 running
+			'~ .~~~. ~'      Packages: 960
+				'~'          CPU: ARMv6-compatible processor rev 7 (v6l)
+							 CPU Usage: [1.0]
+							 RAM: 216.0 MB/ 229.0 MB
+							 Disk: 4.0 / 15.0 GB
+
+
+	pi@calculon ~/github/pyarchey $ pyarchey -zj
+	{"Kernel": "4.1.6+", "Uptime": "15 days 21 hrs 39 mins", "Shell": "/bin/bash", 
+	"Disk": "4.0 / 15.0 GB", "IP": "192.168.1.17 / B8:27:EB:0A:5A:17", "Hostname": 
+	"calculon", "Processes": "73 running", "RAM": "215.0 MB/ 229.0 MB", "User": "pi", 
+	"CPU Usage": "[3.9]", "Packages": 960, "OS": "Raspbian 7 (wheezy) armv6l", "CPU": 
+	"ARMv6-compatible processor rev 7 (v6l)"}
 
 
 -------------
@@ -87,7 +89,7 @@ You can also do::
     cd pyarchey
     python setup.py install
 
-If you plan on doing some development, instead of `install` you can do `develop`.
+If you plan on doing some development, instead of ``install`` you can do ``develop``.
 
 ------
 Usage
@@ -130,4 +132,5 @@ Date           Version   Notes
  4 Apr 15      0.5.0     Added Apple logo, changed custom code to ``psutil``
 11 Apr 15      0.6.0     Added commandline args for: displaying ascii logos, json output, zeroconfig
 26 Aug 15      0.6.2     Minor fixes
+21 Sep 15      0.6.3     OSX now reports OSX version and minor other fixes
 =============  ========  ======
