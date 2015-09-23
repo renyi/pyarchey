@@ -353,32 +353,6 @@ class Output(object):
 		self.distro,self.pname = self.detectDistro()
 		self.json = {}
 
-# 	def fileCheck(self,f):
-# 		"""
-# 		1. Checks if a file exists, if so, reads it
-# 		2. looks for distribution name in file
-# 		3. returns name and if it was successful or not
-# 		"""
-# 		txt = ''
-# 
-# 		if os.path.isfile(f):
-# 			txt = open(f).readlines()
-# 
-# 		else:
-# 			return False,'Linux'
-# 
-# 		linux = ['Arch Linux','Fedora','LinuxMint','Ubuntu','SUSE','Debian','Raspbian','Slackware']
-# 		dist = 'Linux'
-# 		ans = False
-# 		for line in txt:
-# 			for i in linux:
-# 				if line.find(i) >= 0:
-# 					dist = i
-# 					ans = True
-# 					break
-# 
-# 		return ans,dist
-
 	def detectDistro(self):
 		"""
 		Attempts to determine the distribution and draw the logo. However, if it can't, 
@@ -393,12 +367,6 @@ class Output(object):
 			dist = 'FreeBSD'
 		else:
 			dist,pname = self.readDistro()
-			
-# 			try:
-# 				dist = Popen(['lsb_release', '-is'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
-# 			except:
-# 				#print 'Error w/ lsb_release'
-# 				ans,dist = self.fileCheck('/etc/os-release')
 
 		# Correct some distribution names
 		if dist == 'Arch':
@@ -455,16 +423,26 @@ class Output(object):
 			return name,''	
 
 	def getDistro(self):
+		"""
+		Ideally returns the pretty distro name instead of the short distro name. If we 
+		weren't able to figure out the distro, it defaults to Linux.
+		"""
 		if self.pname: return self.pname
 		else: return self.distro
 		
 	def append(self, display):
+		"""
+		Sets up the printing
+		"""
 		self.results.append('%s%s: %s%s' % (colorDict[self.distro][1], display.key, colorDict['Clear'][0], display.value))
 		self.json[display.key] = display.value
 
-	def output(self, json=False):
-		if json:
-			return self.json
+	def output(self, js=False):
+		"""
+		Does the printing. Either picture and info to screen or dumps json.
+		"""
+		if js:
+			print json.dumps(self.json)
 		else:
 			print(logosDict[self.distro].format(color = colorDict[self.distro], results = self.results))
 
@@ -690,11 +668,8 @@ def main():
 	out.append( RAM() )
 	out.append( Disk(args['json']) )
 
-	jsn = out.output(args['json'])
+	out.output(args['json'])
 
-
-	if args['json']:
-		return json.dumps(jsn)
 
 
 
