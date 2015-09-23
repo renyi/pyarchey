@@ -395,7 +395,6 @@ class Output(object):
 			except:
 				#print 'Error w/ lsb_release'
 				ans,dist = self.fileCheck('/etc/os-release')
-				
 
 		# Correct some distribution names
 		if dist == 'Arch':
@@ -417,37 +416,6 @@ class Output(object):
 		else:
 			print(logosDict[self.distro].format(color = colorDict[self.distro], results = self.results))
 
-class Distro(object):
-# 	def __init__(self):
-	
-	def getDistro(self,f='/etc/os-release'):
-		"""
-		1. Checks if a file exists, if so, reads it
-		2. looks for distribution name in file
-		3. returns name and if it was successful or not
-		
-		pi@calculon ~ $ more /etc/os-release
-		PRETTY_NAME="Raspbian GNU/Linux 7 (wheezy)"
-		NAME="Raspbian GNU/Linux"
-		VERSION_ID="7"
-		VERSION="7 (wheezy)"
-		ID=raspbian
-		ID_LIKE=debian
-		ANSI_COLOR="1;31"
-		HOME_URL="http://www.raspbian.org/"
-		SUPPORT_URL="http://www.raspbian.org/RaspbianForums"
-		BUG_REPORT_URL="http://www.raspbian.org/RaspbianBugs"
-		"""
-		try:
-			txt = open(f).readlines()
-
-			for line in txt:
-				if line.find('PRETTY_NAME') >=0: return line.split('=')[1].replace('"','').replace('\n','').replace('GNU/Linux ','')
-			return ''
-		
-		except:
-			return ''	
-
 
 class User(object):
 	def __init__(self):
@@ -468,17 +436,50 @@ class OS(object):
 		if dist == 'Mac OSX':
 			v = platform.mac_ver() 
 			OS = OS + ' ' + v[0] + ' ' + v[2]
-		elif dist == 'Raspbian': # maybe expand this to all linux??
-			d = Distro()
-			dn = d.getDistro()
-			if dn: OS = dn + ' ' + platform.machine()
+		else: 
+			d = self.getDistro()
+			if d: OS = d + ' ' + platform.machine()
 			else: OS = OS + ' ' + platform.machine()
-		else:
-			#arch = Popen(['uname', '-m'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
-			OS = OS + ' ' + platform.machine()
 
 		self.key = 'OS'
 		self.value = OS
+		
+	def getDistro(self,f='/etc/os-release'):
+		"""
+		1. Checks if a file exists, if so, reads it
+		2. looks for distribution name in file
+		3. returns name and if it was successful or not
+		
+		pi@calculon ~ $ more /etc/os-release
+		PRETTY_NAME="Raspbian GNU/Linux 7 (wheezy)"
+		NAME="Raspbian GNU/Linux"
+		VERSION_ID="7"
+		VERSION="7 (wheezy)"
+		ID=raspbian
+		ID_LIKE=debian
+		ANSI_COLOR="1;31"
+		HOME_URL="http://www.raspbian.org/"
+		SUPPORT_URL="http://www.raspbian.org/RaspbianForums"
+		BUG_REPORT_URL="http://www.raspbian.org/RaspbianBugs"
+		
+		$ cat /etc/os-release 
+		NAME="Arch Linux"
+		ID=arch
+		PRETTY_NAME="Arch Linux"
+		ANSI_COLOR="0;36"
+		HOME_URL="https://www.archlinux.org/"
+		SUPPORT_URL="https://bbs.archlinux.org/"
+		BUG_REPORT_URL="https://bugs.archlinux.org/"
+		"""
+		try:
+			txt = open(f).readlines()
+
+			for line in txt:
+				if line.find('PRETTY_NAME') >=0: return line.split('=')[1].replace('"','').replace('\n','').replace('GNU/Linux ','')
+			return ''
+		
+		except:
+			return ''	
 
 
 class Kernel(object):
@@ -588,7 +589,9 @@ class IP(object):
 		"""
 		This tries to get the host name and deterine the IP address from it.
 		It also tries to handle zeroconfig well. Also, there is an issue with getting
-		the MAC address, so this uses uuid to get that too.
+		the MAC address, so this uses uuid to get that too. However, using the UUID is 
+		not reliable, because it can return any MAC address (bluetooth, wired, wireless,
+		etc) or even make a random one.
 		"""
 		ip = '127.0.0.1'
 		mac = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
