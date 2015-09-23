@@ -443,7 +443,7 @@ class Output(object):
 
 			for line in txt:
 				if line.find('PRETTY_NAME') >=0: pretty_name = line.split('=')[1].replace('"','').replace('\n','').replace('GNU/Linux ','')
-				if line.find('NAME') >= 0: name = line.split('=')[1].replace('"','').replace('\n','').replace('GNU/Linux ','')
+				if line.find('NAME') >= 0: name = line.split('=')[1].replace('"','').replace('\n','').replace(' GNU/Linux','')
 			
 			if not name: name = 'Linux'
 			
