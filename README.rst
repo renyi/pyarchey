@@ -135,4 +135,6 @@ Date           Version   Notes
 11 Apr 15      0.6.0     Added commandline args for: displaying ascii logos, json output, zeroconfig
 26 Aug 15      0.6.2     Minor fixes
 21 Sep 15      0.6.3     OSX now reports OSX version and minor other fixes
+22 Sep 15      0.6.4     Arch linux fix
+23 Sep 15      0.6.5     Refactoring to remove some command line programs
 =============  ========  ======

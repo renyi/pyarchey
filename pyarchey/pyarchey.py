@@ -530,8 +530,6 @@ class CPU(object):
 				cpu = Popen(['sysctl', '-n','hw'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
 				cpuinfo = re.sub('	+', ' ', cpu[1].replace('model name\t: ', '').rstrip('\n'))
 			else:
-# 				cpu = Popen(['grep', '-i', 'model name\t: ', '/proc/cpuinfo'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
-# 				cpuinfo = re.sub('	+', ' ', cpu[0].replace('model name\t: ', ''))
 				txt = open('/proc/cpuinfo').readlines()
 				cpuinfo = ''
 				for line in txt:
