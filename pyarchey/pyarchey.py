@@ -454,7 +454,6 @@ class User(object):
 
 class Hostname(object):
 	def __init__(self):
-		#hostname = Popen(['uname', '-n'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
 		self.key = 'Hostname'
 		self.value = platform.node()
 
@@ -475,9 +474,7 @@ class OS(object):
 
 class Kernel(object):
 	def __init__(self):
-		#kernel = Popen(['uname', '-r'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
 		self.key = 'Kernel'
-		#self.value = kernel
 		self.value = platform.release()
 
 class Uptime(object):
