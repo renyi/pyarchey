@@ -350,34 +350,34 @@ class Output(object):
 	results = []
 
 	def __init__(self):
-		self.distro = self.detectDistro()
+		self.distro,self.pname = self.detectDistro()
 		self.json = {}
 
-	def fileCheck(self,f):
-		"""
-		1. Checks if a file exists, if so, reads it
-		2. looks for distribution name in file
-		3. returns name and if it was successful or not
-		"""
-		txt = ''
-
-		if os.path.isfile(f):
-			txt = open(f).readlines()
-
-		else:
-			return False,'Linux'
-
-		linux = ['Arch Linux','Fedora','LinuxMint','Ubuntu','SUSE','Debian','Raspbian','Slackware']
-		dist = 'Linux'
-		ans = False
-		for line in txt:
-			for i in linux:
-				if line.find(i) >= 0:
-					dist = i
-					ans = True
-					break
-
-		return ans,dist
+# 	def fileCheck(self,f):
+# 		"""
+# 		1. Checks if a file exists, if so, reads it
+# 		2. looks for distribution name in file
+# 		3. returns name and if it was successful or not
+# 		"""
+# 		txt = ''
+# 
+# 		if os.path.isfile(f):
+# 			txt = open(f).readlines()
+# 
+# 		else:
+# 			return False,'Linux'
+# 
+# 		linux = ['Arch Linux','Fedora','LinuxMint','Ubuntu','SUSE','Debian','Raspbian','Slackware']
+# 		dist = 'Linux'
+# 		ans = False
+# 		for line in txt:
+# 			for i in linux:
+# 				if line.find(i) >= 0:
+# 					dist = i
+# 					ans = True
+# 					break
+# 
+# 		return ans,dist
 
 	def detectDistro(self):
 		"""
@@ -385,16 +385,20 @@ class Output(object):
 		then it defaults to 'Linux' and draws a simple linux penguin. 
 		"""
 		dist = _platform
+		pname = ''
+		
 		if dist == 'darwin':
 			dist = 'Mac OSX'
 		elif dist == 'freebsd':
 			dist = 'FreeBSD'
 		else:
-			try:
-				dist = Popen(['lsb_release', '-is'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
-			except:
-				#print 'Error w/ lsb_release'
-				ans,dist = self.fileCheck('/etc/os-release')
+			dist,pname = self.readDistro()
+			
+# 			try:
+# 				dist = Popen(['lsb_release', '-is'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
+# 			except:
+# 				#print 'Error w/ lsb_release'
+# 				ans,dist = self.fileCheck('/etc/os-release')
 
 		# Correct some distribution names
 		if dist == 'Arch':
@@ -403,9 +407,57 @@ class Output(object):
 			dist = 'openSUSE'
 
 
-		return dist
+		return dist, pname
 
+	def readDistro(self,f='/etc/os-release'):
+		"""
+		1. Checks if a file exists, if so, reads it
+		2. looks for distribution name in file
+		3. returns name and if not successful, just says 'Linux' which is the default
+		
+		pi@calculon ~ $ more /etc/os-release
+		PRETTY_NAME="Raspbian GNU/Linux 7 (wheezy)"
+		NAME="Raspbian GNU/Linux"
+		VERSION_ID="7"
+		VERSION="7 (wheezy)"
+		ID=raspbian
+		ID_LIKE=debian
+		ANSI_COLOR="1;31"
+		HOME_URL="http://www.raspbian.org/"
+		SUPPORT_URL="http://www.raspbian.org/RaspbianForums"
+		BUG_REPORT_URL="http://www.raspbian.org/RaspbianBugs"
+		
+		$ cat /etc/os-release 
+		NAME="Arch Linux"
+		ID=arch
+		PRETTY_NAME="Arch Linux"
+		ANSI_COLOR="0;36"
+		HOME_URL="https://www.archlinux.org/"
+		SUPPORT_URL="https://bbs.archlinux.org/"
+		BUG_REPORT_URL="https://bugs.archlinux.org/"
+		"""
+		try:
+			txt = open(f).readlines()
+			pretty_name = ''
+			name = ''
 
+			for line in txt:
+				if line.find('PRETTY_NAME') >=0: pretty_name = line.split('=')[1].replace('"','').replace('\n','').replace('GNU/Linux ','')
+				if line.find('NAME') >= 0: name = line.split('=')[1].replace('"','').replace('\n','')
+			
+			if not name: name = 'Linux'
+			
+			return name,pretty_name
+		
+		except:
+			name = Popen(['lsb_release', '-is'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
+			if not name: name = 'Linux'
+			return name,''	
+
+	def getDistro(self):
+		if self.pname: return self.pname
+		else: return self.distro
+		
 	def append(self, display):
 		self.results.append('%s%s: %s%s' % (colorDict[self.distro][1], display.key, colorDict['Clear'][0], display.value))
 		self.json[display.key] = display.value
@@ -437,49 +489,47 @@ class OS(object):
 			v = platform.mac_ver() 
 			OS = OS + ' ' + v[0] + ' ' + v[2]
 		else: 
-			d = self.getDistro()
-			if d: OS = d + ' ' + platform.machine()
-			else: OS = OS + ' ' + platform.machine()
+			OS = OS + ' ' + platform.machine()
 
 		self.key = 'OS'
 		self.value = OS
 		
-	def getDistro(self,f='/etc/os-release'):
-		"""
-		1. Checks if a file exists, if so, reads it
-		2. looks for distribution name in file
-		3. returns name and if it was successful or not
-		
-		pi@calculon ~ $ more /etc/os-release
-		PRETTY_NAME="Raspbian GNU/Linux 7 (wheezy)"
-		NAME="Raspbian GNU/Linux"
-		VERSION_ID="7"
-		VERSION="7 (wheezy)"
-		ID=raspbian
-		ID_LIKE=debian
-		ANSI_COLOR="1;31"
-		HOME_URL="http://www.raspbian.org/"
-		SUPPORT_URL="http://www.raspbian.org/RaspbianForums"
-		BUG_REPORT_URL="http://www.raspbian.org/RaspbianBugs"
-		
-		$ cat /etc/os-release 
-		NAME="Arch Linux"
-		ID=arch
-		PRETTY_NAME="Arch Linux"
-		ANSI_COLOR="0;36"
-		HOME_URL="https://www.archlinux.org/"
-		SUPPORT_URL="https://bbs.archlinux.org/"
-		BUG_REPORT_URL="https://bugs.archlinux.org/"
-		"""
-		try:
-			txt = open(f).readlines()
-
-			for line in txt:
-				if line.find('PRETTY_NAME') >=0: return line.split('=')[1].replace('"','').replace('\n','').replace('GNU/Linux ','')
-			return ''
-		
-		except:
-			return ''	
+# 	def getDistro(self,f='/etc/os-release'):
+# 		"""
+# 		1. Checks if a file exists, if so, reads it
+# 		2. looks for distribution name in file
+# 		3. returns name and if it was successful or not
+# 		
+# 		pi@calculon ~ $ more /etc/os-release
+# 		PRETTY_NAME="Raspbian GNU/Linux 7 (wheezy)"
+# 		NAME="Raspbian GNU/Linux"
+# 		VERSION_ID="7"
+# 		VERSION="7 (wheezy)"
+# 		ID=raspbian
+# 		ID_LIKE=debian
+# 		ANSI_COLOR="1;31"
+# 		HOME_URL="http://www.raspbian.org/"
+# 		SUPPORT_URL="http://www.raspbian.org/RaspbianForums"
+# 		BUG_REPORT_URL="http://www.raspbian.org/RaspbianBugs"
+# 		
+# 		$ cat /etc/os-release 
+# 		NAME="Arch Linux"
+# 		ID=arch
+# 		PRETTY_NAME="Arch Linux"
+# 		ANSI_COLOR="0;36"
+# 		HOME_URL="https://www.archlinux.org/"
+# 		SUPPORT_URL="https://bbs.archlinux.org/"
+# 		BUG_REPORT_URL="https://bugs.archlinux.org/"
+# 		"""
+# 		try:
+# 			txt = open(f).readlines()
+# 
+# 			for line in txt:
+# 				if line.find('PRETTY_NAME') >=0: return line.split('=')[1].replace('"','').replace('\n','').replace('GNU/Linux ','')
+# 			return ''
+# 		
+# 		except:
+# 			return ''	
 
 
 class Kernel(object):
@@ -663,7 +713,7 @@ def main():
 	out.append( User() )
 	out.append( Hostname() )
 	out.append( IP(args['zeroconfig']) )
-	out.append( OS(out.distro) )
+	out.append( OS( out.getDistro() ) )
 	out.append( Kernel() )
 	out.append( Uptime() )
 	out.append( Shell() )
