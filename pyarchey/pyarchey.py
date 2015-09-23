@@ -442,7 +442,7 @@ class Output(object):
 			name = ''
 
 			for line in txt:
-				if line.find('PRETTY_NAME') >=0: pretty_name = line.split('=')[1].replace('"','').replace('\n','').replace('GNU/Linux ','')
+				if line.find('PRETTY_NAME') >= 0: pretty_name = line.split('=')[1].replace('"','').replace('\n','').replace('GNU/Linux ','')
 				if line.find('NAME') >= 0: name = line.split('=')[1].replace('"','').replace('\n','').replace(' GNU/Linux','')
 			
 			if not name: name = 'Linux'
@@ -493,43 +493,6 @@ class OS(object):
 
 		self.key = 'OS'
 		self.value = OS
-		
-# 	def getDistro(self,f='/etc/os-release'):
-# 		"""
-# 		1. Checks if a file exists, if so, reads it
-# 		2. looks for distribution name in file
-# 		3. returns name and if it was successful or not
-# 		
-# 		pi@calculon ~ $ more /etc/os-release
-# 		PRETTY_NAME="Raspbian GNU/Linux 7 (wheezy)"
-# 		NAME="Raspbian GNU/Linux"
-# 		VERSION_ID="7"
-# 		VERSION="7 (wheezy)"
-# 		ID=raspbian
-# 		ID_LIKE=debian
-# 		ANSI_COLOR="1;31"
-# 		HOME_URL="http://www.raspbian.org/"
-# 		SUPPORT_URL="http://www.raspbian.org/RaspbianForums"
-# 		BUG_REPORT_URL="http://www.raspbian.org/RaspbianBugs"
-# 		
-# 		$ cat /etc/os-release 
-# 		NAME="Arch Linux"
-# 		ID=arch
-# 		PRETTY_NAME="Arch Linux"
-# 		ANSI_COLOR="0;36"
-# 		HOME_URL="https://www.archlinux.org/"
-# 		SUPPORT_URL="https://bbs.archlinux.org/"
-# 		BUG_REPORT_URL="https://bugs.archlinux.org/"
-# 		"""
-# 		try:
-# 			txt = open(f).readlines()
-# 
-# 			for line in txt:
-# 				if line.find('PRETTY_NAME') >=0: return line.split('=')[1].replace('"','').replace('\n','').replace('GNU/Linux ','')
-# 			return ''
-# 		
-# 		except:
-# 			return ''	
 
 
 class Kernel(object):
@@ -583,7 +546,6 @@ class Packages(object):
 
 class CPU(object):
 	def __init__(self,dist):
-		#file = open('/proc/cpuinfo').readlines()
 		try:
 			if dist == 'Mac OSX':
 				cpu = Popen(['sysctl', '-n','machdep.cpu.brand_string'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')[0]
@@ -593,8 +555,12 @@ class CPU(object):
 				cpu = Popen(['sysctl', '-n','hw'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
 				cpuinfo = re.sub('	+', ' ', cpu[1].replace('model name\t: ', '').rstrip('\n'))
 			else:
-				cpu = Popen(['grep', '-i', 'model name\t: ', '/proc/cpuinfo'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
-				cpuinfo = re.sub('	+', ' ', cpu[0].replace('model name\t: ', ''))
+# 				cpu = Popen(['grep', '-i', 'model name\t: ', '/proc/cpuinfo'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
+# 				cpuinfo = re.sub('	+', ' ', cpu[0].replace('model name\t: ', ''))
+				txt = open('/proc/cpuinfo').readlines()
+				cpuinfo = ''
+				for line in txt:
+					if line.find('model name') >= 0: cpuinfo = line.split(': ')[1].strip('\n')
 		except:
 			cpuinfo = 'unknown'
 		self.key = 'CPU'
