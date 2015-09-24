@@ -412,8 +412,8 @@ class Output(object):
 			name = ''
 
 			for line in txt:
-				if line.find('PRETTY_NAME'): pretty_name = line.split('=')[1].replace('"','').replace('\n','').replace('GNU/Linux ','')
-				if line.find('NAME'): name = line.split('=')[1].replace('"','').replace('\n','').replace(' GNU/Linux','')
+				if line.startswith('PRETTY_NAME'): pretty_name = line.split('=')[1].replace('"','').replace('\n','').replace('GNU/Linux ','')
+				if line.startswith('NAME'): name = line.split('=')[1].replace('"','').replace('\n','').replace(' GNU/Linux','')
 			
 			if not name: name = 'Linux'
 			
