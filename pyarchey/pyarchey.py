@@ -379,6 +379,8 @@ class Output(object):
 
 	def readDistro(self,f='/etc/os-release'):
 		"""
+		See: http://www.dsm.fordham.edu/cgi-bin/man-cgi.pl?topic=os-release&ampsect=5
+		
 		1. Checks if a file exists, if so, reads it
 		2. looks for distribution name in file
 		3. returns name and if not successful, just says 'Linux' which is the default
@@ -410,8 +412,8 @@ class Output(object):
 			name = ''
 
 			for line in txt:
-				if line.find('PRETTY_NAME') >= 0: pretty_name = line.split('=')[1].replace('"','').replace('\n','').replace('GNU/Linux ','')
-				if line.find('NAME') >= 0: name = line.split('=')[1].replace('"','').replace('\n','').replace(' GNU/Linux','')
+				if line.startswith('PRETTY_NAME'): pretty_name = line.split('=')[1].replace('"','').replace('\n','').replace('GNU/Linux ','')
+				if line.startswith('NAME'): name = line.split('=')[1].replace('"','').replace('\n','').replace(' GNU/Linux','')
 			
 			if not name: name = 'Linux'
 			
