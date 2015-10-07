@@ -642,7 +642,7 @@ def main():
 	if args['display']:
 		for i in logosDict:
 			print(i)
-			print(logosDict[i].format(color = colorDict[i],results=list(xrange(0,13))) )
+			print(logosDict[i].format(color = colorDict[i],results=list(range(0,13))) )
 		return 0
 
     # Need a good way to display version number, there seems to be no standard
