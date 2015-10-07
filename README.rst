@@ -138,4 +138,5 @@ Date           Version   Notes
 22 Sep 15      0.6.4     Arch linux fix
 23 Sep 15      0.6.5     Refactoring to remove some command line programs
 23 Sep 15      0.6.6     Bug fix
+ 6 Oct 15      0.6.7     Bug fix with Python 3
 =============  ========  ======

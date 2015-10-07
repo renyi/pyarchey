@@ -6,7 +6,7 @@ def read(fname):
 
 setup(
 	name="pyarchey",
-	version="0.6.6",
+	version="0.6.7",
 	author="Kevin Walchko",
 	keywords=['system info','ascii art','archey'],
 	author_email="kevin.walchko@outlook.com",
