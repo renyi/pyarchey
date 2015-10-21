@@ -66,7 +66,7 @@ colorDict = {
 	'FreeBSD':			[RD, BRD, YW],
 	'Mac OSX':			[CLR, CY],
 	'Debian':			[RD, BRD],
-	'Raspbian':			[RD, BRD],
+	'Raspbian':			[RD, BRD, GR],
 	'LinuxMint':		[BLG, BGR],
 	'Gentoo':			[BPL, BLG],
 	'OpenBSD':			[BYW, BYW, YW],
@@ -137,8 +137,8 @@ logosDict = {'Arch Linux': """{color[1]}
 {color[0]}             ~~~~~
 \x1b[0m"""
 ,'Raspbian':"""{color[0]}
-{color[0]}        .~~.   .~~.      {results[0]}
-{color[0]}       '. \ ' ' / .'     {results[1]}
+{color[2]}        .~~.   .~~.      {results[0]}
+{color[2]}       '. \ ' ' / .'     {results[1]}
 {color[0]}        .~ .~~~..~.      {results[2]}
 {color[0]}       : .~.'~'.~. :     {results[3]}
 {color[0]}      ~ (   ) (   ) ~    {results[4]}
