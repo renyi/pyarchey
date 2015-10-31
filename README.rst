@@ -139,4 +139,5 @@ Date           Version   Notes
 23 Sep 15      0.6.5     Refactoring to remove some command line programs
 23 Sep 15      0.6.6     Bug fix
  6 Oct 15      0.6.7     Bug fix with Python 3
+20 Oct 15      0.6.8     Colored the leaves on Rpi ascii image 
 =============  ========  ======
