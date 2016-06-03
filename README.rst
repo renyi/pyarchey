@@ -18,17 +18,21 @@ PyArchey
     :target: https://pypi.python.org/pypi/pyarchey/
     :alt: License
 
-This is based off the ``archey`` command (which is also python) distributed by various 
-linux, unix, and osx package managers. In order to avoid a naming conflict between them, 
+This is based off the ``archey`` command (which is also python) distributed by various
+linux, unix, and osx package managers. In order to avoid a naming conflict between them,
 I called this ``pyarchey``.
 
-Currently, ``pyarchey`` supports logos for Arch, Fedora, LinuxMint, Ubuntu, SUSE, Debian, 
+PyArchey is developed for and tested under Python 2.7, no guarrentee is made
+about its suitability for Python 3.x. Pull requests adding 3.x support are
+welcome.
+
+Currently, ``pyarchey`` supports logos for Arch, Fedora, LinuxMint, Ubuntu, SUSE, Debian,
 Raspbian, Gentoo, OpenBSD, generic Linux, and Slackware.
 
 ::
 
     [kevin@Tardis soccer2]$ pyarchey -z
-    
+
                       ##             User: kevin
                    ####              Hostname: Tardis.local
                    ##                IP: 192.168.1.4 / 58:B0:35:F2:25:D8
@@ -63,10 +67,10 @@ Raspbian, Gentoo, OpenBSD, generic Linux, and Slackware.
 
 
     pi@calculon ~/github/pyarchey $ pyarchey -zj
-    {"Kernel": "4.1.6+", "Uptime": "15 days 21 hrs 39 mins", "Shell": "/bin/bash", 
-    "Disk": "4.0 / 15.0 GB", "IP": "192.168.1.17 / B8:27:EB:0A:5A:17", "Hostname": 
-    "calculon", "Processes": "73 running", "RAM": "215.0 MB/ 229.0 MB", "User": "pi", 
-    "CPU Usage": "[3.9]", "Packages": 960, "OS": "Raspbian 7 (wheezy) armv6l", "CPU": 
+    {"Kernel": "4.1.6+", "Uptime": "15 days 21 hrs 39 mins", "Shell": "/bin/bash",
+    "Disk": "4.0 / 15.0 GB", "IP": "192.168.1.17 / B8:27:EB:0A:5A:17", "Hostname":
+    "calculon", "Processes": "73 running", "RAM": "215.0 MB/ 229.0 MB", "User": "pi",
+    "CPU Usage": "[3.9]", "Packages": 960, "OS": "Raspbian 7 (wheezy) armv6l", "CPU":
     "ARMv6-compatible processor rev 7 (v6l)"}
 
 
@@ -74,7 +78,7 @@ Raspbian, Gentoo, OpenBSD, generic Linux, and Slackware.
 Requirements
 -------------
 
-Some of the custom code was removed and ``psutil`` was used to provide a cross-platform 
+Some of the custom code was removed and ``psutil`` was used to provide a cross-platform
 solution.
 
 --------
@@ -113,7 +117,7 @@ args:
 History
 --------
 
-As far as I am aware, this was started by @djmelik which was then forked by 
+As far as I am aware, this was started by @djmelik which was then forked by
 @mikeantonacci where I forked it form him.
 
 --------------
@@ -139,5 +143,6 @@ Date           Version   Notes
 23 Sep 15      0.6.5     Refactoring to remove some command line programs
 23 Sep 15      0.6.6     Bug fix
  6 Oct 15      0.6.7     Bug fix with Python 3
-20 Oct 15      0.6.8     Colored the leaves on Rpi ascii image 
+20 Oct 15      0.6.8     Colored the leaves on Rpi ascii image
+ 3 Jun 16      0.7       Bug fix with Python 3 and some PEP8 fixes
 =============  ========  ======

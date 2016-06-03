@@ -1,14 +1,15 @@
 import os
 from setuptools import setup
 
+
 def read(fname):
 	return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
 	name="pyarchey",
-	version="0.6.8",
+	version="0.7",
 	author="Kevin Walchko",
-	keywords=['system info','ascii art','archey'],
+	keywords=['system info', 'ascii art', 'archey'],
 	author_email="kevin.walchko@outlook.com",
 	description="A simple python scrip to display an OS logo in ASCII art along with basic system information.",
 	license="GPL",
@@ -25,6 +26,7 @@ setup(
 		# Specify the Python versions you support here. In particular, ensure
 		# that you indicate whether you support Python 2, Python 3 or both.
 		'Programming Language :: Python :: 2.7',
+		'Programming Language :: Python :: 2 :: Only',
 		#'Programming Language :: Python :: 3',
 		#'Programming Language :: Python :: 3.2',
 		#'Programming Language :: Python :: 3.3',

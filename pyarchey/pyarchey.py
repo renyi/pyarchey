@@ -21,6 +21,7 @@
 # For more info on psutil, see https://pythonhosted.org/psutil/
 #
 # Import libraries
+from __future__ import print_function  # make things nicer for python 3
 import os                               # fileCheck, tries to determine distribution
 import re                               # used by CPU
 import uuid                             # mac address
@@ -31,34 +32,33 @@ import psutil as ps                     # system info
 import datetime as dt                   # uptime
 import json                             # json
 import argparse                         # handle command line args
-#import unittest                         # unit test
 import math								# handle memory sizes
 import platform							# get system info - not used yet
 
-#---------------Dictionaries---------------#
+# ---------------Dictionaries---------------#
 #  https://wiki.archlinux.org/index.php/Color_Bash_Prompt
 # escape[ x;y   x-{0 normal 1 bold} y-color
-CLR="\033[0;0m"   # normal color scheme
-BK ="\033[0;30m"   # black
-BL ="\033[0;34m"   # blue
-GR ="\033[0;32m"   # green
-CY ="\033[0;36m"   # cyan
-RD ="\033[0;31m"   # red
-PL ="\033[0;35m"   # purple
-YW ="\033[0;33m"   # yellow
-GY ="\033[0;30m"   # grey
-LG ="\033[0;37m"   # light grey
+CLR = "\033[0;0m"   # normal color scheme
+BK = "\033[0;30m"   # black
+BL = "\033[0;34m"   # blue
+GR = "\033[0;32m"   # green
+CY = "\033[0;36m"   # cyan
+RD = "\033[0;31m"   # red
+PL = "\033[0;35m"   # purple
+YW = "\033[0;33m"   # yellow
+GY = "\033[0;30m"   # grey
+LG = "\033[0;37m"   # light grey
 
 # Bold colors (note be 'B' before the color name)
-BBK ="\033[1;30m"   # black
-BBL ="\033[1;34m"   # blue
-BGR ="\033[1;32m"   # green
-BCY ="\033[1;36m"   # cyan
-BRD ="\033[1;31m"   # red
-BPL ="\033[1;35m"   # purple
-BYW ="\033[1;33m"   # yellow
-BGY ="\033[1;30m"   # grey
-BLG ="\033[1;37m"   # light grey
+BBK = "\033[1;30m"   # black
+BBL = "\033[1;34m"   # blue
+BGR = "\033[1;32m"   # green
+BCY = "\033[1;36m"   # cyan
+BRD = "\033[1;31m"   # red
+BPL = "\033[1;35m"   # purple
+BYW = "\033[1;33m"   # yellow
+BGY = "\033[1;30m"   # grey
+BLG = "\033[1;37m"   # light grey
 
 colorDict = {
 	'Arch Linux':		[BL, BBL],
@@ -289,7 +289,7 @@ logosDict = {'Arch Linux': """{color[1]}
 {color[0]}      _#@@@@@@#@@
 {color[0]}        _p@@@@q
 \x1b[0m"""
-,'OpenBSD':"""{color[0]}
+, 'OpenBSD': """{color[0]}
 {color[0]}               |    .            {results[0]}
 {color[0]}           .   |L  /|   .        {results[1]}
 {color[0]}       _ . | _| --+._/| .        {results[2]}
@@ -335,56 +335,56 @@ logosDict = {'Arch Linux': """{color[1]}
 
 
 
-def autoSize(used,total):
-	mem = ['B','KB','MB','GB','TB','PB']
-	for x in range(1,6):
+def autoSize(used, total):
+	mem = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
+	for x in range(1, 6):
 		if total > 1000:
-			used = math.ceil(used/1024)
-			total = math.ceil(total/1024)
+			used = math.ceil(used / 1024)
+			total = math.ceil(total / 1024)
 			size = mem[x]
-	return used,total,size
+	return used, total, size
 
-#---------------Classes---------------#
+# ---------------Classes---------------#
+
 
 class Output(object):
 	results = []
 
 	def __init__(self):
-		self.distro,self.pname = self.detectDistro()
+		self.distro, self.pname = self.detectDistro()
 		self.json = {}
 
 	def detectDistro(self):
 		"""
-		Attempts to determine the distribution and draw the logo. However, if it can't, 
-		then it defaults to 'Linux' and draws a simple linux penguin. 
+		Attempts to determine the distribution and draw the logo. However, if it can't,
+		then it defaults to 'Linux' and draws a simple linux penguin.
 		"""
 		dist = _platform
 		pname = ''
-		
+
 		if dist == 'darwin':
 			dist = 'Mac OSX'
 		elif dist == 'freebsd':
 			dist = 'FreeBSD'
 		else:
-			dist,pname = self.readDistro()
+			dist, pname = self.readDistro()
 
 		# Correct some distribution names
 		if dist == 'Arch':
-			dist =	'Arch Linux'
+			dist = 'Arch Linux'
 		elif dist == 'openSUSE project':
 			dist = 'openSUSE'
 
-
 		return dist, pname
 
-	def readDistro(self,f='/etc/os-release'):
+	def readDistro(self, f='/etc/os-release'):
 		"""
 		See: http://www.dsm.fordham.edu/cgi-bin/man-cgi.pl?topic=os-release&ampsect=5
-		
+
 		1. Checks if a file exists, if so, reads it
 		2. looks for distribution name in file
 		3. returns name and if not successful, just says 'Linux' which is the default
-		
+
 		pi@calculon ~ $ more /etc/os-release
 		PRETTY_NAME="Raspbian GNU/Linux 7 (wheezy)"
 		NAME="Raspbian GNU/Linux"
@@ -396,8 +396,8 @@ class Output(object):
 		HOME_URL="http://www.raspbian.org/"
 		SUPPORT_URL="http://www.raspbian.org/RaspbianForums"
 		BUG_REPORT_URL="http://www.raspbian.org/RaspbianBugs"
-		
-		$ cat /etc/os-release 
+
+		$ cat /etc/os-release
 		NAME="Arch Linux"
 		ID=arch
 		PRETTY_NAME="Arch Linux"
@@ -412,26 +412,26 @@ class Output(object):
 			name = ''
 
 			for line in txt:
-				if line.startswith('PRETTY_NAME'): pretty_name = line.split('=')[1].replace('"','').replace('\n','').replace('GNU/Linux ','')
-				if line.startswith('NAME'): name = line.split('=')[1].replace('"','').replace('\n','').replace(' GNU/Linux','')
-			
+				if line.startswith('PRETTY_NAME'): pretty_name = line.split('=')[1].replace('"', '').replace('\n', '').replace('GNU/Linux ', '')
+				if line.startswith('NAME'): name = line.split('=')[1].replace('"', '').replace('\n', '').replace(' GNU/Linux', '')
+
 			if not name: name = 'Linux'
-			
-			return name,pretty_name
-		
+
+			return name, pretty_name
+
 		except:
 			name = Popen(['lsb_release', '-is'], stdout=PIPE).communicate()[0].decode('Utf-8').rstrip('\n')
 			if not name: name = 'Linux'
-			return name,''	
+			return name, ''
 
 	def getDistro(self):
 		"""
-		Ideally returns the pretty distro name instead of the short distro name. If we 
+		Ideally returns the pretty distro name instead of the short distro name. If we
 		weren't able to figure out the distro, it defaults to Linux.
 		"""
 		if self.pname: return self.pname
 		else: return self.distro
-		
+
 	def append(self, display):
 		"""
 		Sets up the printing
@@ -444,15 +444,16 @@ class Output(object):
 		Does the printing. Either picture and info to screen or dumps json.
 		"""
 		if js:
-			print json.dumps(self.json)
+			print(json.dumps(self.json))
 		else:
-			print(logosDict[self.distro].format(color = colorDict[self.distro], results = self.results))
+			print(logosDict[self.distro].format(color=colorDict[self.distro], results=self.results))
 
 
 class User(object):
 	def __init__(self):
 		self.key = 'User'
 		self.value = os.getenv('USER')
+
 
 class Hostname(object):
 	def __init__(self):
@@ -461,13 +462,13 @@ class Hostname(object):
 
 
 class OS(object):
-	def __init__(self,dist):
+	def __init__(self, dist):
 		OS = dist
-		
+
 		if dist == 'Mac OSX':
-			v = platform.mac_ver() 
+			v = platform.mac_ver()
 			OS = OS + ' ' + v[0] + ' ' + v[2]
-		else: 
+		else:
 			OS = OS + ' ' + platform.machine()
 
 		self.key = 'OS'
@@ -479,28 +480,32 @@ class Kernel(object):
 		self.key = 'Kernel'
 		self.value = platform.release()
 
+
 class Uptime(object):
 	def __init__(self):
 		up = ps.boot_time()
 		up = dt.datetime.fromtimestamp(up)
 		now = dt.datetime.now()
 		diff = now - up
-		uptime = '%d days %d hrs %d mins' %(diff.days,diff.seconds/3600,(diff.seconds%3600)/60)
+		uptime = '%d days %d hrs %d mins' % (diff.days, diff.seconds / 3600, (diff.seconds % 3600) / 60)
 		self.key = 'Uptime'
 		self.value = uptime
+
 
 class Shell(object):
 	def __init__(self):
 		self.key = 'Shell'
 		self.value = os.getenv('SHELL')
 
+
 class Processes(object):
 	def __init__(self):
 		self.key = 'Processes'
-		self.value =  str(len(ps.pids())) + ' running'
+		self.value = str(len(ps.pids())) + ' running'
+
 
 class Packages(object):
-	def __init__(self,dist):
+	def __init__(self, dist):
 		try:
 			if dist == 'Mac OSX':
 				p1 = Popen(['brew', 'list', '-1'], stdout=PIPE).communicate()[0].decode("Utf-8")
@@ -514,22 +519,23 @@ class Packages(object):
 				p0 = Popen(['dpkg', '--get-selections'], stdout=PIPE)
 				p1 = Popen(['grep', '-v', 'deinstall'], stdin=p0.stdout, stdout=PIPE).communicate()[0].decode("Utf-8")
 			elif dist == 'Slackware':
-				 p1 = Popen(['ls', '/var/log/packages/'], stdout=PIPE).communicate()[0].decode("Utf-8")
+				p1 = Popen(['ls', '/var/log/packages/'], stdout=PIPE).communicate()[0].decode("Utf-8")
 			packages = len(p1.rstrip('\n').split('\n'))
 		except:
 			packages = 0
 		self.key = 'Packages'
 		self.value = packages
 
+
 class CPU(object):
-	def __init__(self,dist):
+	def __init__(self, dist):
 		try:
 			if dist == 'Mac OSX':
-				cpu = Popen(['sysctl', '-n','machdep.cpu.brand_string'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')[0]
-				c = cpu.replace('(R)','').replace('(TM)','').replace('CPU','').split()
+				cpu = Popen(['sysctl', '-n', 'machdep.cpu.brand_string'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')[0]
+				c = cpu.replace('(R)', '').replace('(TM)', '').replace('CPU', '').split()
 				cpuinfo = ' '.join(c)
 			elif dist == 'FreeBSD':
-				cpu = Popen(['sysctl', '-n','hw'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
+				cpu = Popen(['sysctl', '-n', 'hw'], stdout=PIPE).communicate()[0].decode('Utf-8').split('\n')
 				cpuinfo = re.sub('	+', ' ', cpu[1].replace('model name\t: ', '').rstrip('\n'))
 			else:
 				txt = open('/proc/cpuinfo').readlines()
@@ -541,27 +547,29 @@ class CPU(object):
 		self.key = 'CPU'
 		self.value = cpuinfo
 
+
 class RAM(object):
 	def __init__(self):
 		ram = ps.virtual_memory()
 		used = ram.used
 		total = ram.total
 
-		used,total,size = autoSize(used,total)
-		ramdisplay = '%s %s/ %s %s' % (used, size, total,size)
+		used, total, size = autoSize(used, total)
+		ramdisplay = '%s %s/ %s %s' % (used, size, total, size)
 
 		self.key = 'RAM'
 		self.value = ramdisplay
 
+
 class Disk(object):
-	def __init__(self,json=False):
+	def __init__(self, json=False):
 		p = ps.disk_usage('/')
 		total = p.total
 		used = p.used
 
-		used,total,size = autoSize(used,total)
+		used, total, size = autoSize(used, total)
 
-		usedpercent = int(float(used)/float(total)*100.0)
+		usedpercent = int(float(used) / float(total) * 100.0)
 
 		if json:
 			disk = '%s / %s %s' % (used, total, size)
@@ -575,12 +583,13 @@ class Disk(object):
 		self.key = 'Disk'
 		self.value = disk
 
+
 class IP(object):
 	def __init__(self, zeroconfig=False):
 		"""
 		This tries to get the host name and deterine the IP address from it.
 		It also tries to handle zeroconfig well. Also, there is an issue with getting
-		the MAC address, so this uses uuid to get that too. However, using the UUID is 
+		the MAC address, so this uses uuid to get that too. However, using the UUID is
 		not reliable, because it can return any MAC address (bluetooth, wired, wireless,
 		etc) or even make a random one.
 		"""
@@ -590,20 +599,22 @@ class IP(object):
 			host = socket.gethostname()
 			if zeroconfig:
 				if host.find('.local') < 0:
-					host=host + '.local'
+					host = host + '.local'
 
 			ip = socket.gethostbyname(host)
 		except:
 			print('Error in IP()')
-		
+
 		self.key = 'IP'
 		self.value = ip + ' / ' + mac.upper()
+
 
 class CPU2(object):
 	def __init__(self):
 		cpu = ps.cpu_percent(interval=1, percpu=True)
 		self.key = 'CPU Usage'
 		self.value = str(cpu)
+
 
 def handleArgs():
 	parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -626,7 +637,7 @@ Currently, it displays:
 	Disk Usage""", epilog="""Package info at: https://pypi.python.org/pypi/pyarchey
 Submit issues to: https://github.com/walchko/pyarchey""")
 
-	#parser.add_argument('-a', '--art', help='not implemented yet')
+	# parser.add_argument('-a', '--art', help='not implemented yet')
 	parser.add_argument('-d', '--display', help='displays all ascii logos and exits', action='store_true')
 	parser.add_argument('-j', '--json', help='instead of printing to screen, returns system as json', action='store_true')
 # 	parser.add_argument('-v', '--version', help='prints version number', action='store_true')
@@ -636,16 +647,17 @@ Submit issues to: https://github.com/walchko/pyarchey""")
 
 	return args
 
+
 def main():
 	args = handleArgs()
 
 	if args['display']:
 		for i in logosDict:
 			print(i)
-			print(logosDict[i].format(color = colorDict[i],results=list(range(0,13))) )
+			print(logosDict[i].format(color=colorDict[i], results=list(range(0, 13))))
 		return 0
 
-    # Need a good way to display version number, there seems to be no standard
+# Need a good way to display version number, there seems to be no standard
 # 	if args['version']:
 # 		print('pyarchey 0.6.3')
 # 		return 0
@@ -666,8 +678,6 @@ def main():
 	out.append( Disk(args['json']) )
 
 	out.output(args['json'])
-
-
 
 
 if __name__ == '__main__':
