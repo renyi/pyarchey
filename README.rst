@@ -17,6 +17,10 @@ PyArchey
 .. image:: https://img.shields.io/pypi/l/pyarchey.svg
     :target: https://pypi.python.org/pypi/pyarchey/
     :alt: License
+.. image:: https://www.quantifiedcode.com/api/v1/project/57f17931e1c142f5a080939fdfb41a26/badge.svg
+  :target: https://www.quantifiedcode.com/app/project/57f17931e1c142f5a080939fdfb41a26
+  :alt: Code issues
+
 
 This is based off the ``archey`` command (which is also python) distributed by various
 linux, unix, and osx package managers. In order to avoid a naming conflict between them,
