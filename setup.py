@@ -1,13 +1,16 @@
 import os
 from setuptools import setup
 
+from pyarchey import __version__ as VERSION
+
 
 def read(fname):
 	return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+
 setup(
 	name="pyarchey",
-	version="0.7",
+	version=VERSION,
 	author="Kevin Walchko",
 	keywords=['system info', 'ascii art', 'archey'],
 	author_email="kevin.walchko@outlook.com",
@@ -27,10 +30,10 @@ setup(
 		# that you indicate whether you support Python 2, Python 3 or both.
 		'Programming Language :: Python :: 2.7',
 		'Programming Language :: Python :: 2 :: Only',
-		#'Programming Language :: Python :: 3',
-		#'Programming Language :: Python :: 3.2',
-		#'Programming Language :: Python :: 3.3',
-		#'Programming Language :: Python :: 3.4',
+		# 'Programming Language :: Python :: 3',
+		# 'Programming Language :: Python :: 3.2',
+		# 'Programming Language :: Python :: 3.3',
+		# 'Programming Language :: Python :: 3.4',
 
 		# Operating systems this runs on
 		'Operating System :: Unix',

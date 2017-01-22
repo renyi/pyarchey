@@ -61,22 +61,22 @@ BGY = "\033[1;30m"   # grey
 BLG = "\033[1;37m"   # light grey
 
 colorDict = {
-	'Arch Linux':		[BL, BBL],
-	'Ubuntu':			[RD, BRD, BYW],
-	'FreeBSD':			[RD, BRD, YW],
-	'Mac OSX':			[CLR, CY],
-	'Debian':			[RD, BRD],
-	'Raspbian':			[RD, BRD, GR],
-	'LinuxMint':		[BLG, BGR],
-	'Gentoo':			[BPL, BLG],
-	'OpenBSD':			[BYW, BYW, YW],
-	'Fedora':			[BLG, BBL, BL],
+	'Arch Linux':       [BL, BBL],
+	'Ubuntu':           [RD, BRD, BYW],
+	'FreeBSD':          [RD, BRD, YW],
+	'Mac OSX':          [CLR, CY],
+	'Debian':           [RD, BRD],
+	'Raspbian':         [RD, BRD, GR],
+	'LinuxMint':        [BLG, BGR],
+	'Gentoo':           [BPL, BLG],
+	'OpenBSD':          [BYW, BYW, YW],
+	'Fedora':           [BLG, BBL, BL],
 	'openSUSE project': [BLG, BGR],
-	'Slackware':		[BLG, BL, BBL],
-	'Linux':			[CLR, BBL],
-	'Sensors':			[BRD, BGR, BYW],
-	'Clear':			[CLR]
-	}
+	'Slackware':        [BLG, BL, BBL],
+	'Linux':            [CLR, BBL],
+	'Sensors':          [BRD, BGR, BYW],
+	'Clear':            [CLR]
+}
 
 logosDict = {'Arch Linux': """{color[1]}
 {color[1]}               +                {results[0]}
@@ -617,7 +617,7 @@ class CPU2(object):
 
 
 def handleArgs():
-	parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
+	parser = argparse.ArgumentParser(version='1.0', formatter_class=argparse.RawDescriptionHelpFormatter,
 	description="""
 Displays system info and a logo for OS
 
@@ -642,6 +642,7 @@ Submit issues to: https://github.com/walchko/pyarchey""")
 	parser.add_argument('-j', '--json', help='instead of printing to screen, returns system as json', action='store_true')
 # 	parser.add_argument('-v', '--version', help='prints version number', action='store_true')
 	parser.add_argument('-z', '--zeroconfig', help='assume a zeroconfig network and adds .local to the hostname', action='store_true')
+	# parser.add_argument('--version', action='version', version='%(prog)s 1.0')
 
 	args = vars(parser.parse_args())
 
@@ -663,19 +664,19 @@ def main():
 # 		return 0
 
 	out = Output()
-	out.append( User() )
-	out.append( Hostname() )
-	out.append( IP(args['zeroconfig']) )
-	out.append( OS( out.getDistro() ) )
-	out.append( Kernel() )
-	out.append( Uptime() )
-	out.append( Shell() )
-	out.append( Processes() )
-	out.append( Packages(out.distro) )
-	out.append( CPU(out.distro) )
-	out.append( CPU2() )
-	out.append( RAM() )
-	out.append( Disk(args['json']) )
+	out.append(User())
+	out.append(Hostname())
+	out.append(IP(args['zeroconfig']))
+	out.append(OS(out.getDistro()))
+	out.append(Kernel())
+	out.append(Uptime())
+	out.append(Shell())
+	out.append(Processes())
+	out.append(Packages(out.distro))
+	out.append(CPU(out.distro))
+	out.append(CPU2())
+	out.append(RAM())
+	out.append(Disk(args['json']))
 
 	out.output(args['json'])
 
