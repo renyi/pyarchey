@@ -91,11 +91,11 @@ Install
 
 The preferred way is to use `pypi.org <https://pypi.python.org/pypi>`_ ::
 
-    pip install pyarchey
+    pip install pyarchey2
 
 You can also do::
 
-    git clone https://github.com/walchko/pyarchey.git
+    git clone https://github.com/renyi/pyarchey2.git
     cd pyarchey
     python setup.py install
 
@@ -115,7 +115,8 @@ args:
 -h, --help        help
 -j, --json        output json of system info, nothing is printed to the screen
 -z, --zeroconfig  add ``.local`` to a hostname for zeroconfig to find IP address easier
-
+--verbose         enables more verbose messages
+--debug           print debug messages
 
 --------
 History

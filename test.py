@@ -12,13 +12,13 @@ import pyarchey.pyarchey as py
 # print o.readDistro('./raspbian.test')
 
 def test_slack():
-	o = py.Output()
-	assert o.readDistro('./test/slack.test') == ('Slackware', 'Slackware 14.1')
-	
+    o = py.Output()
+    assert o.readDistro('./test/slack.test') == ('Slackware', 'Slackware 14.1')
+
 def test_arch():
-	o = py.Output()
-	assert o.readDistro('./test/arch.test') == ('Arch Linux', 'Arch Linux')
+    o = py.Output()
+    assert o.readDistro('./test/arch.test') == ('Arch Linux', 'Arch Linux')
 
 def test_raspbian():
-	o = py.Output()
-	assert o.readDistro('./test/raspbian.test') == ('Raspbian', 'Raspbian 7 (wheezy)')
+    o = py.Output()
+    assert o.readDistro('./test/raspbian.test') == ('Raspbian', 'Raspbian 7 (wheezy)')
