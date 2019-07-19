@@ -20,7 +20,7 @@ setup(
     author="Renyi Khor",
     keywords=['system info', 'ascii art', 'archey'],
     author_email="renyi.ace@gmail.com",
-    description="A simple python scrip to display an OS logo in ASCII art along with basic system information.",
+    description="PyArchey2 is a fork of PyArchey. It is an attempt to speed up PyArchey by introducing multithreading and dropping support for Python2.",
     license="GPL",
     classifiers=[
         # How mature is this project? Common values are
