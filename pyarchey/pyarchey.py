@@ -382,7 +382,6 @@ class Output():
     threads = []
 
     def __init__(self, args):
-        self.queue = queue.Queue()
         self.args = args
 
         self.getDistro()
@@ -480,6 +479,9 @@ class Output():
         self.results.append(f'{colorDict[self.distro][1]}{display[0]}: {colorDict["Clear"][0]}{display[1]}')
 
     def getall(self):
+        if not self.queue:
+            self.queue = queue.Queue()
+
         self.threads.append(threading.Thread(target=self.user))
         self.threads.append(threading.Thread(target=self.hostname))
         self.threads.append(threading.Thread(target=self.ip, args=[self.args['zeroconfig']]))
