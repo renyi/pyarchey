@@ -519,7 +519,7 @@ class Output():
         if not self.results and not self.json:
             self.getall()
 
-        if js is True:
+        if js is True or self.args['json'] is True:
             if dumps is None:
                 dumps = json.dumps
             return json.dumps(self.json)
@@ -731,7 +731,7 @@ class Output():
 
             usedpercent = int(float(p.used) / float(p.total) * 100.0)
 
-            if json:
+            if json is True:
                 disk = f'{used} / {total}'
 
             else:
@@ -772,6 +772,8 @@ class Output():
         mac = ':'.join(re.findall('..', '%012x' % uuid.getnode())).upper()
         try:
             host = socket.gethostname()
+            # host = socket.getfqdn()
+            # ni_list = psutil.net_if_addrs()
             if zeroconfig:
                 if host.find('.local') < 0:
                     host = host + '.local'
@@ -823,7 +825,7 @@ def handleArgs():
                                             CPU Usage
                                             RAM
                                             Disk Usage""",
-                                     epilog="Package info at: https://pypi.python.org/pypi/pyarchey. Submit issues to: https://github.com/walchko/pyarchey")
+                                     epilog="Package info at: https://pypi.python.org/pypi/pyarchey2. Submit issues to: https://github.com/renyi/pyarchey2")
 
     # parser.add_argument('-a', '--art', help='not implemented yet')
     parser.add_argument('-d', '--display', help='displays all ascii logos and exits', action='store_true')
@@ -855,7 +857,7 @@ def main():
         logging.basicConfig(level=logging.INFO)
 
     out = Output(args=args)
-    print(out.output(args['json']))
+    print(out.output())
 
 
 if __name__ == '__main__':
