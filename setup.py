@@ -10,7 +10,7 @@ def read(fname):
 
 
 with open('requirements.txt') as f:
-    return f.read().splitlines()
+    requirements = f.read().splitlines()
 
 
 setup(
