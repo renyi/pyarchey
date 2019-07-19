@@ -9,9 +9,8 @@ def read(fname):
         return f.read()
 
 
-def requirements(fname):
-    with open('requirements.txt') as f:
-        return f.read().splitlines()
+with open('requirements.txt') as f:
+    return f.read().splitlines()
 
 
 setup(
