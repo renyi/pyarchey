@@ -136,10 +136,10 @@ Date           Version   Notes
  6 Oct 15      0.6.7     Bug fix with Python 3
 20 Oct 15      0.6.8     Colored the leaves on Rpi ascii image
  3 Jun 16      0.7       Bug fix with Python 3 and some PEP8 fixes
-19 Jul 19      2.0.0     Dropped Python 2 support
-                         Added multithreading and queues to speed up information gathering
-                         Added logging
-                         Allow output() to override json.dumps()
-                         Use f-strings for string formatting
-                         Added format_bytes to fix some bugs and expand labels to yottabyte
+19 Jul 19      2.0.0     Dropped Python 2 support.
+                         Added multithreading and queues to speed up information gathering.
+                         Added logging.
+                         Allow output() to override json.dumps().
+                         Use f-strings for string formatting.
+                         Added format_bytes to fix some bugs and expand labels to yottabyte.
 =============  ========  ======
