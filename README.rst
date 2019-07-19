@@ -1,26 +1,12 @@
 =========
-PyArchey
+PyArchey2
 =========
 
-.. figure:: https://imgs.xkcd.com/comics/automation.png
-	:align: center
+PyArchey2 drops support for Python 2.7. The motivation for PyArchey2 is performance. Main 
+changes includes multi-threading to speed up information gathering and uses f-strings for 
+string formatting. Also, added logging and bytes labels are expanded to yottabytes.
 
-
-.. image:: https://travis-ci.org/walchko/pyarchey.svg?branch=master
-    :target: https://travis-ci.org/walchko/pyarchey
-.. image:: https://img.shields.io/pypi/v/pyarchey.svg
-    :target: https://pypi.python.org/pypi/pyarchey/
-    :alt: Latest Version
-.. image:: https://img.shields.io/pypi/dm/pyarchey.svg
-    :target: https://pypi.python.org/pypi/pyarchey/
-    :alt: Downloads
-.. image:: https://img.shields.io/pypi/l/pyarchey.svg
-    :target: https://pypi.python.org/pypi/pyarchey/
-    :alt: License
-.. image:: https://www.quantifiedcode.com/api/v1/project/57f17931e1c142f5a080939fdfb41a26/badge.svg
-  :target: https://www.quantifiedcode.com/app/project/57f17931e1c142f5a080939fdfb41a26
-  :alt: Code issues
-
+---
 
 This is based off the ``archey`` command (which is also python) distributed by various
 linux, unix, and osx package managers. In order to avoid a naming conflict between them,
@@ -91,11 +77,11 @@ Install
 
 The preferred way is to use `pypi.org <https://pypi.python.org/pypi>`_ ::
 
-    pip install pyarchey
+    pip install pyarchey2
 
 You can also do::
 
-    git clone https://github.com/walchko/pyarchey.git
+    git clone https://github.com/renyi/pyarchey2.git
     cd pyarchey
     python setup.py install
 
@@ -115,7 +101,8 @@ args:
 -h, --help        help
 -j, --json        output json of system info, nothing is printed to the screen
 -z, --zeroconfig  add ``.local`` to a hostname for zeroconfig to find IP address easier
-
+--verbose         enables more verbose messages
+--debug           print debug messages
 
 --------
 History
@@ -149,4 +136,10 @@ Date           Version   Notes
  6 Oct 15      0.6.7     Bug fix with Python 3
 20 Oct 15      0.6.8     Colored the leaves on Rpi ascii image
  3 Jun 16      0.7       Bug fix with Python 3 and some PEP8 fixes
+19 Jul 19      2.0.0     Dropped Python 2 support.
+                         Added multithreading and queues to speed up information gathering.
+                         Added logging.
+                         Allow output() to override json.dumps().
+                         Use f-strings for string formatting.
+                         Added format_bytes to fix some bugs and expand labels to yottabyte.
 =============  ========  ======
