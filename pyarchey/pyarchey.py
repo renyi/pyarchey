@@ -34,10 +34,12 @@ import datetime as dt                   # uptime
 import json                             # json
 import argparse                         # handle command line args
 import platform                         # get system info - not used yet
+import typing
 
 import threading
-import queue
 import logging
+
+from queue import Queue
 
 logger = logging.getLogger('pyarchey2')
 
@@ -353,18 +355,17 @@ logosDict = {
 }
 
 
-def format_bytes(size):
+def format_bytes(size: float) -> str:
     power = 2**10  # 2**10 = 1024
     n = 0
     power_labels = {0: '', 1: 'K', 2: 'M', 3: 'G', 4: 'T', 5: 'P', 6: 'E', 7: 'Z', 8: 'Y'}
     while size > power:
         size /= power
         n += 1
-    label = power_labels[n]+'B'
-    return f'{size:.2f} {label}'
+    return f'{size:.2f} {power_labels[n]}B'
 
 
-def autoSize(used, total):
+def autoSize(used: float, total: float) -> list:
     return format_bytes(used), format_bytes(total)
 
 
@@ -372,21 +373,30 @@ def autoSize(used, total):
 
 
 class Output():
-    results = []
-    json = {}
-    distro = None
-    pname = None
+    results: typing.List[typing.List] = []
+    json: dict = {}
+    distro: str = None
+    pname: str = None
 
-    args = None
-    queue = None
-    threads = []
+    args: dict = None
+    queue: Queue = None
+    threads: typing.List[threading.Thread] = []
 
-    def __init__(self, args):
+    def __init__(self, args, **kwargs):
         self.args = args
 
         self.getDistro()
 
-    def detectDistro(self):
+    # def __getattr__(self, name):
+    #     for f in self.features:
+    #         if f'get_{f}' == name:
+    #             c = getattr(self, f)
+    #             print(c)
+    #             t = threading.Thread(target=c)
+    #             self.threads.append(t)
+    #             return t
+
+    def detectDistro(self) -> str:
         """
         Attempts to determine the distribution and draw the logo. However, if it can't,
         then it defaults to 'Linux' and draws a simple linux penguin.
@@ -408,7 +418,7 @@ class Output():
             dist = 'openSUSE'
         return dist, pname
 
-    def readDistro(self, f='/etc/os-release'):
+    def readDistro(self, f: str = '/etc/os-release') -> list:
         """
         See: http://www.dsm.fordham.edu/cgi-bin/man-cgi.pl?topic=os-release&ampsect=5
 
@@ -463,7 +473,7 @@ class Output():
                 name = 'Linux'
             return name, ''
 
-    def getDistro(self):
+    def getDistro(self) -> str:
         """
         Ideally returns the pretty distro name instead of the short distro name. If we
         weren't able to figure out the distro, it defaults to Linux.
@@ -472,19 +482,19 @@ class Output():
             self.distro, self.pname = self.detectDistro()
         return self.pname if self.pname else self.distro
 
-    def append(self, display):
+    def append(self, display) -> None:
         """
         Sets up the printing
         """
         self.results.append(f'{colorDict[self.distro][1]}{display[0]}: {colorDict["Clear"][0]}{display[1]}')
 
-    def getall(self):
+    def getall(self) -> None:
         if not self.queue:
-            self.queue = queue.Queue()
+            self.queue = Queue()
 
         self.threads.append(threading.Thread(target=self.user))
         self.threads.append(threading.Thread(target=self.hostname))
-        self.threads.append(threading.Thread(target=self.ip, args=[self.args['zeroconfig']]))
+        self.threads.append(threading.Thread(target=self.ip, args=[self.args.get('zeroconfig', False)]))
         self.threads.append(threading.Thread(target=self.os, args=[self.distro]))
         self.threads.append(threading.Thread(target=self.kernel))
         self.threads.append(threading.Thread(target=self.uptime))
@@ -494,7 +504,7 @@ class Output():
         self.threads.append(threading.Thread(target=self.cpu, args=[self.distro]))
         self.threads.append(threading.Thread(target=self.cpu2))
         self.threads.append(threading.Thread(target=self.ram))
-        self.threads.append(threading.Thread(target=self.disk, args=[self.args['json']]))
+        self.threads.append(threading.Thread(target=self.disk, args=[self.args.get('json', False)]))
 
         logger.debug('Starting threads ...')
         for t in self.threads:
@@ -508,33 +518,45 @@ class Output():
         for t in self.threads:
             res = self.queue.get(False)
             logger.debug(res)
+
+            # Append list
             self.append(res)
+
+            # Append json
+            self.json[res[0]] = res[1]
+
+            # Finish q
             self.queue.task_done()
 
         logger.debug('Joining queue ...')
         self.queue.join()
 
-    def output(self, js=False, dumps=None):
+    def output(self, js: bool = False, dumps: typing.Callable = None, raw: bool = False) -> typing.Union[dict, str]:
         """
         Does the printing. Either picture and info to screen or dumps json.
         """
-        if not self.results and not self.json:
+        if not self.results or not self.json:
             self.getall()
 
-        if js is True or self.args['json'] is True:
-            if dumps is None:
-                dumps = json.dumps
-            return json.dumps(self.json)
-        else:
-            return logosDict[self.distro].format(color=colorDict[self.distro], results=self.results)
+        if self.json:
+            if raw is True:
+                return self.json  # json dict
 
-    def user(self):
+            if js is True or self.args.get('json', False) is True:
+                if dumps is None:
+                    dumps = json.dumps
+                return json.dumps(self.json)  # json string
+
+        # Full UI
+        return logosDict[self.distro].format(color=colorDict[self.distro], results=self.results)  # graphics dict
+
+    def user(self) -> str:
         logger.info('Getting user ..')
         try:
             user = os.getenv('USER')
             msg = 'User', f'{user}'
         except Exception as e:
-            logger.error(e)
+            logger.error(f'user: {e}')
             msg = 'User', ''
 
         if self.queue is not None:
@@ -543,12 +565,12 @@ class Output():
         logger.info('Done user.')
         return msg
 
-    def hostname(self):
+    def hostname(self) -> str:
         logger.info('Getting hostname ..')
         try:
             msg = 'Hostname', f'{platform.node()}'
         except Exception as e:
-            logger.error(e)
+            logger.error(f'hostname: {e}')
             msg = 'Hostname', ''
 
         if self.queue is not None:
@@ -557,7 +579,7 @@ class Output():
         logger.info('Done hostname.')
         return msg
 
-    def os(self, dist):
+    def os(self, dist: str) -> str:
         logger.info('Getting os ..')
         try:
             OS = dist
@@ -571,7 +593,7 @@ class Output():
 
             msg = 'OS', f'{OS}'
         except Exception as e:
-            logger.error(e)
+            logger.error(f'os: {e}')
             msg = 'OS', ''
 
         if self.queue is not None:
@@ -580,12 +602,12 @@ class Output():
         logger.info('Done os.')
         return msg
 
-    def kernel(self):
+    def kernel(self) -> str:
         logger.info('Getting kernel ..')
         try:
             msg = 'Kernel', f'{platform.release()}'
         except Exception as e:
-            logger.error(e)
+            logger.error(f'kernel: {e}')
             msg = 'Kernel', ''
 
         if self.queue is not None:
@@ -594,7 +616,7 @@ class Output():
         logger.info('Done kernel.')
         return msg
 
-    def uptime(self):
+    def uptime(self) -> str:
         logger.info('Getting uptime ..')
         try:
             up = ps.boot_time()
@@ -605,7 +627,7 @@ class Output():
             uptime = f'{diff.days:.0f} days {diff.seconds / 3600:.0f} hrs {(diff.seconds % 3600) / 60:.0f} mins'
             msg = 'Uptime', f'{uptime}'
         except Exception as e:
-            logger.error(e)
+            logger.error(f'uptime: {e}')
             msg = 'Uptime', ''
 
         if self.queue is not None:
@@ -614,13 +636,13 @@ class Output():
         logger.info('Done uptime.')
         return msg
 
-    def shell(self):
+    def shell(self) -> str:
         logger.info('Getting shell ..')
         try:
             shell = os.getenv('SHELL')
             msg = 'Shell', f'{shell}'
         except Exception as e:
-            logger.error(e)
+            logger.error(f'shell: {e}')
             msg = 'Shell', ''
 
         if self.queue is not None:
@@ -629,12 +651,12 @@ class Output():
         logger.info('Done shell.')
         return msg
 
-    def processes(self):
+    def processes(self) -> str:
         logger.info('Getting processes ..')
         try:
             msg = 'Processes', f'{str(len(ps.pids()))} running'
         except Exception as e:
-            logger.error(e)
+            logger.error(f'processes: {e}')
             msg = 'Processes', ''
 
         if self.queue is not None:
@@ -643,7 +665,7 @@ class Output():
         logger.info('Done processes.')
         return msg
 
-    def packages(self, dist):
+    def packages(self, dist: str) -> str:
         logger.info('Getting packages ..')
         try:
             if dist == 'Mac OSX':
@@ -663,7 +685,7 @@ class Output():
 
             msg = 'Packages', f'{packages}'
         except Exception as e:
-            logger.error(e)
+            logger.error(f'packages: {e}')
             msg = 'Packages', ''
 
         if self.queue is not None:
@@ -672,7 +694,7 @@ class Output():
         logger.info('Done packages.')
         return msg
 
-    def cpu(self, dist):
+    def cpu(self, dist: str) -> str:
         logger.info('Getting cpu ..')
         cpuinfo = 'unknown'
         try:
@@ -693,7 +715,7 @@ class Output():
 
             msg = 'CPU', f'{cpuinfo}'
         except Exception as e:
-            logger.error(e)
+            logger.error(f'cpu: {e}')
             msg = 'CPU', ''
 
         if self.queue is not None:
@@ -702,7 +724,7 @@ class Output():
         logger.info('Done cpu.')
         return msg
 
-    def ram(self):
+    def ram(self) -> str:
         logger.info('Getting ram ..')
         try:
             ram = ps.virtual_memory()
@@ -713,7 +735,7 @@ class Output():
 
             msg = 'RAM', f'{used} / {total}'
         except Exception as e:
-            logger.error(e)
+            logger.error(f'ram: {e}')
             msg = 'RAM', ''
 
         if self.queue is not None:
@@ -722,7 +744,7 @@ class Output():
         logger.info('Done ram.')
         return msg
 
-    def disk(self, json=False):
+    def disk(self, json: bool = False) -> str:
         logger.info('Getting disk ..')
         try:
             p = ps.disk_usage('/')
@@ -752,7 +774,7 @@ class Output():
 
             msg = 'Disk', f'{disk}'
         except Exception as e:
-            logger.error(e)
+            logger.error(f'disk: {e}')
             msg = 'Disk', ''
 
         if self.queue is not None:
@@ -761,7 +783,7 @@ class Output():
         logger.info('Done disk.')
         return msg
 
-    def ip(self, zeroconfig=False):
+    def ip(self, zeroconfig: bool = False) -> str:
         """
         This tries to get the host name and deterine the IP address from it.
         It also tries to handle zeroconfig well. Also, there is an issue with getting
@@ -773,16 +795,17 @@ class Output():
         ip = '127.0.0.1'
         mac = ':'.join(re.findall('..', '%012x' % uuid.getnode())).upper()
         try:
-            host = socket.gethostname()
-            # host = socket.getfqdn()
-            # ni_list = psutil.net_if_addrs()
-            if zeroconfig:
-                if host.find('.local') < 0:
-                    host = host + '.local'
+            if not self.distro == 'Mac OSX':  # Temp fix for [Errno 8] nodename nor servname provided, or not known
+                host = socket.gethostname()
+                # host = socket.getfqdn()
+                # ni_list = psutil.net_if_addrs()
+                if zeroconfig is True:
+                    if host.find('.local') < 0:
+                        host = host + '.local'
 
-            ip = socket.gethostbyname(host)
+                ip = socket.gethostbyname(host)
         except Exception as e:
-            logger.error(e)
+            logger.error(f'ip: {e}')
 
         msg = 'IP', f'{ip} / {mac}'
 
@@ -792,13 +815,13 @@ class Output():
         logger.info('Done ip.')
         return msg
 
-    def cpu2(self):
+    def cpu2(self) -> str:
         logger.info('Getting cpu2 ..')
         try:
             cpu = ps.cpu_percent(interval=1, percpu=True)
             msg = 'CPU Usage', f'{cpu}'
         except Exception as e:
-            logger.error(e)
+            logger.error(f'cpu2: {e}')
             msg = 'CPU Usage', ''
 
         if self.queue is not None:
