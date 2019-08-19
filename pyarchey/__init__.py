@@ -1,3 +1,1 @@
-VERSION = (2, 0, 0)
-
-__version__ = '.'.join(map(str, VERSION))
+from .__version__ import __version__  # noqa
