@@ -482,13 +482,13 @@ class Output():
             self.distro, self.pname = self.detectDistro()
         return self.pname if self.pname else self.distro
 
-    def append(self, display) -> None:
+    def append(self, display: str):
         """
         Sets up the printing
         """
         self.results.append(f'{colorDict[self.distro][1]}{display[0]}: {colorDict["Clear"][0]}{display[1]}')
 
-    def getall(self) -> None:
+    def getall(self):
         if not self.queue:
             self.queue = Queue()
 
@@ -551,7 +551,7 @@ class Output():
         return logosDict[self.distro].format(color=colorDict[self.distro], results=self.results)  # graphics dict
 
     def user(self) -> str:
-        logger.info('Getting user ..')
+        logger.debug('Getting user ..')
         try:
             user = os.getenv('USER')
             msg = 'User', f'{user}'
@@ -562,11 +562,11 @@ class Output():
         if self.queue is not None:
             self.queue.put(msg, False)
 
-        logger.info('Done user.')
+        logger.debug('Done user.')
         return msg
 
     def hostname(self) -> str:
-        logger.info('Getting hostname ..')
+        logger.debug('Getting hostname ..')
         try:
             msg = 'Hostname', f'{platform.node()}'
         except Exception as e:
@@ -576,11 +576,11 @@ class Output():
         if self.queue is not None:
             self.queue.put(msg, False)
 
-        logger.info('Done hostname.')
+        logger.debug('Done hostname.')
         return msg
 
     def os(self, dist: str) -> str:
-        logger.info('Getting os ..')
+        logger.debug('Getting os ..')
         try:
             OS = dist
 
@@ -599,11 +599,11 @@ class Output():
         if self.queue is not None:
             self.queue.put(msg, False)
 
-        logger.info('Done os.')
+        logger.debug('Done os.')
         return msg
 
     def kernel(self) -> str:
-        logger.info('Getting kernel ..')
+        logger.debug('Getting kernel ..')
         try:
             msg = 'Kernel', f'{platform.release()}'
         except Exception as e:
@@ -613,11 +613,11 @@ class Output():
         if self.queue is not None:
             self.queue.put(msg, False)
 
-        logger.info('Done kernel.')
+        logger.debug('Done kernel.')
         return msg
 
     def uptime(self) -> str:
-        logger.info('Getting uptime ..')
+        logger.debug('Getting uptime ..')
         try:
             up = ps.boot_time()
             up = dt.datetime.fromtimestamp(up)
@@ -633,11 +633,11 @@ class Output():
         if self.queue is not None:
             self.queue.put(msg, False)
 
-        logger.info('Done uptime.')
+        logger.debug('Done uptime.')
         return msg
 
     def shell(self) -> str:
-        logger.info('Getting shell ..')
+        logger.debug('Getting shell ..')
         try:
             shell = os.getenv('SHELL')
             msg = 'Shell', f'{shell}'
@@ -648,11 +648,11 @@ class Output():
         if self.queue is not None:
             self.queue.put(msg, False)
 
-        logger.info('Done shell.')
+        logger.debug('Done shell.')
         return msg
 
     def processes(self) -> str:
-        logger.info('Getting processes ..')
+        logger.debug('Getting processes ..')
         try:
             msg = 'Processes', f'{str(len(ps.pids()))} running'
         except Exception as e:
@@ -662,11 +662,11 @@ class Output():
         if self.queue is not None:
             self.queue.put(msg, False)
 
-        logger.info('Done processes.')
+        logger.debug('Done processes.')
         return msg
 
     def packages(self, dist: str) -> str:
-        logger.info('Getting packages ..')
+        logger.debug('Getting packages ..')
         try:
             if dist == 'Mac OSX':
                 p1 = Popen(['brew', 'list', '-1'], stdout=PIPE).communicate()[0].decode("Utf-8")
@@ -691,11 +691,11 @@ class Output():
         if self.queue is not None:
             self.queue.put(msg, False)
 
-        logger.info('Done packages.')
+        logger.debug('Done packages.')
         return msg
 
     def cpu(self, dist: str) -> str:
-        logger.info('Getting cpu ..')
+        logger.debug('Getting cpu ..')
         cpuinfo = 'unknown'
         try:
             if dist == 'Mac OSX':
@@ -721,11 +721,11 @@ class Output():
         if self.queue is not None:
             self.queue.put(msg, False)
 
-        logger.info('Done cpu.')
+        logger.debug('Done cpu.')
         return msg
 
     def ram(self) -> str:
-        logger.info('Getting ram ..')
+        logger.debug('Getting ram ..')
         try:
             ram = ps.virtual_memory()
             used = ram.used
@@ -741,11 +741,11 @@ class Output():
         if self.queue is not None:
             self.queue.put(msg, False)
 
-        logger.info('Done ram.')
+        logger.debug('Done ram.')
         return msg
 
     def disk(self, json: bool = False) -> str:
-        logger.info('Getting disk ..')
+        logger.debug('Getting disk ..')
         try:
             p = ps.disk_usage('/')
             total = p.total
@@ -780,7 +780,7 @@ class Output():
         if self.queue is not None:
             self.queue.put(msg, False)
 
-        logger.info('Done disk.')
+        logger.debug('Done disk.')
         return msg
 
     def ip(self, zeroconfig: bool = False) -> str:
@@ -791,7 +791,7 @@ class Output():
         not reliable, because it can return any MAC address (bluetooth, wired, wireless,
         etc) or even make a random one.
         """
-        logger.info('Getting ip ..')
+        logger.debug('Getting ip ..')
         ip = '127.0.0.1'
         mac = ':'.join(re.findall('..', '%012x' % uuid.getnode())).upper()
         try:
@@ -812,11 +812,11 @@ class Output():
         if self.queue is not None:
             self.queue.put(msg, False)
 
-        logger.info('Done ip.')
+        logger.debug('Done ip.')
         return msg
 
     def cpu2(self) -> str:
-        logger.info('Getting cpu2 ..')
+        logger.debug('Getting cpu2 ..')
         try:
             cpu = ps.cpu_percent(interval=1, percpu=True)
             msg = 'CPU Usage', f'{cpu}'
@@ -827,7 +827,7 @@ class Output():
         if self.queue is not None:
             self.queue.put(msg, False)
 
-        logger.info('Done cpu2.')
+        logger.debug('Done cpu2.')
         return msg
 
 
@@ -882,8 +882,8 @@ def main():
         logging.basicConfig(level=logging.INFO)
 
     out = Output(args=args)
-    print(out.output())
+    return out.output()
 
 
 if __name__ == '__main__':
-    main()
+    print(main())
