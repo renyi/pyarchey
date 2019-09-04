@@ -9,7 +9,7 @@ def read(fname):
         return f.read()
 
 
-with open('requirements/requirements.txt') as f:
+with open(os.path.join(os.path.dirname(__file__), 'requirements.txt')) as f:
     requirements = f.read().splitlines()
 
 
