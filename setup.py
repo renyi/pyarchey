@@ -9,6 +9,10 @@ def read(fname):
         return f.read()
 
 
+with open('requirements/requirements.txt') as f:
+    requirements = f.read().splitlines()
+
+
 setup(
     name="pyarchey2",
     version=VERSION,
@@ -49,7 +53,7 @@ setup(
         'Topic :: System :: Shells',
         'Environment :: Console'
     ],
-    install_requires=read("requirements.txt"),
+    install_requires=requirements,
     url="https://github.com/renyi/pyarchey2",
     long_description=read("README.rst"),
     packages=["pyarchey"],
