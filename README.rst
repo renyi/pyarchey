@@ -12,10 +12,6 @@ This is based off the ``archey`` command (which is also python) distributed by v
 linux, unix, and osx package managers. In order to avoid a naming conflict between them,
 I called this ``pyarchey``.
 
-PyArchey is developed for and tested under Python 2.7, no guarrentee is made
-about its suitability for Python 3.x. Pull requests adding 3.x support are
-welcome.
-
 Currently, ``pyarchey`` supports logos for Arch, Fedora, LinuxMint, Ubuntu, SUSE, Debian,
 Raspbian, Gentoo, OpenBSD, generic Linux, and Slackware.
 
@@ -109,12 +105,13 @@ History
 --------
 
 As far as I am aware, this was started by @djmelik which was then forked by
-@mikeantonacci where I forked it form him.
+@mikeantonacci, and then forked by Kevin (@walchko) and then by me.
 
 --------------
 Contributions
 --------------
 
+- Kevin (walchko) - Orignal fork
 - Dimitris Zlatanidis (dslackw) - Slackware support
 - mikeantonacci - fixed tab errors
 - Alessandro-Barbieri - Gentoo support
